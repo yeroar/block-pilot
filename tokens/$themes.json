@@ -3,10 +3,7 @@
     "id": "theme-token",
     "name": "Token",
     "group": "Theme",
-    "selectedTokenSets": {
-      "map": "disabled",
-      "core": "disabled"
-    },
+    "selectedTokenSets": {},
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
       "Layer.background": "79f63ccc560779d57de901488bdaa5083447e9c2",
@@ -70,8 +67,7 @@
     "name": "v2.1",
     "group": "Theme",
     "selectedTokenSets": {
-      "map": "enabled",
-      "core": "disabled"
+      "map": "enabled"
     },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
@@ -118,11 +114,6 @@
       "Object.primary.subtle.selected": "1f54b72a01d42a771011898ff3c60480ac09d9de",
       "Face.inverse": "5bc21b265f578ee6de4b37d45f0359c4ed320267",
       "Face.accent": "b05665151e1f4f6c618a152b4b38bb9f3087b06f",
-      "Padding.m-0": "dbfe884cb8eb638fa6000db1809ae11d4a7361c6",
-      "Padding.m-4": "c1065c27b6c819077e4ea73e664ed2e62d44769f",
-      "Padding.m-6": "f869d8c1f10b2ffba4f64f6a0b4943fd5e4a2a96",
-      "Padding.m-3": "7fb49f7dab572eaaa9e244fcf754e7a6e9ae17bc",
-      "Padding.m-8": "0aefd377578c63fafafeccb6e3fc1f8f51847864",
       "Object.positive.bold.selected": "cb46d358af94988a75332f3ecacc4b7c14b13654",
       "Object.positive.subtle.selected": "bb161b7ca6f82c50786333f59daf8ea67eb10494",
       "Object.negative.bold.selected": "c62221b331b063387e7466d8e1709511b41e1b01",
@@ -135,7 +126,12 @@
       "Object.accent.bold.default": "96bff905d89cc602fbd40ca0cb48ce31db7b0131",
       "Object.secondary.selected": "3c597233a47bae7961d13f966571b884233d168d",
       "Object.tertiary.selected": "f30785a404a3276c3426fd8c3ea17a6499de51c5",
-      "Object.inverse.selected": "f4440cfaf01b0c5735468bf8e61f2a9a218bccd7"
+      "Object.inverse.selected": "f4440cfaf01b0c5735468bf8e61f2a9a218bccd7",
+      "Spacing.m-0": "dbfe884cb8eb638fa6000db1809ae11d4a7361c6",
+      "Spacing.m-4": "c1065c27b6c819077e4ea73e664ed2e62d44769f",
+      "Spacing.m-6": "f869d8c1f10b2ffba4f64f6a0b4943fd5e4a2a96",
+      "Spacing.m-3": "7fb49f7dab572eaaa9e244fcf754e7a6e9ae17bc",
+      "Spacing.m-8": "0aefd377578c63fafafeccb6e3fc1f8f51847864"
     },
     "$figmaModeId": "5142:0",
     "$figmaCollectionId": "VariableCollectionId:1:2912"
@@ -145,7 +141,6 @@
     "name": "Mode 1",
     "group": "_Primitives 2.0",
     "selectedTokenSets": {
-      "map": "disabled",
       "core": "enabled"
     },
     "$figmaStyleReferences": {},
@@ -224,10 +219,7 @@
     "id": "_primitives-mode 1",
     "name": "Mode 1",
     "group": "_Primitives",
-    "selectedTokenSets": {
-      "map": "disabled",
-      "core": "disabled"
-    },
+    "selectedTokenSets": {},
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
       "Cream.50": "6ead4b3d2b22839a794290cc93eab7a2f48b3db4",

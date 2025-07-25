@@ -308,25 +308,29 @@
       "description": "Use to visually group or separate UI elements, such as flat cards or side panel dividers."
     }
   },
-  "Padding": {
+  "Spacing": {
     "m-0": {
-      "value": 0,
+      "value": "0",
       "type": "number"
     },
     "m-4": {
-      "value": 16,
+      "value": "16",
       "type": "number"
     },
     "m-6": {
-      "value": 24,
+      "value": "24",
       "type": "number"
     },
     "m-3": {
-      "value": 12,
+      "value": "12",
       "type": "number"
     },
     "m-8": {
-      "value": 48,
+      "value": "48",
+      "type": "number"
+    },
+    "m2": {
+      "value": "8",
       "type": "number"
     }
   }
