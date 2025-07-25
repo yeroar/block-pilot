@@ -1,0 +1,333 @@
+{
+  "Layer": {
+    "background": {
+      "value": "{Gray.Opaque.200}",
+      "type": "color",
+      "description": "Use as the primary background for the UI."
+    },
+    "primary": {
+      "value": "{Gray.Opaque.100}",
+      "type": "color",
+      "description": "Use for the background of actionable cards."
+    },
+    "secondary": {
+      "value": "{Gray.Opaque.50}",
+      "type": "color",
+      "description": "Use for the background of actionable cards."
+    },
+    "secondaryPressed": {
+      "value": "{Gray.Alpha.400}",
+      "type": "color",
+      "description": "Use for the background of actionable cards."
+    },
+    "backgroundPressed": {
+      "value": "{Gray.Alpha.400}",
+      "type": "color",
+      "description": "Use as the primary background for the UI."
+    },
+    "primaryPressed": {
+      "value": "{Gray.Alpha.400}",
+      "type": "color",
+      "description": "Use for the background of actionable cards."
+    }
+  },
+  "Object": {
+    "primary": {
+      "bold": {
+        "default": {
+          "value": "{Yellow.400}",
+          "type": "color",
+          "description": "Use for the background of elements used to reinforce our brand, but with more emphasis."
+        },
+        "pressed": {
+          "value": "{Yellow.500}",
+          "type": "color",
+          "description": "Use for the background of elements used to reinforce our brand, but with more emphasis."
+        },
+        "selected": {
+          "value": "{Yellow.200}",
+          "type": "color",
+          "description": "The selected state color for fold-tier elements."
+        }
+      },
+      "subtle": {
+        "default": {
+          "value": "{Yellow.50}",
+          "type": "color",
+          "description": "Use for the background of elements that appear to have no background in a resting state, such as subtle buttons and menu items."
+        },
+        "pressed": {
+          "value": "{Yellow.100}",
+          "type": "color",
+          "description": "Use for the background of elements that appear to have no background in a resting state, such as subtle buttons and menu items."
+        },
+        "selected": {
+          "value": "{Yellow.200}",
+          "type": "color",
+          "description": "The selected state color for fold-tier elements."
+        }
+      }
+    },
+    "secondary": {
+      "default": {
+        "value": "{Gray.Opaque.300}",
+        "type": "color"
+      },
+      "pressed": {
+        "value": "{Gray.Opaque.400}",
+        "type": "color"
+      },
+      "selected": {
+        "value": "{Gray.Opaque.200}",
+        "type": "color"
+      }
+    },
+    "tertiary": {
+      "default": {
+        "value": "{Gray.Opaque.100}",
+        "type": "color"
+      },
+      "pressed": {
+        "value": "{Gray.Opaque.200}",
+        "type": "color"
+      },
+      "selected": {
+        "value": "{Gray.Opaque.300}",
+        "type": "color"
+      }
+    },
+    "negative": {
+      "subtle": {
+        "default": {
+          "value": "{Red.50}",
+          "type": "color",
+          "description": "Use for backgrounds communicating critical information, such in error section messages."
+        },
+        "pressed": {
+          "value": "{Red.100}",
+          "type": "color",
+          "description": "Use for backgrounds communicating critical information, such in error section messages."
+        },
+        "selected": {
+          "value": "{Red.200}",
+          "type": "color",
+          "description": "Use for backgrounds communicating critical information, such in error section messages."
+        }
+      },
+      "bold": {
+        "default": {
+          "value": "{Red.600}",
+          "type": "color",
+          "description": "A vibrant background option for communicating critical information, such as in danger buttons and error banners."
+        },
+        "pressed": {
+          "value": "{Red.700}",
+          "type": "color",
+          "description": "A vibrant background option for communicating critical information, such as in danger buttons and error banners."
+        },
+        "selected": {
+          "value": "{Red.200}",
+          "type": "color",
+          "description": "A vibrant background option for communicating critical information, such as in danger buttons and error banners."
+        }
+      }
+    },
+    "positive": {
+      "subtle": {
+        "default": {
+          "value": "{Green.50}",
+          "type": "color",
+          "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages."
+        },
+        "pressed": {
+          "value": "{Green.100}",
+          "type": "color",
+          "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages."
+        },
+        "selected": {
+          "value": "{Green.200}",
+          "type": "color"
+        }
+      },
+      "bold": {
+        "default": {
+          "value": "{Green.600}",
+          "type": "color",
+          "description": "A vibrant background option for communicating a favorable outcome, such as in checked selectors."
+        },
+        "pressed": {
+          "value": "{Green.700}",
+          "type": "color",
+          "description": "A vibrant background option for communicating a favorable outcome, such as in checked selectors."
+        },
+        "selected": {
+          "value": "{Green.300}",
+          "type": "color"
+        }
+      }
+    },
+    "inverse": {
+      "default": {
+        "value": "{Gray.Opaque.1000}",
+        "type": "color",
+        "description": "A vibrant background option for neutral UI elements, such as announcement banners."
+      },
+      "pressed": {
+        "value": "{Gray.Opaque.900}",
+        "type": "color",
+        "description": "A vibrant background option for neutral UI elements, such as announcement banners."
+      },
+      "selected": {
+        "value": "{Gray.Opaque.600}",
+        "type": "color",
+        "description": "A vibrant background option for neutral UI elements, such as announcement banners."
+      }
+    },
+    "disabled": {
+      "disabled": {
+        "value": "{Gray.Opaque.200}",
+        "type": "color",
+        "description": "Use for backgrounds of elements in a disabled state."
+      }
+    },
+    "accent": {
+      "subtle": {
+        "selected": {
+          "value": "{Blue.200}",
+          "type": "color"
+        },
+        "pressed": {
+          "value": "{Blue.100}",
+          "type": "color",
+          "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages."
+        },
+        "default": {
+          "value": "{Blue.50}",
+          "type": "color",
+          "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages."
+        }
+      },
+      "bold": {
+        "selected": {
+          "value": "{Blue.300}",
+          "type": "color"
+        },
+        "pressed": {
+          "value": "{Blue.700}",
+          "type": "color",
+          "description": "A vibrant background option for communicating a favorable outcome, such as in checked selectors."
+        },
+        "default": {
+          "value": "{Blue.600}",
+          "type": "color",
+          "description": "A vibrant background option for communicating a favorable outcome, such as in checked selectors."
+        }
+      }
+    }
+  },
+  "Face": {
+    "primary": {
+      "value": "{Gray.Opaque.900}",
+      "type": "color",
+      "description": "Primary text, such as body copy, sentence case headers, and buttons."
+    },
+    "secondary": {
+      "value": "{Gray.Opaque.800}",
+      "type": "color",
+      "description": "Secondary text, such as navigation, subtle button links, input field labels, and all caps subheadings."
+    },
+    "tertiary": {
+      "value": "{Gray.Opaque.700}",
+      "type": "color",
+      "description": "Meta-data, breadcrumbs, input field placeholder and helper text."
+    },
+    "negative": {
+      "value": "{Red.600}",
+      "type": "color",
+      "description": "Use for critical text, such as input field error messaging."
+    },
+    "positive": {
+      "value": "{Green.700}",
+      "type": "color",
+      "description": "Use for text to emphasize caution, such as in migration message."
+    },
+    "disabled": {
+      "value": "{Gray.Opaque.500}",
+      "type": "color",
+      "description": "Use for text in a disabled state."
+    },
+    "inverse": {
+      "value": "{Gray.Opaque.50}",
+      "type": "color",
+      "description": "Use for text on bold backgrounds."
+    },
+    "accent": {
+      "value": "{Blue.600}",
+      "type": "color"
+    }
+  },
+  "Border": {
+    "secondary": {
+      "value": "{Gray.Opaque.300}",
+      "type": "color",
+      "description": "Use to visually group or separate UI elements, such as flat cards or side panel dividers."
+    },
+    "negative": {
+      "value": "{Red.500}",
+      "type": "color",
+      "description": "Use for borders communicating critical information, such as the borders on invalid text fields."
+    },
+    "primary": {
+      "value": "{Yellow.500}",
+      "type": "color",
+      "description": "Use for borders communicating caution."
+    },
+    "positive": {
+      "value": "{Green.600}",
+      "type": "color",
+      "description": "Use for borders communicating a favorable outcome, such as the borders on validated text fields."
+    },
+    "disabled": {
+      "value": "{Gray.Opaque.100}",
+      "type": "color",
+      "description": "Use for borders of elements in a disabled state."
+    },
+    "focused": {
+      "value": "{Blue.500}",
+      "type": "color",
+      "description": "Use for focus rings of elements in a focus state."
+    },
+    "inverse": {
+      "value": "{Gray.Opaque.50}",
+      "type": "color",
+      "description": "Use for borders on bold backgrounds."
+    },
+    "tertiary": {
+      "value": "{Gray.Opaque.200}",
+      "type": "color",
+      "description": "Use to visually group or separate UI elements, such as flat cards or side panel dividers."
+    }
+  },
+  "Padding": {
+    "m-0": {
+      "value": 0,
+      "type": "number"
+    },
+    "m-4": {
+      "value": 16,
+      "type": "number"
+    },
+    "m-6": {
+      "value": 24,
+      "type": "number"
+    },
+    "m-3": {
+      "value": 12,
+      "type": "number"
+    },
+    "m-8": {
+      "value": 48,
+      "type": "number"
+    }
+  }
+}
