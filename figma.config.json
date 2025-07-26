@@ -1,7 +1,14 @@
 {
   "codeConnect": {
-    "include": ["components/**/*.{tsx,jsx}"],
-    "label": "React",
-    "interactiveSetupFigmaFileUrl": "https://www.figma.com/design/ahZy0r2O6hcR2Wt6HP3U9Y/Untitled?node-id=0-1&t=YnGjjTYMTIXk6RsI-1"
+    "parser": "react",
+    "include": [
+      "cc-components/**/*.tsx",
+      "cc-components/Button/FWButton.tsx",
+      "components/**/*.tsx"
+    ],
+    "exclude": ["node_modules/**"],
+    "paths": {
+      "@components/*": ["components/*"]
+    }
   }
 }
