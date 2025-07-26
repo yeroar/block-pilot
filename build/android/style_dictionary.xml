@@ -4,10 +4,6 @@
   Do not edit directly, this file was auto-generated.
 -->
 <resources>
-  <integer name="border_radius_br_0">0</integer>
-  <integer name="border_radius_br_1">6</integer>
-  <integer name="border_radius_br_2">12</integer>
-  <integer name="border_radius_rounded">1000</integer>
   <color name="yellow_50">#fffffae0</color>
   <color name="yellow_100">#fffff2b4</color>
   <color name="yellow_200">#ffffeb87</color>
@@ -135,7 +131,11 @@
   <integer name="spacing_m_6">24</integer>
   <integer name="spacing_m_3">12</integer>
   <integer name="spacing_m_8">48</integer>
-  <integer name="spacing_m2">8</integer>
+  <integer name="spacing_m_2">8</integer>
+  <integer name="border_radius_br_0">0</integer>
+  <integer name="border_radius_br_1">6</integer>
+  <integer name="border_radius_br_2">12</integer>
+  <integer name="border_radius_rounded">1000</integer>
   <string name="font_families_geist">Geist</string>
   <string name="line_heights_0">36</string>
   <string name="line_heights_1">28</string>

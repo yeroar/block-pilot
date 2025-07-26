@@ -3,10 +3,6 @@
  */
 
 :root {
-  --border-radius-br-0: 0;
-  --border-radius-br-1: 6;
-  --border-radius-br-2: 12;
-  --border-radius-rounded: 1000;
   --yellow-50: #fffae0;
   --yellow-100: #fff2b4;
   --yellow-200: #ffeb87;
@@ -134,7 +130,11 @@
   --spacing-m-6: 24;
   --spacing-m-3: 12;
   --spacing-m-8: 48;
-  --spacing-m2: 8;
+  --spacing-m-2: 8;
+  --border-radius-br-0: 0;
+  --border-radius-br-1: 6;
+  --border-radius-br-2: 12;
+  --border-radius-rounded: 1000;
   --font-families-geist: Geist;
   --line-heights-0: 36;
   --line-heights-1: 28;

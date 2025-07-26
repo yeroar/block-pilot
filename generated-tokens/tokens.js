@@ -2,10 +2,6 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-export const BorderRadiusBr0 = 0;
-export const BorderRadiusBr1 = 6;
-export const BorderRadiusBr2 = 12;
-export const BorderRadiusRounded = 1000;
 export const Yellow50 = "#fffae0";
 export const Yellow100 = "#fff2b4";
 export const Yellow200 = "#ffeb87";
@@ -128,12 +124,16 @@ export const BorderDisabled = "#fdf8ef";
 export const BorderFocused = "#4f86da";
 export const BorderInverse = "#fffdfa";
 export const BorderTertiary = "#fbf5e4";
-export const SpacingM0 = "0";
-export const SpacingM4 = "16";
-export const SpacingM6 = "24";
-export const SpacingM3 = "12";
-export const SpacingM8 = "48";
-export const SpacingM2 = "8";
+export const SpacingM0 = 0;
+export const SpacingM4 = 16;
+export const SpacingM6 = 24;
+export const SpacingM3 = 12;
+export const SpacingM8 = 48;
+export const SpacingM2 = 8;
+export const BorderRadiusBr0 = 0;
+export const BorderRadiusBr1 = 6;
+export const BorderRadiusBr2 = 12;
+export const BorderRadiusRounded = 1000;
 export const FontFamiliesGeist = "Geist";
 export const LineHeights0 = "36";
 export const LineHeights1 = "28";
