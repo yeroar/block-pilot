@@ -4,7 +4,8 @@
     "name": "Mode 1",
     "group": "_Primitives",
     "selectedTokenSets": {
-      "_Primitives/Mode 1": "enabled"
+      "map": "disabled",
+      "core": "disabled"
     },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
@@ -133,7 +134,7 @@
     "group": "Theme",
     "selectedTokenSets": {
       "map": "enabled",
-      "Theme/v2.1": "enabled"
+      "core": "disabled"
     },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
@@ -212,8 +213,8 @@
     "name": "Mode 1",
     "group": "_Primitives 2.0",
     "selectedTokenSets": {
-      "core": "enabled",
-      "_Primitives 2.0/Mode 1": "enabled"
+      "map": "disabled",
+      "core": "enabled"
     },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
