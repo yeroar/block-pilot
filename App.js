@@ -6,10 +6,16 @@ export default function App() {
   return (
     <View style={styles.container}>
       <FWButton
-        label="Block agent button"
-        onPress={() => alert("Button Pressed!")}
+        label="Default Button"
+        onPress={() => console.log("Default Button Pressed")}
+        state="default"
         disabled={false}
-        variant="default"
+      />
+      <FWButton
+        label="Disabled Button"
+        onPress={() => console.log("Disabled Button Pressed")}
+        state="default"
+        disabled={true}
       />
       <StatusBar style="auto" />
     </View>

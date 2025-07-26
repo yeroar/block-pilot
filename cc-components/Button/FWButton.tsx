@@ -1,54 +1,85 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, Pressable, StyleSheet } from 'react-native';
+import { MobileButton01, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, ObjectDisabledDisabled, FacePrimary, FaceDisabled } from '../../generated-tokens/tokens';
 
-const FWButton = ({ label, onPress, disabled, variant = 'default' }) => {
+const TOKENS = {
+  colors: {
+    default: ObjectPrimaryBoldDefault,
+    pressed: ObjectPrimaryBoldPressed,
+    disabled: ObjectDisabledDisabled,
+    textPrimary: FacePrimary,
+    textDisabled: FaceDisabled,
+  },
+  spacing: {
+    vertical: 0, // Spacing/m-0
+    horizontal: 12, // Spacing/m-3
+    height: 48, // Spacing/m-8
+  },
+  borderRadius: 6, // BorderRadius/br-1
+};
+
+const FWButton = ({ label, onPress, disabled, state = 'default' }) => {
   const getBackgroundColor = () => {
-    if (disabled) return styles.disabled.backgroundColor;
-    switch (variant) {
-      case 'primary':
-        return styles.primary.backgroundColor;
-      case 'subtle':
-        return styles.subtle.backgroundColor;
+    if (disabled) return TOKENS.colors.disabled;
+    if (state === 'pressed') return TOKENS.colors.pressed;
+    return TOKENS.colors.default;
+  };
+
+  const getTextColor = () => {
+    return disabled ? TOKENS.colors.textDisabled : TOKENS.colors.textPrimary;
+  };
+
+  const mapFontWeight = (weight) => {
+    switch (weight.toLowerCase()) {
+      case 'medium':
+        return '500';
+      case 'regular':
+        return '400';
+      case 'light':
+        return '300';
       default:
-        return styles.default.backgroundColor;
+        return '400';
     }
   };
 
   return (
     <Pressable
       onPress={disabled ? null : onPress}
-      style={[styles.button, { backgroundColor: getBackgroundColor() }]}
+      style={[
+        styles.button,
+        {
+          backgroundColor: getBackgroundColor(),
+          borderRadius: TOKENS.borderRadius,
+          paddingVertical: TOKENS.spacing.vertical,
+          paddingHorizontal: TOKENS.spacing.horizontal,
+          height: TOKENS.spacing.height,
+        },
+      ]}
     >
-      <Text style={styles.label}>{label}</Text>
+      <Text
+        style={[
+          styles.label,
+          {
+            color: getTextColor(),
+            fontSize: Number(MobileButton01.fontSize),
+            fontWeight: mapFontWeight(MobileButton01.fontWeight),
+            lineHeight: Number(MobileButton01.lineHeight),
+            fontFamily: MobileButton01.fontFamily,
+          },
+        ]}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 12,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  label: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: 'ObjectPrimaryBoldDefault',
-  },
-  default: {
-    backgroundColor: 'ColorBackgroundAccentPurpleBolderDefault',
-  },
-  primary: {
-    backgroundColor: 'ObjectPrimaryBoldDefault',
-  },
-  subtle: {
-    backgroundColor: 'ColorBackgroundAccentPurpleSubtlestDefault',
-  },
-  disabled: {
-    backgroundColor: 'ObjectDisabledDisabled',
-  },
+  label: {},
 });
 
 export default FWButton;
