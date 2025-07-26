@@ -3,6 +3,10 @@
  */
 
 :root {
+  --border-radius-br-0: 0;
+  --border-radius-br-1: 6;
+  --border-radius-br-2: 12;
+  --border-radius-rounded: 1000;
   --yellow-50: #fffae0;
   --yellow-100: #fff2b4;
   --yellow-200: #ffeb87;

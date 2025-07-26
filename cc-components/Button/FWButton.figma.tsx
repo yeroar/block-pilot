@@ -26,7 +26,7 @@ figma.connect(
       label={props.label}
       onPress={() => {}}
       disabled={props.isDisabled}
-      variant={props.state}
+      state={props.state}
     />
 
   },

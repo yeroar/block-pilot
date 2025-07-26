@@ -4,6 +4,10 @@
   Do not edit directly, this file was auto-generated.
 -->
 <resources>
+  <integer name="border_radius_br_0">0</integer>
+  <integer name="border_radius_br_1">6</integer>
+  <integer name="border_radius_br_2">12</integer>
+  <integer name="border_radius_rounded">1000</integer>
   <color name="yellow_50">#fffffae0</color>
   <color name="yellow_100">#fffff2b4</color>
   <color name="yellow_200">#ffffeb87</color>

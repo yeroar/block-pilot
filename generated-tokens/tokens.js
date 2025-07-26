@@ -2,6 +2,10 @@
  * Do not edit directly, this file was auto-generated.
  */
 
+export const BorderRadiusBr0 = 0;
+export const BorderRadiusBr1 = 6;
+export const BorderRadiusBr2 = 12;
+export const BorderRadiusRounded = 1000;
 export const Yellow50 = "#fffae0";
 export const Yellow100 = "#fff2b4";
 export const Yellow200 = "#ffeb87";

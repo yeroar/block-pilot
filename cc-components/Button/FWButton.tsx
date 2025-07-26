@@ -1,6 +1,17 @@
 import React from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
-import { MobileButton01, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, ObjectDisabledDisabled, FacePrimary, FaceDisabled } from '../../generated-tokens/tokens';
+import { 
+  MobileButton01, 
+  ObjectPrimaryBoldDefault, 
+  ObjectPrimaryBoldPressed, 
+  ObjectDisabledDisabled, 
+  FacePrimary, 
+  FaceDisabled,
+  SpacingM0,
+  SpacingM3,
+  SpacingM8,
+  BorderRadiusBr1
+} from '../../generated-tokens/tokens';
 
 const TOKENS = {
   colors: {
@@ -11,11 +22,11 @@ const TOKENS = {
     textDisabled: FaceDisabled,
   },
   spacing: {
-    vertical: 0, // Spacing/m-0
-    horizontal: 12, // Spacing/m-3
-    height: 48, // Spacing/m-8
+    vertical: SpacingM0,
+    horizontal: SpacingM3,
+    height: SpacingM8,
   },
-  borderRadius: 6, // BorderRadius/br-1
+  borderRadius: BorderRadiusBr1,
 };
 
 const FWButton = ({ label, onPress, disabled, state = 'default' }) => {
@@ -50,9 +61,9 @@ const FWButton = ({ label, onPress, disabled, state = 'default' }) => {
         {
           backgroundColor: getBackgroundColor(),
           borderRadius: TOKENS.borderRadius,
-          paddingVertical: TOKENS.spacing.vertical,
-          paddingHorizontal: TOKENS.spacing.horizontal,
-          height: TOKENS.spacing.height,
+          paddingVertical: Number(TOKENS.spacing.vertical),
+          paddingHorizontal: Number(TOKENS.spacing.horizontal),
+          height: Number(TOKENS.spacing.height),
         },
       ]}
     >
