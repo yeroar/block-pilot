@@ -336,3 +336,5 @@ export const MobileBalance03 = {
 export const TextCaseNone = "none";
 export const TextDecorationNone = "none";
 export const ParagraphIndent0 = "0px";
+export const IconBackspace =
+  "https://cdn-icons-png.flaticon.com/512/318/318218.png";
