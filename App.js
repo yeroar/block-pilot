@@ -2,12 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import CustomKeyButton from "./cc-components/KeyboardButton/KeyboardButton";
-import SimpleButton from "./cc-components/ActionTile/ActionTile";
+import ActionTile from "./cc-components/ActionTile/ActionTile";
 import MinimalIcon from "./components/content/MinimalIcon";
 import { IconBackspace } from "./generated-tokens/tokens";
 
 export default function App() {
-  const [buttonState, setButtonState] = useState("default"); // State for SimpleButton
+  const [buttonState, setButtonState] = useState("default"); // State for ActionTile
 
   const toggleState = () => {
     setButtonState((prevState) => {
@@ -41,7 +41,7 @@ export default function App() {
           onPress={() => console.log("Key 3 pressed")}
         />
       </View>
-      <SimpleButton
+      <ActionTile
         label={`Backspace (${buttonState})`} // Display current state in label
         leadingIcon={true}
         leadingSlot={<MinimalIcon name={IconBackspace} size={16} />}
@@ -53,7 +53,6 @@ export default function App() {
           toggleState();
         }}
       />
-      <StatusBar style="auto" />
     </View>
   );
 }

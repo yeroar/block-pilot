@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MinimalIcon from "../../components/content/MinimalIcon"; // Updated to use MinimalIcon
 import { FacePrimary, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, ObjectPrimarySubtleDefault, ObjectPrimarySubtlePressed, ObjectPrimarySubtleSelected, SpacingM2, SpacingM3 } from "../../generated-tokens/tokens";
 
-export type SimpleButtonProps = {
+export type ActionTileProps = {
   label: string;
   leadingIcon?: boolean;
   trailingIcon?: boolean;
@@ -13,7 +13,7 @@ export type SimpleButtonProps = {
   onPress?: () => void; // Added onPress prop
 };
 
-export default function SimpleButton({
+export default function ActionTile({
   label,
   leadingIcon = false,
   trailingIcon = false,
@@ -21,7 +21,7 @@ export default function SimpleButton({
   trailingSlot = null,
   state = "default", // Default state
   onPress, // Added onPress prop
-}: SimpleButtonProps) {
+}: ActionTileProps) {
   const backgroundColor =
     state === "pressed"
       ? ObjectPrimaryBoldPressed
@@ -29,7 +29,7 @@ export default function SimpleButton({
       ? ObjectPrimarySubtleDefault
       : ObjectPrimaryBoldDefault; // Determine background color based on state
 
-  console.log("SimpleButton rendered with state:", state); // Debugging state rendering
+  console.log("ActionTile rendered with state:", state); // Debugging state rendering
 
   return (
     <TouchableOpacity onPress={onPress}> {/* Make button interactive */}
