@@ -10,7 +10,9 @@ import {
   SpacingM0,
   SpacingM3,
   SpacingM8,
-  BorderRadiusBr1
+  BorderRadiusBr1,
+  ObjectSecondaryDefault,
+  ObjectSecondaryPressed
 } from '../../generated-tokens/tokens';
 
 const TOKENS = {
@@ -29,21 +31,29 @@ const TOKENS = {
   borderRadius: BorderRadiusBr1,
 };
 
-type FWButtonProps = {
-  label: any;
-  onPress: any;
-  disabled: any;
-  state?: string;
+interface FWButtonProps {
+  children?: React.ReactNode; // Add children as an optional prop
+  label?: string;
+  onPress: () => void;
   variant?: "primary" | "secondary";
-  size?: "default" | "sm";
-};
+  size?: "sm" | "default";
+  state?: "default" | "pressed";
+  disabled?: boolean;
+}
 
 const FWButton = ({ label, onPress, disabled, state = 'default', variant = 'primary', size = 'default' }: FWButtonProps) => {
-  const getBackgroundColor = () => {
-    if (disabled) return TOKENS.colors.disabled;
-    if (state === 'pressed') return TOKENS.colors.pressed;
-    return TOKENS.colors.default;
-  };
+const getBackgroundColor = () => {
+  if (disabled) return TOKENS.colors.disabled;
+
+  const isSecondary = variant === 'secondary';
+  const isPressed = state === 'pressed';
+
+  if (isSecondary) {
+    return isPressed ? ObjectSecondaryPressed : ObjectSecondaryDefault;
+  }
+
+  return isPressed ? ObjectPrimaryBoldPressed : ObjectPrimaryBoldDefault;
+};
 
   const getTextColor = () => {
     return disabled ? TOKENS.colors.textDisabled : TOKENS.colors.textPrimary;

@@ -7,6 +7,7 @@ import MinimalIcon from "./components/content/MinimalIcon";
 import { IconBackspace } from "./generated-tokens/tokens";
 import React from "react";
 import { TouchableOpacity, Text } from "react-native";
+import CurrencyInput from "./cc-components/CurrencyInput/CurrencyInput";
 
 export default function App() {
   const [buttonState, setButtonState] = useState("default"); // State for ActionTile
@@ -58,6 +59,13 @@ export default function App() {
       <TouchableOpacity style={styles.secondaryButton}>
         <Text style={styles.secondaryButtonText}>Secondary Button</Text>
       </TouchableOpacity>
+      <View style={{ marginTop: 20, width: "80%" }}>
+        <CurrencyInput
+          topContextVariant="~฿"
+          amount="$10"
+          bottomContextVariant="addPayment"
+        />
+      </View>
     </View>
   );
 }
