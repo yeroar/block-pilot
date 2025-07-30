@@ -5,6 +5,8 @@ import CustomKeyButton from "./cc-components/KeyboardButton/KeyboardButton";
 import ActionTile from "./cc-components/ActionTile/ActionTile";
 import MinimalIcon from "./components/content/MinimalIcon";
 import { IconBackspace } from "./generated-tokens/tokens";
+import React from "react";
+import { TouchableOpacity, Text } from "react-native";
 
 export default function App() {
   const [buttonState, setButtonState] = useState("default"); // State for ActionTile
@@ -53,6 +55,9 @@ export default function App() {
           toggleState();
         }}
       />
+      <TouchableOpacity style={styles.secondaryButton}>
+        <Text style={styles.secondaryButtonText}>Secondary Button</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -69,5 +74,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     width: "80%",
     marginVertical: 10,
+  },
+  secondaryButton: {
+    backgroundColor: "#e0e0e0",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 4,
+  },
+  secondaryButtonText: {
+    fontSize: 14,
+    fontWeight: "500",
+    textAlign: "center",
+    color: "#333",
   },
 });

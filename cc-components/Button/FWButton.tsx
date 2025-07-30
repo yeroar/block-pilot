@@ -29,7 +29,16 @@ const TOKENS = {
   borderRadius: BorderRadiusBr1,
 };
 
-const FWButton = ({ label, onPress, disabled, state = 'default' }) => {
+type FWButtonProps = {
+  label: any;
+  onPress: any;
+  disabled: any;
+  state?: string;
+  variant?: "primary" | "secondary";
+  size?: "default" | "sm";
+};
+
+const FWButton = ({ label, onPress, disabled, state = 'default', variant = 'primary', size = 'default' }: FWButtonProps) => {
   const getBackgroundColor = () => {
     if (disabled) return TOKENS.colors.disabled;
     if (state === 'pressed') return TOKENS.colors.pressed;
