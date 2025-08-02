@@ -17,7 +17,7 @@ figma.connect(
   "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7017%3A3401",
   {
     props: {
-      icon: figma.instance("icon"), // Adjusted to use instance for compatibility
+      icon: figma.string("icon"), // Use a string for icon (e.g., icon name or URL)
     },
     example: ({ icon }) => (
       <CustomKeyboard

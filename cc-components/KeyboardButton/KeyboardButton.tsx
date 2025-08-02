@@ -1,44 +1,31 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
-import {
-  LayerBackground,
-  LayerBackgroundPressed,
-  FacePrimary,
-  ObjectDisabledDisabled,
-  FaceDisabled,
-  MobileTitle03,
-} from '../../generated-tokens/tokens';
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from "react-native";
+import MinimalIcon from "../../components/content/MinimalIcon"; // Import MinimalIcon for fallback icons
+import { FacePrimary, FaceDisabled, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, SpacingM2, SpacingM3 } from "../../generated-tokens/tokens";
 
-/**
- * CustomKeyButton component
- * @param {Object} props
- * @param {string} props.variant - The variant of the button ("iconOnly" or "textOnly")
- * @param {React.ReactNode} props.icon - The icon to display (for "iconOnly" variant)
- * @param {string} props.label - The label to display (for "textOnly" variant)
- * @param {boolean} props.disabled - Whether the button is disabled
- * @param {function} props.onPress - The function to call when the button is pressed
- */
-export type CustomKeyButtonProps = {
-  variant: "iconOnly";
-  icon: React.ReactElement;
-  disabled?: boolean;
-  onPress: () => void;
-} | {
-  variant: "textOnly";
-  label?: string; // Make label optional
-  children?: React.ReactNode; // Add children prop
-  disabled?: boolean;
-  onPress: () => void;
+export type KeyboardButtonProps = {
+  variant: "iconOnly" | "textOnly"; // Define the variant prop
+  icon?: React.ReactNode; // Icon for iconOnly variant
+  label?: string; // Label for textOnly variant
+  children?: React.ReactNode; // Allow children for flexibility
+  disabled?: boolean; // Disable the button
+  onPress: () => void; // Callback for button press
+  style?: ViewStyle; // Custom styles for the button
+  textStyle?: TextStyle; // Custom styles for the text
 };
 
-export default function CustomKeyButton(props: CustomKeyButtonProps) {
-  const { variant, disabled = false, onPress } = props;
-
-  const getButtonStyle = () => {
-    if (disabled) {
-      return [styles.button, styles.buttonDisabled];
-    }
-    return styles.button;
+export default function KeyboardButton({
+  variant,
+  icon,
+  label,
+  children,
+  disabled = false,
+  onPress,
+  style,
+  textStyle,
+}: KeyboardButtonProps) {
+  const getBackgroundColor = () => {
+    return disabled ? FaceDisabled : ObjectPrimaryBoldDefault;
   };
 
   const getTextColor = () => {
@@ -46,69 +33,71 @@ export default function CustomKeyButton(props: CustomKeyButtonProps) {
   };
 
   const renderContent = () => {
-    if (variant === "iconOnly" && "icon" in props) {
-      return (
-        <View style={styles.iconContainer}>
-          {React.cloneElement(props.icon, {
-            ...(props.icon.props && typeof props.icon.props === 'object' ? props.icon.props : {})
-          })}
-        </View>
-      );
-    } else if (variant === "textOnly") {
-      if (props.children) {
-        return props.children; // Render children if provided
-      } else if ("label" in props && props.label) {
+    if (variant === "iconOnly") {
+      if (React.isValidElement(icon)) {
         return (
-          <Text style={[styles.label, { color: getTextColor() }]}>{props.label}</Text>
+          <View style={styles.iconContainer}>
+            {React.cloneElement(icon, {
+              ...(icon.props && typeof icon.props === "object" ? icon.props : {}),
+            })}
+          </View>
+        );
+      } else {
+        console.warn("KeyboardButton: Invalid icon prop.");
+        return (
+          <View style={styles.iconContainer}>
+            <MinimalIcon name="default-icon" size={20} /> {/* Fallback icon */}
+          </View>
         );
       }
+    } else if (variant === "textOnly") {
+      if (children) {
+        return children; // Render children if provided
+      } else if (label) {
+        return (
+          <Text style={[styles.label, { color: getTextColor() }]}>{label}</Text>
+        );
+      } else {
+        console.warn("KeyboardButton: Missing label or children for textOnly variant.");
+        return null;
+      }
     }
-    console.warn("KeyboardButton: Missing required props for the selected variant.");
+    console.warn("KeyboardButton: Invalid variant.");
     return null;
   };
 
   return (
     <TouchableOpacity
-      style={getButtonStyle()}
       onPress={disabled ? undefined : onPress}
-      activeOpacity={disabled ? 1 : 0.85}
-      disabled={disabled}
+      style={[
+        styles.button,
+        {
+          backgroundColor: getBackgroundColor(),
+          opacity: disabled ? 0.5 : 1,
+        },
+        style, // Apply custom styles
+      ]}
     >
-      <View style={styles.labelContainer}>{renderContent()}</View>
+      {renderContent()}
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: LayerBackground,
-    borderRadius: 12,
-    alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 0,
-    height: 48, // Ensure all buttons have the same height
-    minWidth: 48, // Optional: ensure square buttons
-  },
-  buttonDisabled: {
-    backgroundColor: ObjectDisabledDisabled,
+    alignItems: "center",
+    flexDirection: "row",
+    paddingVertical: SpacingM2,
+    paddingHorizontal: SpacingM3,
+    borderRadius: 8,
   },
   iconContainer: {
-    width: 20,
-    height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  labelContainer: {
-    alignItems: "center",
     justifyContent: "center",
-    height: 20,
+    alignItems: "center",
   },
   label: {
-    fontFamily: MobileTitle03.fontFamily,
-    fontSize: Number(MobileTitle03.fontSize),
-    lineHeight: Number(MobileTitle03.lineHeight),
-    letterSpacing: Number(MobileTitle03.letterSpacing),
+    fontSize: 16,
+    textAlign: "center",
   },
-
 });
