@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { 
   MobileButton01, 
   ObjectPrimaryBoldDefault, 
@@ -14,6 +14,7 @@ import {
   ObjectSecondaryDefault,
   ObjectSecondaryPressed
 } from '../../generated-tokens/tokens';
+import { FoldText } from '../FoldText/FoldText'; // Import FoldText
 
 const TOKENS = {
   colors: {
@@ -86,20 +87,14 @@ const getBackgroundColor = () => {
         },
       ]}
     >
-      <Text
-        style={[
-          styles.label,
-          {
-            color: getTextColor(),
-            fontSize: Number(MobileButton01.fontSize),
-            fontWeight: mapFontWeight(MobileButton01.fontWeight),
-            lineHeight: Number(MobileButton01.lineHeight),
-            fontFamily: MobileButton01.fontFamily,
-          },
-        ]}
+      <FoldText
+        type={size === 'sm' ? 'button-sm-v2' : 'button-lrg-v2'} // Use FoldText with appropriate type
+        style={{
+          color: getTextColor(),
+        }}
       >
         {label}
-      </Text>
+      </FoldText>
     </Pressable>
   );
 };
