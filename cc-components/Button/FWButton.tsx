@@ -44,7 +44,7 @@ interface FWButtonProps {
   label?: string;
   onPress: () => void;
   disabled?: boolean;
-  primary?: boolean; // Add the primary prop
+  variant?: 'primary' | 'secondary'; // Add the variant prop
   loading?: boolean; // Loading state
   style?: ViewStyle; // Custom styles for the button
   textStyle?: TextStyle; // Custom styles for the text
@@ -63,7 +63,7 @@ const FWButton = ({
   label = 'Fold button',
   onPress,
   disabled = false,
-  primary = true,
+  variant = 'primary',
   loading = false,
   style, // Custom button styles
   textStyle, // Custom text styles
@@ -71,7 +71,7 @@ const FWButton = ({
   const getBackgroundColor = () => {
     if (disabled) return TOKENS.colors.disabled;
 
-    return primary
+    return variant === 'primary'
       ? TOKENS.colors.default
       : TOKENS.colors.secondaryDefault;
   };
@@ -87,7 +87,7 @@ const FWButton = ({
         styles.button,
         {
           backgroundColor: pressed && !disabled
-            ? primary
+            ? variant === 'primary'
               ? TOKENS.colors.pressed
               : TOKENS.colors.secondaryPressed
             : getBackgroundColor(),
@@ -109,9 +109,8 @@ const FWButton = ({
             { color: getTextColor() }, // Default text color
             textStyle, // Apply custom text styles
           ]}
-        >
-          {label || children} {/* Use label if provided, otherwise children */}
-        </FoldText>
+          children={label || children} // Explicitly pass children prop
+        />
       )}
     </Pressable>
   );

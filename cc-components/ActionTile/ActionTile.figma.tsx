@@ -8,7 +8,6 @@ import figma from "@figma/code-connect"
  * You should check this is correct, and update the `example` function
  * to return the code example you'd like to see in Figma
  */
-å
 
 figma.connect(
   ActionTile,

@@ -16,14 +16,17 @@ figma.connect(
   {
     props: {
       label: figma.string("label"), // Map label to a string property
-      primary: figma.boolean("primary"), // Map primary to a boolean
+      variant: figma.enum("variant", {
+        primary: 'primary',
+        secondary: 'secondary',
+      }), // Map variant to an enum
       disabled: figma.enum("state", {
         disabled: true,
       }), // Map isDisabled to a boolean
     },
     example: (props) => (
       <FWButton
-      primary={props.primary} 
+      variant={props.variant}
       disabled={props.disabled}
       onPress={() => {
         

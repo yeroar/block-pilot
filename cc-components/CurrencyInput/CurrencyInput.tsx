@@ -21,8 +21,6 @@ const BottomContext: React.FC<{ state?: "maxButton" | "empty" | "payment" | "add
       {state === "maxButton" && (
         <FWButton
           label="$100"
-          variant="secondary"
-          size="sm"
           onPress={() => console.log("Max button pressed")}
         />
       )}
