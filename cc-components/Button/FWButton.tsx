@@ -1,25 +1,32 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { 
-  MobileButton01, 
-  ObjectPrimaryBoldDefault, 
-  ObjectPrimaryBoldPressed, 
-  ObjectDisabledDisabled, 
-  FacePrimary, 
+import {
+  Pressable,
+  ActivityIndicator,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
+import { FoldText } from '../Primitives/FoldText'; // Import FoldText
+import {
+  ObjectPrimaryBoldDefault,
+  ObjectPrimaryBoldPressed,
+  ObjectDisabledDisabled,
+  FacePrimary,
   FaceDisabled,
+  ObjectSecondaryDefault,
+  ObjectSecondaryPressed,
+  BorderRadiusBr1,
   SpacingM0,
   SpacingM3,
   SpacingM8,
-  BorderRadiusBr1,
-  ObjectSecondaryDefault,
-  ObjectSecondaryPressed
 } from '../../generated-tokens/tokens';
-import { FoldText } from '../FoldText/FoldText'; // Import FoldText
 
 const TOKENS = {
   colors: {
     default: ObjectPrimaryBoldDefault,
     pressed: ObjectPrimaryBoldPressed,
+    secondaryPressed: ObjectSecondaryPressed,
+    secondaryDefault: ObjectSecondaryDefault,
     disabled: ObjectDisabledDisabled,
     textPrimary: FacePrimary,
     textDisabled: FaceDisabled,
@@ -36,75 +43,78 @@ interface FWButtonProps {
   children?: React.ReactNode; // Add children as an optional prop
   label?: string;
   onPress: () => void;
-  variant?: "primary" | "secondary";
-  size?: "sm" | "default";
-  state?: "default" | "pressed";
   disabled?: boolean;
+  primary?: boolean; // Add the primary prop
+  loading?: boolean; // Loading state
+  style?: ViewStyle; // Custom styles for the button
+  textStyle?: TextStyle; // Custom styles for the text
 }
 
-const FWButton = ({ label, onPress, disabled, state = 'default', variant = 'primary', size = 'default' }: FWButtonProps) => {
-const getBackgroundColor = () => {
-  if (disabled) return TOKENS.colors.disabled;
+const styles = StyleSheet.create({
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+});
 
-  const isSecondary = variant === 'secondary';
-  const isPressed = state === 'pressed';
+const FWButton = ({
+  children,
+  label = 'Fold button',
+  onPress,
+  disabled = false,
+  primary = true,
+  loading = false,
+  style, // Custom button styles
+  textStyle, // Custom text styles
+}: FWButtonProps) => {
+  const getBackgroundColor = () => {
+    if (disabled) return TOKENS.colors.disabled;
 
-  if (isSecondary) {
-    return isPressed ? ObjectSecondaryPressed : ObjectSecondaryDefault;
-  }
-
-  return isPressed ? ObjectPrimaryBoldPressed : ObjectPrimaryBoldDefault;
-};
+    return primary
+      ? TOKENS.colors.default
+      : TOKENS.colors.secondaryDefault;
+  };
 
   const getTextColor = () => {
     return disabled ? TOKENS.colors.textDisabled : TOKENS.colors.textPrimary;
   };
 
-  const mapFontWeight = (weight) => {
-    switch (weight.toLowerCase()) {
-      case 'medium':
-        return '500';
-      case 'regular':
-        return '400';
-      case 'light':
-        return '300';
-      default:
-        return '400';
-    }
-  };
-
   return (
     <Pressable
-      onPress={disabled ? null : onPress}
-      style={[
+      onPress={disabled || loading ? null : onPress}
+      style={({ pressed }) => [
         styles.button,
         {
-          backgroundColor: getBackgroundColor(),
+          backgroundColor: pressed && !disabled
+            ? primary
+              ? TOKENS.colors.pressed
+              : TOKENS.colors.secondaryPressed
+            : getBackgroundColor(),
           borderRadius: TOKENS.borderRadius,
           paddingVertical: Number(TOKENS.spacing.vertical),
           paddingHorizontal: Number(TOKENS.spacing.horizontal),
           height: Number(TOKENS.spacing.height),
+          opacity: disabled || loading ? 0.5 : 1,
         },
+        style, // Apply custom button styles
       ]}
     >
-      <FoldText
-        type={size === 'sm' ? 'button-sm-v2' : 'button-lrg-v2'} // Use FoldText with appropriate type
-        style={{
-          color: getTextColor(),
-        }}
-      >
-        {label}
-      </FoldText>
+      {loading ? (
+        <ActivityIndicator size="small" color={getTextColor()} />
+      ) : (
+        <FoldText
+          type="button-lrg-v2" // Use a single default type for button text
+          style={[
+            { color: getTextColor() }, // Default text color
+            textStyle, // Apply custom text styles
+          ]}
+        >
+          {label || children} {/* Use label if provided, otherwise children */}
+        </FoldText>
+      )}
     </Pressable>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {},
-});
-
-export default FWButton;
+export default FWButton

@@ -26,21 +26,25 @@ figma.connect(
 
     props: {
       label: figma.string("label"), // Map label to a string property
-      leadingIcon: figma.boolean("leadingIcon"), // Map leadingIcon to a boolean
-      trailingIcon: figma.boolean("trailingIcon"), // Map trailingIcon to a boolean
-      leadingSlot: figma.instance("leadingSlot"), // Adjusted to use instance for compatibility
-      trailingSlot: figma.instance("trailingSlot"), // Adjusted to use instance for compatibility
+      leadingIcon: figma.boolean("leadingIcon", {
+        true: figma.instance("leadingSlot"),
+        false: undefined,
+      }), // Map leadingIcon to a boolean
+      trailingIcon: figma.boolean("trailingIcon", {
+        true: figma.instance("trailingSlot"),
+        false: undefined,
+      }), // Map trailingIcon to a boolean
       state: figma.enum("state", {
         default: "default",
         pressed: "pressed",
-        selected: "selected",
+        selected: "selected", 
       }), // Map state to an enum with all possible values
     },
 
     example: (props) => {
       <ActionTile
-        leadingSlot={props.leadingSlot}
-        trailingSlot={props.trailingSlot}
+        leadingSlot={props.leadingIcon}
+        trailingSlot={props.trailingIcon}
         state={props.state}
       >
         {props.label}

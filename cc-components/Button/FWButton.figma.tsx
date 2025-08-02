@@ -12,33 +12,24 @@ import figma from "@figma/code-connect";
 
 figma.connect(
   FWButton,
-  "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7003-72901&m=dev",
+  "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7003-72901&t=hRbPZyJGMSjyNYEW-4",
   {
     props: {
       label: figma.string("label"), // Map label to a string property
-      variant: figma.enum("variant", {
-        primary: "primary",
-        secondary: "secondary",
-      }), // Map variant to an enum
-      size: figma.enum("size", {
-        sm: "sm",
-        default: "default",
-      }), // Map size to an enum
-      state: figma.enum("state", {
-        default: "default",
-        pressed: "pressed",
-      }), // Map state to an enum
-      isDisabled: figma.boolean("isDisabled"), // Map isDisabled to a boolean
+      primary: figma.boolean("primary"), // Map primary to a boolean
+      disabled: figma.enum("state", {
+        disabled: true,
+      }), // Map isDisabled to a boolean
     },
     example: (props) => (
       <FWButton
-        onPress={() => console.log("Button pressed")}
-        variant={props.variant}
-        size={props.size}
-        state={props.state}
-        disabled={props.isDisabled}
-      >{props.label} {/* Render label as children */}
-      </FWButton>
+      primary={props.primary} 
+      disabled={props.disabled}
+      onPress={() => {
+        
+      }}
+    >{props.label} {/* Render label as children */}
+    </FWButton>
     ),
   },
 );
