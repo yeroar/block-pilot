@@ -8,22 +8,12 @@ import figma from "@figma/code-connect"
  * You should check this is correct, and update the `example` function
  * to return the code example you'd like to see in Figma
  */
-
-type ActionTileState =
-  | { state: "default"; backgroundColor: string }
-  | { state: "pressed"; backgroundColor: string }
-  | { state: "selected"; backgroundColor: string }
+å
 
 figma.connect(
   ActionTile,
   "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7041%3A3059",
   {
-    
-
-    
-
-
-
     props: {
       label: figma.string("label"), // Map label to a string property
       leadingIcon: figma.boolean("leadingIcon", {
@@ -34,21 +24,19 @@ figma.connect(
         true: figma.instance("trailingSlot"),
         false: undefined,
       }), // Map trailingIcon to a boolean
-      state: figma.enum("state", {
-        default: "default",
-        pressed: "pressed",
-        selected: "selected", 
-      }), // Map state to an enum with all possible values
+      selected: figma.boolean("selected"), // Map state to an enum with all possible values
     },
 
     example: (props) => {
-      <ActionTile
-        leadingSlot={props.leadingIcon}
-        trailingSlot={props.trailingIcon}
-        state={props.state}
-      >
-        {props.label}
-      </ActionTile>
+      return (
+        <ActionTile
+          selected={props.selected}
+          leadingSlot={props.leadingIcon}
+          trailingSlot={props.trailingIcon}
+        >
+          {props.label}
+        </ActionTile>
+      );
     },
   },
 )

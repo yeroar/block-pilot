@@ -1,6 +1,8 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import FWButton from "./cc-components/Button/FWButton";
+import ActionTile from "./cc-components/ActionTile/ActionTile"; // Import ActionTile component
+import { IconBackspace } from "./generated-tokens/tokens"; // Import IconBackspace
 
 export default function App() {
   return (
@@ -18,6 +20,11 @@ export default function App() {
         primary={false} // Secondary стиль
         onPress={() => console.log("Secondary Button Pressed")}
       />
+
+      {/* Example ActionTile */}
+      <ActionTile selected={false} trailingSlot={IconBackspace}>
+        Cash balance
+      </ActionTile>
     </View>
   );
 }
