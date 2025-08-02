@@ -25,7 +25,8 @@ export type CustomKeyButtonProps = {
   onPress: () => void;
 } | {
   variant: "textOnly";
-  label: string;
+  label?: string; // Make label optional
+  children?: React.ReactNode; // Add children prop
   disabled?: boolean;
   onPress: () => void;
 };
@@ -44,6 +45,28 @@ export default function CustomKeyButton(props: CustomKeyButtonProps) {
     return disabled ? FaceDisabled : FacePrimary;
   };
 
+  const renderContent = () => {
+    if (variant === "iconOnly" && "icon" in props) {
+      return (
+        <View style={styles.iconContainer}>
+          {React.cloneElement(props.icon, {
+            ...(props.icon.props && typeof props.icon.props === 'object' ? props.icon.props : {})
+          })}
+        </View>
+      );
+    } else if (variant === "textOnly") {
+      if (props.children) {
+        return props.children; // Render children if provided
+      } else if ("label" in props && props.label) {
+        return (
+          <Text style={[styles.label, { color: getTextColor() }]}>{props.label}</Text>
+        );
+      }
+    }
+    console.warn("KeyboardButton: Missing required props for the selected variant.");
+    return null;
+  };
+
   return (
     <TouchableOpacity
       style={getButtonStyle()}
@@ -51,17 +74,7 @@ export default function CustomKeyButton(props: CustomKeyButtonProps) {
       activeOpacity={disabled ? 1 : 0.85}
       disabled={disabled}
     >
-      <View style={styles.labelContainer}>
- {variant === "iconOnly" && "icon" in props ? (
-  <View style={styles.iconContainer}>
-    {React.cloneElement(props.icon, {
-      ...(props.icon.props && typeof props.icon.props === 'object' ? props.icon.props : {})
-    })}
-  </View>
-) : variant === "textOnly" && "label" in props ? (
-  <Text style={[styles.label, { color: getTextColor() }]}>{props.label}</Text>
-) : null}
-      </View>
+      <View style={styles.labelContainer}>{renderContent()}</View>
     </TouchableOpacity>
   );
 }

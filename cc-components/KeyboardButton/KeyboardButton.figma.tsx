@@ -23,7 +23,7 @@ figma.connect(
       <CustomKeyboard
         variant="iconOnly"
         icon={icon}
-        onPress={() => console.log("Key pressed")}
+        onPress={() => {}}
       />
     ),
   }
@@ -39,9 +39,11 @@ figma.connect(
     example: ({ label }) => (
       <CustomKeyboard
         variant="textOnly"
-        label={label}
-        onPress={() => console.log("Key pressed")}
-      />
+        onPress={() => {}
+      }
+      >
+        {label} 
+      </CustomKeyboard>
     ),
   }
 );
