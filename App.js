@@ -10,7 +10,6 @@ import { PlusCircleIcon } from "./assets/BlueSkyIcons/PlusCircleIcon";
 export default function App() {
   return (
     <SafeAreaProvider>
-      {" "}
       {/* Wrap the app with SafeAreaProvider */}
       <View style={styles.container}>
         {/* FoldPageViewHeader */}

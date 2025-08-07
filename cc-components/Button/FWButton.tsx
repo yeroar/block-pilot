@@ -23,12 +23,15 @@ import {
 
 const TOKENS = {
   colors: {
-    default: ObjectPrimaryBoldDefault,
-    pressed: ObjectPrimaryBoldPressed,
-    secondaryPressed: ObjectSecondaryPressed,
-    secondaryDefault: ObjectSecondaryDefault,
-    disabled: ObjectDisabledDisabled,
-    textPrimary: FacePrimary,
+    bgPrimary: ObjectPrimaryBoldDefault,
+    bgPrimaryPressed: ObjectPrimaryBoldPressed,
+
+    bgSecondary: ObjectSecondaryDefault,
+    bgSecondaryPressed: ObjectSecondaryPressed,
+
+    bgDisabled: ObjectDisabledDisabled,
+
+    text: FacePrimary,
     textDisabled: FaceDisabled,
   },
   spacing: {
@@ -67,15 +70,15 @@ const FWButton = ({
   textStyle,
 }: FWButtonProps) => {
   const getBackgroundColor = () => {
-    if (disabled) return TOKENS.colors.disabled;
+    if (disabled) return TOKENS.colors.bgDisabled;
 
     return variant === 'primary'
-      ? TOKENS.colors.default
-      : TOKENS.colors.secondaryDefault;
+      ? TOKENS.colors.bgPrimary
+      : TOKENS.colors.bgSecondary;
   };
 
   const getTextColor = () => {
-    return disabled ? TOKENS.colors.textDisabled : TOKENS.colors.textPrimary;
+    return disabled ? TOKENS.colors.textDisabled : TOKENS.colors.text;
   };
 
   return (
@@ -86,8 +89,8 @@ const FWButton = ({
         {
           backgroundColor: pressed && !disabled
             ? variant === 'primary'
-              ? TOKENS.colors.pressed
-              : TOKENS.colors.secondaryPressed
+              ? TOKENS.colors.bgPrimaryPressed
+              : TOKENS.colors.bgSecondaryPressed
             : getBackgroundColor(),
           borderRadius: TOKENS.borderRadius,
           paddingVertical: Number(TOKENS.spacing.vertical),

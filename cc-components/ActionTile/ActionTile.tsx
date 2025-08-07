@@ -16,8 +16,6 @@ export type ActionTileProps = {
   textStyle?: ViewStyle;
 };
 
-
-
 export default function ActionTile({
   label,
   selected = false,
@@ -53,12 +51,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    height: Number(SpacingM10),
-    paddingHorizontal: Number(SpacingM3),
-    borderRadius: 8,
-    gap: Number(SpacingM1),
+    height: SpacingM10,
+    paddingHorizontal: SpacingM3,
+    borderRadius: SpacingM2,
+    gap: SpacingM1,
   },
   icon: {
-    marginHorizontal: Number(SpacingM2),
+    marginHorizontal: SpacingM2,
   },
 });
