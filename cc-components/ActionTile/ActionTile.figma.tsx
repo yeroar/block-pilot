@@ -29,11 +29,11 @@ figma.connect(
     example: (props) => {
       return (
         <ActionTile
+          label={props.label}
           selected={props.selected}
           leadingSlot={props.leadingIcon}
           trailingSlot={props.trailingIcon}
         >
-          {props.label}
         </ActionTile>
       );
     },

@@ -32,8 +32,7 @@ export default function ActionTile({
   textStyle,
   ...rest
 }: ActionTileProps) {
-  // Automatically enable trailingIcon if trailingSlot is defined
-  const hasTrailingIcon = trailingIcon || !!trailingSlot;
+  // trailingSlot is rendered directly if provided
 
   const backgroundColor =
     selected === false
@@ -59,7 +58,7 @@ export default function ActionTile({
   return (
     <TouchableOpacity onPress={onPress} style={style} {...rest}>
       <View style={[styles.container, { backgroundColor }]}>
-        {leadingIcon && (leadingSlot || <MinimalIcon name="default-leading" size={16} />)}
+        {leadingSlot}
         {label ? (
           <FoldText type="body-sm-bold-v2" style={textStyle}>
             {label}
@@ -72,7 +71,7 @@ export default function ActionTile({
             {children}
           </FoldText>
         )}
-        {hasTrailingIcon && (trailingSlot || <MinimalIcon name="default-trailing" size={16} />)}
+        {trailingSlot}
       </View>
     </TouchableOpacity>
   );

@@ -26,12 +26,12 @@ figma.connect(
     },
     example: (props) => (
       <FWButton
+      label={props.label}
       variant={props.variant}
       disabled={props.disabled}
       onPress={() => {
-        
       }}
-    >{props.label} {/* Render label as children */}
+    >
     </FWButton>
     ),
   },

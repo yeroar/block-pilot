@@ -40,14 +40,13 @@ const TOKENS = {
 };
 
 interface FWButtonProps {
-  children?: React.ReactNode; // Add children as an optional prop
   label?: string;
   onPress: () => void;
   disabled?: boolean;
-  variant?: 'primary' | 'secondary'; // Add the variant prop
-  loading?: boolean; // Loading state
-  style?: ViewStyle; // Custom styles for the button
-  textStyle?: TextStyle; // Custom styles for the text
+  variant?: 'primary' | 'secondary';
+  loading?: boolean;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
 }
 
 const styles = StyleSheet.create({
@@ -59,14 +58,13 @@ const styles = StyleSheet.create({
 });
 
 const FWButton = ({
-  children,
   label = 'Fold button',
   onPress,
   disabled = false,
   variant = 'primary',
   loading = false,
-  style, // Custom button styles
-  textStyle, // Custom text styles
+  style,
+  textStyle,
 }: FWButtonProps) => {
   const getBackgroundColor = () => {
     if (disabled) return TOKENS.colors.disabled;
@@ -104,13 +102,14 @@ const FWButton = ({
         <ActivityIndicator size="small" color={getTextColor()} />
       ) : (
         <FoldText
-          type="button-lrg-v2" // Use a single default type for button text
+          type="button-lrg-v2"
           style={[
-            { color: getTextColor() }, // Default text color
-            textStyle, // Apply custom text styles
+            { color: getTextColor() },
+            textStyle,
           ]}
-          children={label || children} // Explicitly pass children prop
-        />
+        >
+          {label}
+        </FoldText>
       )}
     </Pressable>
   );

@@ -5,6 +5,7 @@ import FWButton from "./cc-components/Button/FWButton";
 import ActionTile from "./cc-components/ActionTile/ActionTile";
 import FoldPageViewHeader from "./cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import CurrencyInput from "./cc-components/CurrencyInput/CurrencyInput";
+import { PlusCircleIcon } from "./assets/BlueSkyIcons/PlusCircleIcon";
 
 export default function App() {
   return (
@@ -23,7 +24,6 @@ export default function App() {
           backgroundColor="#f5f5f5"
           titleColor="#333"
         />
-
         {/* FWButton examples */}
         <FWButton
           label="Primary Button"
@@ -35,15 +35,12 @@ export default function App() {
           variant="secondary"
           onPress={() => console.log("Secondary Button Pressed")}
         />
-
         {/* ActionTile example */}
         <ActionTile
           selected={false}
-          trailingSlot={
-            <View style={{ width: 24, height: 24, backgroundColor: "blue" }} />
-          }
+          trailingSlot={<PlusCircleIcon width={12} height={12} />}
         >
-          Cash balance
+          Cash
         </ActionTile>
 
         {/* CurrencyInput example */}
