@@ -590,5 +590,57 @@
       },
       "type": "typography"
     }
+  },
+  "m-0": {
+    "value": "0",
+    "type": "spacing"
+  },
+  "m-100": {
+    "value": "4",
+    "type": "spacing"
+  },
+  "m-150": {
+    "value": "6",
+    "type": "spacing"
+  },
+  "m-200": {
+    "value": "8",
+    "type": "spacing"
+  },
+  "m-300": {
+    "value": "12",
+    "type": "spacing"
+  },
+  "m-400": {
+    "value": "16",
+    "type": "spacing"
+  },
+  "m-500": {
+    "value": "20",
+    "type": "spacing"
+  },
+  "m-600": {
+    "value": "24",
+    "type": "spacing"
+  },
+  "m-800": {
+    "value": "32",
+    "type": "spacing"
+  },
+  "m-1000": {
+    "value": "40",
+    "type": "spacing"
+  },
+  "m-1200": {
+    "value": "48",
+    "type": "spacing"
+  },
+  "m-1400": {
+    "value": "56",
+    "type": "spacing"
+  },
+  "m-1600": {
+    "value": "64",
+    "type": "spacing"
   }
 }
