@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from "react-native";
-import MinimalIcon from "../../components/content/MinimalIcon"; // Import MinimalIcon for fallback icons
 import { FacePrimary, FaceDisabled, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, SpacingM2, SpacingM3 } from "../../generated-tokens/tokens";
 
 export type KeyboardButtonProps = {
@@ -37,18 +36,12 @@ export default function KeyboardButton({
       if (React.isValidElement(icon)) {
         return (
           <View style={styles.iconContainer}>
-            {React.cloneElement(icon, {
-              ...(icon.props && typeof icon.props === "object" ? icon.props : {}),
-            })}
+            {icon}
           </View>
         );
       } else {
         console.warn("KeyboardButton: Invalid icon prop.");
-        return (
-          <View style={styles.iconContainer}>
-            <MinimalIcon name="default-icon" size={20} /> {/* Fallback icon */}
-          </View>
-        );
+        return null;
       }
     } else if (variant === "textOnly") {
       if (children) {

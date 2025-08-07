@@ -1,8 +1,8 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, Image } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import KeyboardButton from "../KeyboardButton/KeyboardButton";
-import { IconBackspace } from "../../generated-tokens/tokens";
 import { LayerBackground, SpacingM4, SpacingM6 } from "../../generated-tokens/tokens";
+import { ArrowNarrowLeftIcon } from "../../assets/BlueSkyIcons/ArrowNarrowLeftIcon";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "←"];
 const NUM_COLUMNS = 3;
@@ -48,13 +48,7 @@ export default function CustomKeyboard({ onKeyPress }) {
                     {key === "←" ? (
                       <KeyboardButton
                         variant="iconOnly"
-                        icon={
-                          <Image
-                            source={{ uri: IconBackspace }}
-                            style={{ width: 24, height: 24 }}
-                            resizeMode="contain"
-                          />
-                        }
+                        icon={<ArrowNarrowLeftIcon width={24} height={24} />}
                         onPress={() => onKeyPress(key)}
                       />
                     ) : (

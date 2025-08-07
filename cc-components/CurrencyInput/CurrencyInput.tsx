@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ActionTile from "../ActionTile/ActionTile";
 import FWButton from "../Button/FWButton";
-import { AddIcon } from "../../generated-tokens/tokens";
-import MinimalIcon from "../../components/content/MinimalIcon";
+import { PlusCircleIcon } from "../../assets/BlueSkyIcons/PlusCircleIcon";
+
 
 const TopContext: React.FC<{ content: string }> = ({ content }) => {
   if (!content) return null;
@@ -37,7 +37,7 @@ const BottomContext: React.FC<{ state?: "maxButton" | "empty" | "payment" | "add
         <ActionTile
         selected={true}
           label="Add payment method"
-          trailingSlot={<MinimalIcon name={AddIcon} size={16} />} // Use AddIcon from tokens
+          trailingSlot={<PlusCircleIcon />} // Use AddIcon from tokens
           onPress={() => console.log("Add payment method pressed")}
         />
       )}
