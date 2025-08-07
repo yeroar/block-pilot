@@ -37,11 +37,10 @@ export default function App() {
         />
         {/* ActionTile example */}
         <ActionTile
+          label="Cash balance"
           selected={false}
           trailingSlot={<PlusCircleIcon width={12} height={12} />}
-        >
-          Cash
-        </ActionTile>
+        ></ActionTile>
 
         {/* CurrencyInput example */}
         <View

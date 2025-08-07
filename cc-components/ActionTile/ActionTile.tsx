@@ -5,8 +5,7 @@ import MinimalIcon from "../../components/content/MinimalIcon"; // Updated to us
 import { FaceNegative, FacePrimary, SpacingM32, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, ObjectPrimarySubtleDefault, ObjectPrimarySubtlePressed, ObjectPrimarySubtleSelected, SpacingM2, SpacingM3, SpacingM8 } from "../../generated-tokens/tokens";
 
 export type ActionTileProps = {
-  children?: React.ReactNode; // Add children if needed
-  label?: string; // Make label optional
+  label: string;
   selected?: boolean;
   leadingIcon?: boolean;
   trailingIcon?: boolean;
@@ -20,7 +19,6 @@ export type ActionTileProps = {
 
 
 export default function ActionTile({
-  children,
   label,
   selected = false,
   leadingIcon = false,
@@ -32,46 +30,19 @@ export default function ActionTile({
   textStyle,
   ...rest
 }: ActionTileProps) {
-  // trailingSlot is rendered directly if provided
-
-  const backgroundColor =
-    selected === false
-      ? ObjectPrimarySubtleDefault
-      : ObjectPrimaryBoldDefault;
-
-  const renderChildren = () => {
-    if (typeof children === "string" || typeof children === "number") {
-      return <Text>{children}</Text>;
-    }
-    if (Array.isArray(children)) {
-      return children.map((child, idx) =>
-        typeof child === "string" || typeof child === "number" ? (
-          <Text key={idx}>{child}</Text>
-        ) : (
-          child
-        )
-      );
-    }
-    return children;
-  };
+  // If a slot is provided, always show it
+  const showLeading = leadingIcon || !!leadingSlot;
+  const showTrailing = trailingIcon || !!trailingSlot;
+  const backgroundColor = selected ? ObjectPrimaryBoldDefault : ObjectPrimarySubtleDefault;
 
   return (
     <TouchableOpacity onPress={onPress} style={style} {...rest}>
-      <View style={[styles.container, { backgroundColor }]}>
-        {leadingSlot}
-        {label ? (
-          <FoldText type="body-sm-bold-v2" style={textStyle}>
-            {label}
-          </FoldText>
-        ) : (
-          renderChildren()
-        )}
-        {children && (
-          <FoldText type="body-sm-bold-v2" style={textStyle}>
-            {children}
-          </FoldText>
-        )}
-        {trailingSlot}
+      <View style={[styles.container, { backgroundColor }]}> 
+        {showLeading && leadingSlot}
+        <FoldText type="body-sm-bold-v2" style={textStyle}>
+          {label}
+        </FoldText>
+        {showTrailing && trailingSlot}
       </View>
     </TouchableOpacity>
   );
