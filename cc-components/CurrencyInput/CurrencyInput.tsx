@@ -1,49 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import ActionTile from "../ActionTile/ActionTile";
-import FWButton from "../Button/FWButton";
-import { PlusCircleIcon } from "../../assets/BlueSkyIcons/PlusCircleIcon";
-
-
-const TopContext: React.FC<{ content: string }> = ({ content }) => {
-  if (!content) return null;
-
-  return (
-    <View style={styles.topContext}>
-      <Text style={styles.topContextText}>{content}</Text>
-    </View>
-  );
-};
-
-const BottomContext: React.FC<{ state?: "maxButton" | "empty" | "payment" | "addPayment" }> = ({ state = "maxButton" }) => {
-  if (!state || state === "empty") return null;
-
-  return (
-    <View style={styles.bottomContext}>
-      {state === "maxButton" && (
-        <FWButton
-          label="$100"
-          onPress={() => console.log("Max button pressed")}
-        />
-      )}
-      {state === "payment" && (
-        <ActionTile
-        selected={false}
-          label="Payment Method"
-          onPress={() => console.log("Payment method pressed")}
-        />
-      )}
-      {state === "addPayment" && (
-        <ActionTile
-        selected={true}
-          label="Add payment method"
-          trailingSlot={<PlusCircleIcon />} // Use AddIcon from tokens
-          onPress={() => console.log("Add payment method pressed")}
-        />
-      )}
-    </View>
-  );
-};
+import TopContext from "./TopContext";
+import BottomContext from "./BottomContext";
 
 interface CurrencyInputProps {
   topContextVariant?: "Frequency" | "~฿" | "Empty";
@@ -73,27 +31,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fcfaf2",
     borderRadius: 8,
   },
-  topContext: {
-    height: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
-  topContextText: {
-    fontSize: 14,
-    fontWeight: "500",
-    textAlign: "center",
-  },
   amount: {
     fontSize: 72,
     fontWeight: "bold",
     textAlign: "center",
-  },
-  bottomContext: {
-    height: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
   },
 });
 

@@ -48,7 +48,7 @@ export default function App() {
           <CurrencyInput
             topContextVariant="Weekly"
             amount="$0"
-            bottomContextVariant="addPayment"
+            bottomContextVariant="payment"
           />
         </View>
       </View>
