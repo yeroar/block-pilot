@@ -1,7 +1,7 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, ViewStyle, Text } from "react-native"; // Import ViewStyle for type definitions
+import { View, StyleSheet, ViewStyle, Text } from "react-native"; // Import ViewStyle for type definitions
+import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText"; // Import FoldText component
-import MinimalIcon from "../../components/content/MinimalIcon"; // Updated to use MinimalIcon
 import { FaceNegative, FacePrimary, SpacingM32, ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, ObjectPrimarySubtleDefault, ObjectPrimarySubtlePressed, ObjectPrimarySubtleSelected, SpacingM2, SpacingM3, SpacingM8 } from "../../generated-tokens/tokens";
 
 export type ActionTileProps = {
@@ -36,7 +36,7 @@ export default function ActionTile({
   const backgroundColor = selected ? ObjectPrimaryBoldDefault : ObjectPrimarySubtleDefault;
 
   return (
-    <TouchableOpacity onPress={onPress} style={style} {...rest}>
+    <FoldPressable onPress={onPress} style={style} {...rest}>
       <View style={[styles.container, { backgroundColor }]}> 
         {showLeading && leadingSlot}
         <FoldText type="body-sm-bold-v2" style={textStyle}>
@@ -44,7 +44,7 @@ export default function ActionTile({
         </FoldText>
         {showTrailing && trailingSlot}
       </View>
-    </TouchableOpacity>
+    </FoldPressable>
   );
 }
 
