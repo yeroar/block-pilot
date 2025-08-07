@@ -128,6 +128,7 @@ export const SpacingM0 = 0;
 export const SpacingM4 = 16;
 export const SpacingM6 = 24;
 export const SpacingM3 = 12;
+export const SpacingM32 = 32;
 export const SpacingM8 = 48;
 export const SpacingM2 = 8;
 export const BorderRadiusBr0 = 0;
@@ -338,3 +339,4 @@ export const TextDecorationNone = "none";
 export const ParagraphIndent0 = "0px";
 export const IconBackspace =
   "https://cdn-icons-png.flaticon.com/512/318/318218.png";
+export const AddIcon = "https://static.thenounproject.com/png/617815-200.png";

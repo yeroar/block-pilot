@@ -4,6 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context"; // Import Saf
 import FWButton from "./cc-components/Button/FWButton";
 import ActionTile from "./cc-components/ActionTile/ActionTile";
 import FoldPageViewHeader from "./cc-components/FoldPageViewHeader/FoldPageViewHeader";
+import CurrencyInput from "./cc-components/CurrencyInput/CurrencyInput";
 
 export default function App() {
   return (
@@ -26,12 +27,12 @@ export default function App() {
         {/* FWButton examples */}
         <FWButton
           label="Primary Button"
-          primary={true}
+          variant="primary"
           onPress={() => console.log("Primary Button Pressed")}
         />
         <FWButton
           label="Secondary Button"
-          primary={false}
+          variant="secondary"
           onPress={() => console.log("Secondary Button Pressed")}
         />
 
@@ -44,6 +45,17 @@ export default function App() {
         >
           Cash balance
         </ActionTile>
+
+        {/* CurrencyInput example */}
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <CurrencyInput
+            topContextVariant="Weekly"
+            amount="$0"
+            bottomContextVariant="addPayment"
+          />
+        </View>
       </View>
     </SafeAreaProvider>
   );
