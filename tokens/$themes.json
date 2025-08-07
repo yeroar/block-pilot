@@ -185,7 +185,7 @@
       "Spacing.m-4": "c1065c27b6c819077e4ea73e664ed2e62d44769f",
       "Spacing.m-6": "f869d8c1f10b2ffba4f64f6a0b4943fd5e4a2a96",
       "Spacing.m-3": "7fb49f7dab572eaaa9e244fcf754e7a6e9ae17bc",
-      "Spacing.m-8": "0aefd377578c63fafafeccb6e3fc1f8f51847864",
+      "Spacing.m-12": "0aefd377578c63fafafeccb6e3fc1f8f51847864",
       "Object.positive.bold.selected": "cb46d358af94988a75332f3ecacc4b7c14b13654",
       "Object.positive.subtle.selected": "bb161b7ca6f82c50786333f59daf8ea67eb10494",
       "Object.negative.bold.selected": "c62221b331b063387e7466d8e1709511b41e1b01",
@@ -203,7 +203,13 @@
       "BorderRadius.br-0": "9de30d12d8de803d546e72e98bab909f943fc7fa",
       "BorderRadius.br-1": "425605387ceab8dace69581535cbc596c98ddf73",
       "BorderRadius.br-2": "ba098d87d7a8b34e3b06e1fb33349eecb7d6c557",
-      "BorderRadius.rounded": "902facad95e9b75b1aa04db1e674051d7b144ab7"
+      "BorderRadius.rounded": "902facad95e9b75b1aa04db1e674051d7b144ab7",
+      "Spacing.m-8": "e41dcc373977f3bd692c7f63de954431e2c70741",
+      "Spacing.m-10": "655a820fa1bb5132823b5c900f1d707cf3497fa8",
+      "Spacing.m-1": "6e58b16ba88536b92c59d3d81d3701c4b1eca9de",
+      "Spacing.m-5": "ad66b46013e69f99aa1acfc87fd82cf0cb88ff07",
+      "Spacing.m-14": "0d2e2fa468a88d66ad3a197551cdb2500ec0e098",
+      "Spacing.m-16": "3ccef57971416ea46857e0d0fe2ca401061057a7"
     },
     "$figmaModeId": "5142:0",
     "$figmaCollectionId": "VariableCollectionId:1:2912"
