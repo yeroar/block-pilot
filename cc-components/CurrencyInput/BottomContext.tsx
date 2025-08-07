@@ -2,16 +2,14 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import ActionTile from "../ActionTile/ActionTile";
 import FWButton from "../Button/FWButton";
+import { FoldText } from "../Primitives/FoldText";
 import { PlusCircleIcon } from "../../assets/BlueSkyIcons/PlusCircleIcon";
 import { BankIcon } from "../../assets/BlueSkyIcons/BankIcon";
 import {
   ObjectPrimarySubtleDefault,
   BorderRadiusBr1,
   SpacingM3,
-  SpacingM8,
-  FacePrimary,
-  MobileButton02,
-  FontWeightsMedium
+  SpacingM8
 } from "../../generated-tokens/tokens";
 
 interface BottomContextProps {
@@ -25,10 +23,9 @@ const BottomContext: React.FC<BottomContextProps> = ({ state = "maxButton" }) =>
     <View style={styles.bottomContext}>
       {state === "maxButton" && (
         <FWButton
-          label="Max $100"
+          labelSlot={<FoldText type="body-sm-bold-v2">Max $100</FoldText>}
           onPress={() => console.log("Max button pressed")}
           style={styles.maxButton}
-          textStyle={styles.maxButtonText}
         />
       )}
       {state === "payment" && (
@@ -63,11 +60,6 @@ const styles = StyleSheet.create({
     backgroundColor: ObjectPrimarySubtleDefault,
     paddingHorizontal: SpacingM3,
     borderRadius: BorderRadiusBr1,
-  },
-  maxButtonText: {
-    ...MobileButton02,
-    fontWeight: FontWeightsMedium, // Ensure compatibility with React Native
-    color: FacePrimary,
   },
 });
 

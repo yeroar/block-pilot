@@ -50,6 +50,7 @@ interface FWButtonProps {
   loading?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  labelSlot?: React.ReactNode;
 }
 
 const styles = StyleSheet.create({
@@ -68,6 +69,7 @@ const FWButton = ({
   loading = false,
   style,
   textStyle,
+  labelSlot,
 }: FWButtonProps) => {
   const getBackgroundColor = () => {
     if (disabled) return TOKENS.colors.bgDisabled;
@@ -103,6 +105,8 @@ const FWButton = ({
     >
       {loading ? (
         <ActivityIndicator size="small" color={getTextColor()} />
+      ) : labelSlot ? (
+        labelSlot
       ) : (
         <FoldText
           type="button-lrg-v2"
