@@ -5,6 +5,7 @@ import FWButton from "./cc-components/Button/FWButton";
 import ActionTile from "./cc-components/ActionTile/ActionTile";
 import FoldPageViewHeader from "./cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import CurrencyInput from "./cc-components/CurrencyInput/CurrencyInput";
+import CustomKeyboard from "./cc-components/Keyboard/CustomKeyboard";
 import { PlusCircleIcon } from "./assets/BlueSkyIcons/PlusCircleIcon";
 
 export default function App() {
@@ -23,34 +24,26 @@ export default function App() {
           backgroundColor="#f5f5f5"
           titleColor="#333"
         />
-        {/* FWButton examples */}
-        <FWButton
-          label="Primary Button"
-          variant="primary"
-          onPress={() => console.log("Primary Button Pressed")}
-        />
-        <FWButton
-          label="Secondary Button"
-          variant="secondary"
-          onPress={() => console.log("Secondary Button Pressed")}
-        />
-        {/* ActionTile example */}
-        <ActionTile
-          label="Cash balance"
-          selected={false}
-          trailingSlot={<PlusCircleIcon width={12} height={12} />}
-        ></ActionTile>
 
-        {/* CurrencyInput example */}
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <CurrencyInput
-            topContextVariant="Weekly"
-            amount="$0"
-            bottomContextVariant="payment"
-          />
-        </View>
+        {/* CurrencyInput with maxbutton and sats */}
+        <CurrencyInput
+          topContextVariant="~ 10,000 sats"
+          amount="$0"
+          bottomContextVariant="maxButton"
+        />
+
+        {/* CustomKeyboard */}
+        <CustomKeyboard
+          onKeyPress={(key) => console.log("Key pressed:", key)}
+        />
+
+        {/* Primary FWButton for preview buy */}
+        <FWButton
+          label="Preview Buy"
+          variant="primary"
+          onPress={() => console.log("Preview Buy Pressed")}
+          style={{ marginTop: 24 }}
+        />
       </View>
     </SafeAreaProvider>
   );
