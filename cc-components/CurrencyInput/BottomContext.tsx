@@ -8,7 +8,6 @@ import {
   ObjectPrimarySubtleDefault,
   BorderRadiusBr1,
   SpacingM3,
-  SpacingM0,
   SpacingM8,
   FacePrimary,
   MobileButton02,
