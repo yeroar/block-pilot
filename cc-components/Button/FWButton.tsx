@@ -31,7 +31,7 @@ const TOKENS = {
 
     bgDisabled: ObjectDisabledDisabled,
 
-    text: FacePrimary,
+    textDefault: FacePrimary,
     textDisabled: FaceDisabled,
   },
   spacing: {
@@ -71,50 +71,38 @@ const FWButton = ({
   textStyle,
   labelSlot,
 }: FWButtonProps) => {
-  const getBackgroundColor = () => {
-    if (disabled) return TOKENS.colors.bgDisabled;
-
-    return variant === 'primary'
-      ? TOKENS.colors.bgPrimary
-      : TOKENS.colors.bgSecondary;
-  };
-
-  const getTextColor = () => {
-    return disabled ? TOKENS.colors.textDisabled : TOKENS.colors.text;
-  };
+  const isDisabled = disabled;
+  const bgDefault =
+    variant === 'primary' ? TOKENS.colors.bgPrimary : TOKENS.colors.bgSecondary;
+  const bgPressed =
+    variant === 'primary' ? TOKENS.colors.bgPrimaryPressed : TOKENS.colors.bgSecondaryPressed;
+  const textColor = disabled ? TOKENS.colors.textDisabled : TOKENS.colors.textDefault;
 
   return (
     <Pressable
-      onPress={disabled || loading ? null : onPress}
+      disabled={isDisabled}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: isDisabled, busy: loading }}
+      onPress={onPress}
       style={({ pressed }) => [
         styles.button,
         {
-          backgroundColor: pressed && !disabled
-            ? variant === 'primary'
-              ? TOKENS.colors.bgPrimaryPressed
-              : TOKENS.colors.bgSecondaryPressed
-            : getBackgroundColor(),
+          backgroundColor: pressed && !isDisabled ? bgPressed : bgDefault,
           borderRadius: TOKENS.borderRadius,
-          paddingVertical: Number(TOKENS.spacing.vertical),
-          paddingHorizontal: Number(TOKENS.spacing.horizontal),
-          height: Number(TOKENS.spacing.height),
-          opacity: disabled || loading ? 0.5 : 1,
+          paddingVertical: TOKENS.spacing.vertical,
+          paddingHorizontal: TOKENS.spacing.horizontal,
+          height: TOKENS.spacing.height,
+          opacity: isDisabled ? 0.5 : 1,
         },
-        style, // Apply custom button styles
+        style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator size="small" color={getTextColor()} />
+        <ActivityIndicator size="small" color={textColor} />
       ) : labelSlot ? (
         labelSlot
       ) : (
-        <FoldText
-          type="button-lrg-v2"
-          style={[
-            { color: getTextColor() },
-            textStyle,
-          ]}
-        >
+        <FoldText type="button-lrg-v2" style={[{ color: textColor }, textStyle]}>
           {label}
         </FoldText>
       )}

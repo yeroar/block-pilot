@@ -39,6 +39,12 @@ export default function App() {
           trailingSlot={<XCloseIcon />}
           onPress={() => console.log("Action tile pressed")}
         />
+        <FWButton
+          label="Button label"
+          loading={false}
+          variant="primary"
+          onPress={() => {}}
+        ></FWButton>
       </View>
     </SafeAreaProvider>
   );

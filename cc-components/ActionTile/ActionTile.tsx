@@ -1,8 +1,8 @@
 import React from "react";
-import { View, StyleSheet, ViewStyle, Text } from "react-native"; // Import ViewStyle for type definitions
+import { View, StyleSheet, ViewStyle, Text } from "react-native"; 
 import FoldPressable from "../Primitives/FoldPressable";
-import { FoldText } from "../Primitives/FoldText"; // Import FoldText component
-import { FaceNegative, FacePrimary,  ObjectPrimaryBoldDefault, ObjectPrimaryBoldPressed, ObjectPrimarySubtleDefault, ObjectPrimarySubtlePressed, ObjectPrimarySubtleSelected, SpacingM1, SpacingM2, SpacingM3, SpacingM10 } from "../../generated-tokens/tokens";
+import { FoldText } from "../Primitives/FoldText"; 
+import { ObjectPrimaryBoldDefault,  ObjectPrimarySubtleDefault, SpacingM1, SpacingM2, SpacingM3, SpacingM10, BorderRadiusBr1 } from "../../generated-tokens/tokens";
 
 export type ActionTileProps = {
   label: string;
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: SpacingM10,
     paddingHorizontal: SpacingM3,
-    borderRadius: SpacingM2,
+    borderRadius: BorderRadiusBr1,
     gap: SpacingM1,
   },
   icon: {
