@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import KeyboardButton from "../KeyboardButton/KeyboardButton";
 import { LayerBackground, SpacingM2, SpacingM4, SpacingM6 } from "../../generated-tokens/tokens";
-import { ArrowNarrowLeftIcon } from "../../assets/BlueSkyIcons/ArrowNarrowLeftIcon";
+import { ArrowNarrowLeftIcon } from "../assets/BlueSkyIcons/ArrowNarrowLeftIcon";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "←"];
 

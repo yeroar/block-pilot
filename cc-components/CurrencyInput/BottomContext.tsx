@@ -3,8 +3,8 @@ import { View, StyleSheet } from "react-native";
 import ActionTile from "../ActionTile/ActionTile";
 import FWButton from "../Button/FWButton";
 import { FoldText } from "../Primitives/FoldText";
-import { PlusCircleIcon } from "../../assets/BlueSkyIcons/PlusCircleIcon";
-import { BankIcon } from "../../assets/BlueSkyIcons/BankIcon";
+import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
+import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import {
   ObjectPrimarySubtleDefault,
   BorderRadiusBr1,

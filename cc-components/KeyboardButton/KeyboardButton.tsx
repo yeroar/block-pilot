@@ -1,16 +1,32 @@
 import React, { ReactNode } from "react";
-import { StyleSheet, ViewStyle } from "react-native";
+import { StyleSheet, ViewStyle, StyleProp } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
 import { FacePrimary, FaceDisabled, LayerBackground, SpacingM16 } from "../../generated-tokens/tokens";
+import { BellIcon } from "../assets/BlueSkyIcons/BellIcon";
+import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
+import { AlarmClockIcon } from "../assets/BlueSkyIcons/AlarmClockIcon";
+import { XCloseIcon } from "../assets/BlueSkyIcons/XCloseIcon";
+
+// Simple icon registry
+const ICONS = {
+  Bell: BellIcon,
+  Bank: BankIcon,
+  Alarm: AlarmClockIcon,
+  Close: XCloseIcon,
+  close: XCloseIcon,
+  XClose: XCloseIcon,
+} as const;
+
+type IconKey = keyof typeof ICONS;
 
 export type KeyboardButtonProps = {
   variant: "iconOnly" | "textOnly";
-  icon?: ReactNode;
+  icon?: ReactNode | string; // Accept strings from Figma (icon name) or a React node
   label?: string;
   disabled?: boolean;
   onPress: () => void;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
 export default function KeyboardButton({
@@ -24,10 +40,20 @@ export default function KeyboardButton({
   const isIconOnly = variant === "iconOnly";
   
   // Create a ViewStyle object that FoldPressable can accept
-  const buttonStyles = {
+  const buttonStyles: ViewStyle = {
     ...styles.button,
     backgroundColor: disabled ? FaceDisabled : LayerBackground,
-    ...(style || {})
+    ...(style ? (StyleSheet.flatten(style) as ViewStyle) : {}),
+  };
+
+  const renderIcon = () => {
+    if (!isIconOnly) return null;
+    if (React.isValidElement(icon)) return icon;
+    if (typeof icon === "string") {
+      const IconComp = ICONS[icon as IconKey];
+      return IconComp ? <IconComp /> : null;
+    }
+    return null;
   };
 
   return (
@@ -36,7 +62,7 @@ export default function KeyboardButton({
       style={buttonStyles}
     >
       {isIconOnly ? (
-        icon
+        renderIcon()
       ) : (
         <FoldText 
           type="header-md-v2" 

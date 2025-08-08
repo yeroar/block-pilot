@@ -102,7 +102,7 @@ const FoldPageViewHeader = ({
         }}
       >
         <FoldText
-          type="header-xl-v2"
+          type="header-sm-v2"
           style={{
             textAlign: 'center',
             color: titleColor || headerTextColor,
