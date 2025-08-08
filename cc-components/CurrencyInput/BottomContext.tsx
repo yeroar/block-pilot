@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import ActionTile from "../ActionTile/ActionTile";
-import FWButton from "../Button/FWButton";
+import FWButton from "../Button/Button";
 import { FoldText } from "../Primitives/FoldText";
 import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";

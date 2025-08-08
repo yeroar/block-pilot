@@ -1,5 +1,5 @@
 import React from "react";
-import FWButton from "./FWButton";
+import Button from "./Button";
 import figma from "@figma/code-connect";
 
 /**
@@ -11,7 +11,7 @@ import figma from "@figma/code-connect";
  */
 
 figma.connect(
-  FWButton,
+  Button,
   "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7003-72901&t=hRbPZyJGMSjyNYEW-4",
   {
     props: {
@@ -20,19 +20,21 @@ figma.connect(
         primary: 'primary',
         secondary: 'secondary',
       }), // Map variant to an enum
+      size: figma.enum("size", { lg: 'lg', xs: 'xs' }),
       disabled: figma.enum("state", {
         disabled: true,
       }), // Map isDisabled to a boolean
     },
     example: (props) => (
-      <FWButton
+      <Button
       label={props.label}
       variant={props.variant}
+      size={props.size}
       disabled={props.disabled}
       onPress={() => {
       }}
     >
-    </FWButton>
+    </Button>
     ),
   },
 );

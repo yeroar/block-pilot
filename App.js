@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context"; // Import SafeAreaProvider
-import FWButton from "./cc-components/Button/FWButton";
+import Button from "./cc-components/Button/Button";
 import FoldPageViewHeader from "./cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import CurrencyInput from "./cc-components/CurrencyInput/CurrencyInput";
 import CustomKeyboard from "./cc-components/Keyboard/CustomKeyboard";
@@ -12,7 +12,9 @@ import { FaceNegative, SpacingM2 } from "./generated-tokens/tokens";
 
 export default function App() {
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ paddingHorizontal: SpacingM2 }}>
+      {" "}
+      {/* Ensure SafeAreaProvider wraps the app */}
       {/* Wrap the app with SafeAreaProvider */}
       <View style={styles.container}>
         {/* ActionTile with leading and trailing slots */}
@@ -39,12 +41,12 @@ export default function App() {
           trailingSlot={<XCloseIcon />}
           onPress={() => console.log("Action tile pressed")}
         />
-        <FWButton
+        <Button
           label="Button label"
-          loading={false}
+          size="lg"
           variant="primary"
           onPress={() => {}}
-        ></FWButton>
+        ></Button>
       </View>
     </SafeAreaProvider>
   );

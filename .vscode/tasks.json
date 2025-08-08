@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Rename FWButton.tsx to Button.tsx",
+			"command": "mv cc-components/FWButton/FWButton.tsx cc-components/FWButton/Button.tsx && rm cc-components/FWButton/Button.tsx",
+			"group": "build"
+		}
+	]
+}
