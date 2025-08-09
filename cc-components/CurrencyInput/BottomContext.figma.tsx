@@ -15,13 +15,13 @@ figma.connect(
   {
     props: {
       // These props were automatically mapped based on your linked code:
-      state: figma.enum("state", {
+      content: figma.enum("content", {
         maxButton: "maxButton",
         empty: "empty",
         payment: "payment",
         addPayment: "addPayment",
       }),
     },
-    example: (props) => <BottomContext state={props.state} />,
+    example: (props) => <BottomContext content={props.content} />,
   },
 )

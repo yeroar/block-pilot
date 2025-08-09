@@ -9,6 +9,8 @@ import { LoadingIcon } from "./cc-components/assets/BlueSkyIcons/LoadingIcon";
 import { XCloseIcon } from "./cc-components/assets/BlueSkyIcons/XCloseIcon";
 import ActionTile from "./cc-components/ActionTile/ActionTile";
 import { FaceNegative, SpacingM2 } from "./generated-tokens/tokens";
+import TopContext from "./cc-components/CurrencyInput/TopContext";
+import BottomContext from "./cc-components/CurrencyInput/BottomContext";
 
 export default function App() {
   return (
@@ -28,6 +30,11 @@ export default function App() {
           onRightPress={() => console.log("Right icon pressed")}
           backgroundColor="#f5f5f5"
           titleColor="#333"
+        />
+        <CurrencyInput
+          amount="$0"
+          topSlot={<TopContext label="Label"></TopContext>}
+          bottomSlot={<BottomContext content="maxButton" />}
         />
         <ActionTile
           label="Code connect component"
