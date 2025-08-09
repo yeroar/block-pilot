@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Pressable, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FoldText } from '../Primitives/FoldText';
 import FoldPressable from '../Primitives/FoldPressable';
@@ -11,7 +11,10 @@ import {
   ObjectDisabledDisabled,
   FacePrimary,
   FaceDisabled,
+  SpacingM0,
 } from '../../generated-tokens/tokens';
+import StackControl from './StackControl';
+import { XCloseIcon } from '../assets/BlueSkyIcons/XCloseIcon';
 
 const TOKENS = {
   colors: {
@@ -39,7 +42,8 @@ type FoldPageViewHeaderProps = {
   titleColor?: string
 }
 
-const HEADER_HEIGHT = 48
+const HEADER_HEIGHT = 48;
+const SIDE_WIDTH = 88;
 
 const FoldPageViewHeader = ({
   title,
@@ -54,24 +58,13 @@ const FoldPageViewHeader = ({
   rightIconColor,
   titleColor
 }: FoldPageViewHeaderProps) => {
+  const insets = useSafeAreaInsets();
+  const headerTextColor = titleColor || TOKENS.colors.textPrimary;
 
-  const insets = useSafeAreaInsets()
+  // Center max width = screen - 176 (88 per side)
+  const centerMaxWidth = Dimensions.get('window').width - 176;
 
-  const containerPaddingVertical = 4
-
-  const containerPaddingHorizontal = 16
-
-  const gap = 4
-
-  const [rightSideWidth, setRightSideWidth] = React.useState(0)
-
-  const [leftSideWidth, setLeftSideWidth] = React.useState(0)
-
-  const iconStyles = {
-    padding: 8
-  }
-
-  const headerTextColor = titleColor || TOKENS.colors.textPrimary
+  const iconStyles = { margin: 12};
 
   return (
     <View
@@ -80,118 +73,90 @@ const FoldPageViewHeader = ({
         backgroundColor: backgroundColor || 'transparent',
         height: HEADER_HEIGHT + insets.top,
         paddingTop: insets.top,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
       }}
     >
-      {/* Center part */}
-      <View
-        style={{
-          alignItems: 'center',
-          gap: gap,
-          maxWidth:
-            Dimensions.get('window').width -
-            leftSideWidth -
-            rightSideWidth -
-            containerPaddingHorizontal - // do it twice once for each side
-            containerPaddingHorizontal -
-            gap -
-            45, // Random number that seems to work well for most devices
-          marginVertical: containerPaddingVertical
-        }}
-      >
-        <FoldText
-          type="header-sm-v2"
-          style={{
-            textAlign: 'center',
-            color: titleColor || headerTextColor,
-          }}>
-            {title || 'Default Title'} {/* Provide a fallback value for title */}
-        </FoldText>
-      </View>
-
-      {/* Left side */}
-      <View
-        onLayout={event => {
-          setLeftSideWidth(event.nativeEvent.layout.width)
-        }}
-        style={{
-          alignItems: 'flex-start',
-          position: 'absolute',
-          left: 0,
-          marginLeft: containerPaddingHorizontal,
-          marginVertical: containerPaddingVertical,
-          paddingTop: insets.top,
-          backgroundColor: backgroundColor || 'transparent'
-        }}
-      >
-        {leftComponent ||
-          (leftIcon && onLeftPress && (
-            <FoldPressable style={iconStyles} onPress={onLeftPress}>
-              {/* <FoldIcon
-                name={leftIcon}
-                size={20}
-                color={headerTextColor}
-                weight={300}
-              /> */}
-              <View
-                style={{
-                  width: 24,
-                  height: 24,
-                  backgroundColor: 'red'
-                }}
+      <View style={styles.row}>
+        {/* Left (88 wide) */}
+        <View style={styles.leftSide}>
+          {leftComponent ? (
+            <StackControl variant="left">{leftComponent}</StackControl>
+          ) : (
+            leftIcon &&
+            onLeftPress && (
+              <StackControl
+                variant="left"
+                leadingSlot={
+                  <FoldPressable style={iconStyles} onPress={onLeftPress}>
+                    <XCloseIcon />
+                  </FoldPressable>
+                }
               />
-            </FoldPressable>
-          ))}
-      </View>
+            )
+          )}
+        </View>
 
-      {/* Right side */}
-      <View
-        onLayout={event => {
-          setRightSideWidth(event.nativeEvent.layout.width)
-        }}
-        style={{
-          alignItems: 'flex-end',
-          position: 'absolute',
-          right: 0,
-          marginRight: containerPaddingHorizontal,
-          marginVertical: containerPaddingVertical,
-                    paddingTop: insets.top,
+        {/* Center (flex:1, capped to screen - 176) */}
+        <View style={[styles.center, { maxWidth: centerMaxWidth }]}>
+          <FoldText
+            type="header-sm-v2"
+            style={{ textAlign: 'center', color: headerTextColor }}
+          >
+            {title || 'Default Title'}
+          </FoldText>
+        </View>
 
-          backgroundColor: backgroundColor || 'transparent'
-        }}
-      >
-        {rightComponent ||
-          (rightIcon && onRightPress && (
-            <FoldPressable style={iconStyles} onPress={onRightPress}>
-              {/* <FoldIcon
-                name={rightIcon}
-                size={20}
-                color={rightIconColor || themeColors.text}
-                weight={300}
-              /> */}
-              <View
-                style={{
-                  width: 24,
-                  height: 24,
-                  backgroundColor: 'red'
-                }}
+        {/* Right (88 wide) */}
+        <View style={styles.rightSide}>
+          {rightComponent ? (
+            <StackControl variant="right">{rightComponent}</StackControl>
+          ) : (
+            rightIcon &&
+            onRightPress && (
+              <StackControl
+                variant="right"
+                trailingSlot={
+                  <FoldPressable style={iconStyles} onPress={onRightPress}>
+                    <XCloseIcon />
+                  </FoldPressable>
+                }
+                leadingSlot={
+                  <FoldPressable style={iconStyles} onPress={onRightPress}>
+                    <XCloseIcon />
+                  </FoldPressable>
+                }
               />
-            </FoldPressable>
-          ))}
+            )
+          )}
+        </View>
       </View>
     </View>
-  )
+  );
 }
 
 export default FoldPageViewHeader
 
 const styles = StyleSheet.create({
-  container: {
+  row: {
+    height: HEADER_HEIGHT,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%'
-  }
-})
+  },
+  leftSide: {
+    width: SIDE_WIDTH,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  center: {
+    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rightSide: {
+    width: SIDE_WIDTH,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+});
