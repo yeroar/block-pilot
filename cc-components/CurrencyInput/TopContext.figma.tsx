@@ -15,19 +15,19 @@ figma.connect(
   "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7092%3A3551",
   {
     props: {
-       "content": figma.enum('content', {
-         "empty": "empty",
-         "iconLabel": "iconLabel",
-         "label": "label"
-       }),
-       icon: figma.instance("icon"),
+      leadingIcon: figma.boolean("leadingIcon", {
+        true: figma.instance("leadingSlot"),
+        false: undefined,
+      }), 
        label: figma.string("label"),
+       isEmpty: figma.boolean("isEmpty"),
     },
      example: (props) => {
           return (
             <TopContext
+              leadingIcon={props.leadingIcon}
               label={props.label}
-              icon={props.icon}
+              isEmpty={props.isEmpty}
             >
             </TopContext>
           );

@@ -4,19 +4,32 @@ import { SpacingM1, SpacingM10 } from "../../generated-tokens/tokens";
 import { FoldText } from "../Primitives/FoldText";
 
 interface TopContextProps {
-  content?: "empty" | "label" | "iconLabel";
+  // From Figma mapping:
+  // - isEmpty: boolean
+  // - leadingIcon: ReactNode (figma.instance) or undefined
+  // - label: string
+  // Local convenience (optional): allow a boolean to force showing the slot even if icon is absent
+  leadingSlot?: boolean;
+  isEmpty?: boolean;
+  leadingIcon?: React.ReactNode;
   label?: string | React.ReactNode;
-  icon?: React.ReactNode;
 }
 
-const TopContext: React.FC<TopContextProps> = ({ content, label, icon }) => {
-  const hasLabel = label !== undefined && label !== null && label !== "";
-  const hasIcon = !!icon;
-  const resolvedContent: "empty" | "label" | "iconLabel" =
-    content ?? (hasLabel ? (hasIcon ? "iconLabel" : "label") : "empty");
+const TopContext: React.FC<TopContextProps> = ({
+  isEmpty,
+  leadingSlot,
+  leadingIcon,
+  label,
+}) => {
+  const hasLabel = typeof label === "string" ? label.trim().length > 0 : !!label;
+  const hasIcon = !!leadingIcon;
 
-  if (resolvedContent === "empty") {
-    // Preserve layout height even when empty
+  // Auto-enable slot semantics if an icon is present (like ActionTile)
+  const showLeading = hasIcon || !!leadingSlot;
+
+  // If flagged empty but any content is present, content wins
+  const resolvedIsEmpty = !!isEmpty && !hasLabel && !hasIcon;
+  if (resolvedIsEmpty) {
     return <View style={styles.topContext} />;
   }
 
@@ -29,14 +42,16 @@ const TopContext: React.FC<TopContextProps> = ({ content, label, icon }) => {
 
   return (
     <View style={styles.topContext}>
-      {resolvedContent === "iconLabel" ? (
+      {showLeading && hasIcon && hasLabel ? (
         <View style={styles.inline}>
-          {icon ? <View style={{ marginRight: SpacingM1 }}>{icon}</View> : null}
+          <View style={styles.iconMargin}>{leadingIcon}</View>
           {labelNode}
         </View>
-      ) : (
+      ) : showLeading && hasIcon ? (
+        <View style={styles.inline}>{leadingIcon}</View>
+      ) : hasLabel ? (
         labelNode
-      )}
+      ) : null}
     </View>
   );
 };
@@ -51,6 +66,9 @@ const styles = StyleSheet.create({
   inline: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  iconMargin: {
+    marginRight: SpacingM1,
   },
 });
 
