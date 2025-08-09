@@ -4,54 +4,38 @@ import { SpacingM1, SpacingM10 } from "../../generated-tokens/tokens";
 import { FoldText } from "../Primitives/FoldText";
 
 interface TopContextProps {
-  // From Figma mapping:
-  // - isEmpty: boolean
-  // - leadingIcon: ReactNode (figma.instance) or undefined
-  // - label: string
-  // Local convenience (optional): allow a boolean to force showing the slot even if icon is absent
-  leadingSlot?: boolean;
-  isEmpty?: boolean;
+  leadingSlot?: boolean; // ignored in simplified logic
+  isEmpty?: boolean;     // ignored in simplified logic
   leadingIcon?: React.ReactNode;
-  label?: string | React.ReactNode;
+  label?: string;        // string-only
 }
 
-const TopContext: React.FC<TopContextProps> = ({
-  isEmpty,
-  leadingSlot,
-  leadingIcon,
-  label,
-}) => {
-  const hasLabel = typeof label === "string" ? label.trim().length > 0 : !!label;
+const TopContext: React.FC<TopContextProps> = ({ leadingIcon, label }) => {
+  const trimmed = typeof label === "string" ? label.trim() : "";
+  const hasLabel = trimmed.length > 0;
   const hasIcon = !!leadingIcon;
 
-  // Auto-enable slot semantics if an icon is present (like ActionTile)
-  const showLeading = hasIcon || !!leadingSlot;
-
-  // If flagged empty but any content is present, content wins
-  const resolvedIsEmpty = !!isEmpty && !hasLabel && !hasIcon;
-  if (resolvedIsEmpty) {
+  // Empty: no label (icon-only is not supported)
+  if (!hasLabel) {
     return <View style={styles.topContext} />;
   }
 
-  const labelNode =
-    typeof label === "string" ? (
-      <FoldText type="body-sm-bold-v2">{label}</FoldText>
-    ) : (
-      label
-    );
-
-  return (
-    <View style={styles.topContext}>
-      {showLeading && hasIcon && hasLabel ? (
+  // icon + label
+  if (hasIcon) {
+    return (
+      <View style={styles.topContext}>
         <View style={styles.inline}>
           <View style={styles.iconMargin}>{leadingIcon}</View>
-          {labelNode}
+          <FoldText type="body-sm-bold-v2">{trimmed}</FoldText>
         </View>
-      ) : showLeading && hasIcon ? (
-        <View style={styles.inline}>{leadingIcon}</View>
-      ) : hasLabel ? (
-        labelNode
-      ) : null}
+      </View>
+    );
+  }
+
+  // label only
+  return (
+    <View style={styles.topContext}>
+      <FoldText type="body-sm-bold-v2">{trimmed}</FoldText>
     </View>
   );
 };
