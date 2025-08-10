@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { SpacingM1, SpacingM10, SpacingM4 } from "../../generated-tokens/tokens";
+import { ObjectAccentBoldDefault, SpacingM1, SpacingM10, SpacingM4 } from "../../generated-tokens/tokens";
 import { FoldText } from "../Primitives/FoldText";
 
 interface TopContextProps {
