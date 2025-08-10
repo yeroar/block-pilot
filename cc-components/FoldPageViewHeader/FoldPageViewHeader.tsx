@@ -11,7 +11,6 @@ import {
   ObjectDisabledDisabled,
   FacePrimary,
   FaceDisabled,
-  SpacingM0,
 } from '../../generated-tokens/tokens';
 import StackControl from './StackControl';
 import { XCloseIcon } from '../assets/BlueSkyIcons/XCloseIcon';

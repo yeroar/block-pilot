@@ -6,32 +6,78 @@ import CurrencyInput from "../cc-components/CurrencyInput/CurrencyInput";
 import TopContext from "../cc-components/CurrencyInput/TopContext";
 import BottomContext from "../cc-components/CurrencyInput/BottomContext";
 import CustomKeyboard from "../cc-components/Keyboard/CustomKeyboard";
-import { XCloseIcon } from "../cc-components/assets/BlueSkyIcons/XCloseIcon";
-import { BellIcon } from "../cc-components/assets/BlueSkyIcons/BellIcon";
-import { ShieldIcon } from "../cc-components/assets/BlueSkyIcons/ShieldIcon";
-import { LayerBackground, SpacingM4, SpacingM12, SpacingM6 } from "../generated-tokens/tokens";
+import FoldPressable from "../cc-components/Primitives/FoldPressable";
+import { FoldText } from "../cc-components/Primitives/FoldText";
 
+// Import your icons - from Figma I see:
+// - Arrow/back icon for header left
+// - Info circle and scan icons for header right
+// - Calendar icon for Weekly label
+import { ArrowNarrowLeftIcon } from "../cc-components/assets/BlueSkyIcons/ArrowNarrowLeftIcon";
+import { InfoCircleIcon } from "../cc-components/assets/BlueSkyIcons/InfoCircleIcon";
+import { ScanIcon } from "../cc-components/assets/BlueSkyIcons/ScanIcon"; 
+import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
+
+import {
+  LayerBackground,
+  SpacingM4,   // 16
+  SpacingM6,   // 24
+  SpacingM12,  // 48
+  FacePrimary,
+  SpacingM10,
+  SpacingM8,
+  SpacingM5,
+} from "../generated-tokens/tokens";
+
+// Button styling constants from Figma variables
+const YELLOW_BG = "#ffdd33";     // color/bg/accent/yellow/bold/default
+const YELLOW_BORDER = "#ffd600"; // Border/primary
 
 const TransferScreen: React.FC = () => {
   return (
     <View style={styles.screen}>
+      {/* Header */}
       <FoldPageViewHeader
         title="Title"
-        leftComponent={<StackControl variant="left" leadingSlot={<XCloseIcon />} />}
-        rightComponent={<StackControl variant="right" leadingSlot={<ShieldIcon />} />}
+        leftComponent={
+          <StackControl 
+            variant="left" 
+            leadingSlot={<ArrowNarrowLeftIcon />} 
+          />
+        }
+        rightComponent={
+          <StackControl
+            variant="right"
+            leadingSlot={<ScanIcon />}
+            trailingSlot={<InfoCircleIcon />}
+          />
+        }
       />
 
-      <View style={styles.body}>
+      {/* Main content: currency input, keypad, button */}
+      
         <View style={styles.amountBlock}>
           <CurrencyInput
             amount="$100"
-            topSlot={<TopContext leadingIcon={<BellIcon />} label="Weekly" />}
+            topSlot={
+              <TopContext
+                leadingIcon={<CalendarIcon width={16} height={16} />} //EDIT
+                label="Weekly"
+              />
+            }
             bottomSlot={<BottomContext content="maxButton" />}
           />
-        </View>
 
-        <CustomKeyboard onKeyPress={undefined} />
+        <CustomKeyboard />
       </View>
+
+        <View style={styles.footer}>
+          <FoldPressable style={styles.cta} onPress={() => {}}>
+            <FoldText type="body-lg-bold-v2" style={styles.ctaText}>
+              Preview deposit
+            </FoldText>
+          </FoldPressable>
+        </View>
     </View>
   );
 };
@@ -39,18 +85,32 @@ const TransferScreen: React.FC = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: LayerBackground, // Matches Figma's Layer/background (#fbf5e4)
-    paddingHorizontal: SpacingM4, // Lateral margins = 16px
+    paddingHorizontal: SpacingM4,
   },
-  body: {
+
+  amountBlock: {
     flex: 1,
     justifyContent: "space-between",
-    paddingTop: SpacingM12, // Space below header = 48px
-    paddingBottom: SpacingM6, // Space above keyboard = 24px
   },
-  amountBlock: {
+  footer: {
+    width: "100%",
+    paddingTop: SpacingM6, // 48px spacing below header
+    paddingBottom: SpacingM10, // 24px spacing at bottom
+
+
+  },
+  cta: {
+    width: "100%",
+    height: 48,
+    borderRadius: 8,
     alignItems: "center",
-    gap: SpacingM6, // Gap between elements = 24px
+    justifyContent: "center",
+    backgroundColor: YELLOW_BG,
+    borderWidth: 1,
+    borderColor: YELLOW_BORDER,
+  },
+  ctaText: {
+    color: FacePrimary,
   },
 });
 

@@ -1,29 +1,49 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import KeyboardButton from "../KeyboardButton/KeyboardButton";
-import { LayerBackground, SpacingM2, SpacingM4, SpacingM6 } from "../../generated-tokens/tokens";
-import { ArrowNarrowLeftIcon } from "../assets/BlueSkyIcons/ArrowNarrowLeftIcon";
+import { DeleteIcon } from "../assets/BlueSkyIcons/DeleteIcon";
+import { SpacingM16, SpacingM4, SpacingM8 } from "../../generated-tokens/tokens";
 
-const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "←"];
+const KEYS = [
+  ["1", "2", "3"],
+  ["4", "5", "6"],
+  ["7", "8", "9"],
+  [".", "0", "←"]
+];
 
 export default function CustomKeyboard({ onKeyPress }) {
+  // Calculate screen width minus padding
+  const screenWidth = Dimensions.get('window').width;
+  
   return (
-    <View style={styles.keyboardGrid}>
-      {KEYS.map((key, idx) => (
-        <View key={key + idx} style={styles.keyCell}>
-          {key === "←" ? (
-            <KeyboardButton
-              variant="iconOnly"
-              icon={<ArrowNarrowLeftIcon width={24} height={24} />}
-              onPress={() => onKeyPress(key)}
-            />
-          ) : (
-            <KeyboardButton
-              variant="textOnly"
-              label={key}
-              onPress={() => onKeyPress(key)}
-            />
-          )}
+    <View style={styles.keyboardContainer}>
+      {KEYS.map((row, rowIndex) => (
+        <View key={`row-${rowIndex}`} style={styles.keyboardRow}>
+          {row.map((key, keyIndex) => (
+            <View 
+              key={key} 
+              style={[
+                styles.keyCell,
+                { width: screenWidth / 3 }, // Divide available width by 3
+                keyIndex === 0 && { paddingLeft: 0 }, // First column: 32px left padding
+                keyIndex === row.length - 1 && { paddingRight: 0 }, // Last column: 32px right padding
+              ]}
+            >
+              {key === "←" ? (
+                <KeyboardButton
+                  variant="iconOnly"
+                  icon={<DeleteIcon width={24} height={24} />}
+                  onPress={() => onKeyPress?.(key)}
+                />
+              ) : (
+                <KeyboardButton
+                  variant="textOnly"
+                  label={key}
+                  onPress={() => onKeyPress?.(key)}
+                />
+              )}
+            </View>
+          ))}
         </View>
       ))}
     </View>
@@ -31,19 +51,19 @@ export default function CustomKeyboard({ onKeyPress }) {
 }
 
 const styles = StyleSheet.create({
-  keyboardGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
+  keyboardContainer: {
     width: "100%",
-    backgroundColor: LayerBackground,
-    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  keyboardRow: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
   },
   keyCell: {
-    flexBasis: "33.33%", // 3 columns
     alignItems: "center",
     justifyContent: "center",
-    padding: 0,
+    height: SpacingM16,
   },
 });

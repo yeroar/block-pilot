@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { SpacingM12 } from "../../generated-tokens/tokens";
 
 interface CurrencyInputProps {
   amount?: string;
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "center",
-    padding: 16,
+    padding: SpacingM12,
     borderRadius: 8,
   },
   amount: {

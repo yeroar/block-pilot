@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { StyleSheet, ViewStyle, StyleProp } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
-import { FacePrimary, FaceDisabled, LayerBackground, SpacingM16 } from "../../generated-tokens/tokens";
+import { FacePrimary, FaceDisabled, LayerBackground, SpacingM16, ObjectAccentBoldDefault } from "../../generated-tokens/tokens";
 
 
 export type KeyboardButtonProps = {
@@ -40,7 +40,7 @@ export default function KeyboardButton({
       {isIconOnly ? (
         renderIcon()
       ) : (
-        <FoldText type="header-md-v2" style={{ color: disabled ? FaceDisabled : FacePrimary }}>
+        <FoldText type="header-lg-v2" style={{ color: disabled ? FaceDisabled : FacePrimary }}>
           {label}
         </FoldText>
       )}

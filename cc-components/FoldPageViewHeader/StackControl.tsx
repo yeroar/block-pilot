@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
-import { SpacingM0 } from "../../generated-tokens/tokens";
+import { SpacingM0, SpacingM6 } from "../../generated-tokens/tokens";
 
 type StackControlProps = {
   variant: "left" | "right";
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     // gap between icons: 24px
-    gap: 0,
+    gap: SpacingM6,
   },
   left: {
     justifyContent: "flex-start",
