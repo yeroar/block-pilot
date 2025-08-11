@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Button from '../Button/Button';
-import { SpacingM2,SpacingM4 SpacingM10 } from '../../generated-tokens/tokens';
+import { SpacingM2, SpacingM10, SpacingM4 } from '../../generated-tokens/tokens';
 
 interface ActionBarProps {
   topButton?: {
@@ -22,13 +22,19 @@ interface ActionBarProps {
     onPress: () => void;
     disabled?: boolean;
   };
+  isEmpty?: boolean;
 }
 
 const ActionBar: React.FC<ActionBarProps> = ({
   topButton,
   midButton,
   bottomButton,
+  isEmpty,
 }) => {
+  if (isEmpty) {
+    return null; // Render nothing if isEmpty is true
+  }
+
   return (
     <View style={styles.container}>
       {topButton && (

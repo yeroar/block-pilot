@@ -15,12 +15,33 @@ figma.connect(
   "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7108%3A4538",
   {
     props: {
-      // No matching props could be found for these Figma properties:
-      // "topButton": figma.boolean('topButton'),
-      // "midButton": figma.boolean('midButton'),
-      // "bottomButton": figma.boolean('bottomButton'),
-      // "isEmpty": figma.boolean('isEmpty')
+      topButton: figma.boolean('topButton', {
+        true: figma.instance("topSlot"), // Map topButton to an instance
+        false: undefined
+      }),
+
+      midButton: figma.boolean('midButton', {
+        true: figma.instance("midSlot"), // Map midButton to an instance
+        false: undefined
+      }),
+
+      bottomButton: figma.boolean('bottomButton', {
+        true: figma.instance("bottomSlot"), // Map bottomButton to an instance
+        false: undefined
+      }),
+      isEmpty: figma.boolean("isEmpty", {
+        true: true, // Map isEmpty to an instance
+        false: undefined
+      }),
+
     },
-    example: (props) => <ActionBar />,
+    example: (props) => (
+      <ActionBar
+        topButton={props.topButton}
+        midButton={props.midButton}
+        isEmpty={props.isEmpty}
+        bottomButton={props.bottomButton}
+      />
+    ),
   },
 )
