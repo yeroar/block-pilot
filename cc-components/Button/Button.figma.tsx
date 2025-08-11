@@ -17,24 +17,23 @@ figma.connect(
     props: {
       label: figma.string("label"), // Map label to a string property
       variant: figma.enum("variant", {
-        primary: 'primary',
-        secondary: 'secondary',
+        primary: "primary",
+        secondary: "secondary",
+        tertiary: "tertiary",
       }), // Map variant to an enum
-      size: figma.enum("size", { lg: 'lg', xs: 'xs' }),
+      size: figma.enum("size", { lg: "lg", xs: "xs" }),
       disabled: figma.enum("state", {
         disabled: true,
       }), // Map isDisabled to a boolean
     },
     example: (props) => (
       <Button
-      label={props.label}
-      variant={props.variant}
-      size={props.size}
-      disabled={props.disabled}
-      onPress={() => {
-      }}
-    >
-    </Button>
+        label={props.label}
+        variant={props.variant}
+        size={props.size}
+        disabled={props.disabled}
+        onPress={() => {}}
+      ></Button>
     ),
-  },
+  }
 );

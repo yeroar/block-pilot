@@ -1,81 +1,29 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Button from '../Button/Button';
-import { SpacingM2, SpacingM10, SpacingM4 } from '../../generated-tokens/tokens';
+import React, { ReactNode } from "react";
+import { View, StyleSheet } from "react-native";
+import {
+  SpacingM2,
+  SpacingM4,
+  SpacingM10,
+} from "../../generated-tokens/tokens";
 
-interface ActionBarProps {
-  topButton?: {
-    label: string;
-    variant?: 'primary' | 'secondary';
-    onPress: () => void;
-    disabled?: boolean;
-  };
-  midButton?: {
-    label: string;
-    variant?: 'primary' | 'secondary';
-    onPress: () => void;
-    disabled?: boolean;
-  };
-  bottomButton?: {
-    label: string;
-    variant?: 'primary' | 'secondary';
-    onPress: () => void;
-    disabled?: boolean;
-  };
+type ActionBarProps = {
+  children?: ReactNode;
   isEmpty?: boolean;
-}
+};
 
-const ActionBar: React.FC<ActionBarProps> = ({
-  topButton,
-  midButton,
-  bottomButton,
-  isEmpty,
-}) => {
-  if (isEmpty) {
-    return null; // Render nothing if isEmpty is true
-  }
+const ActionBar: React.FC<ActionBarProps> = ({ children, isEmpty }) => {
+  const count = React.Children.count(children);
+  if (isEmpty || count === 0) return null;
 
-  return (
-    <View style={styles.container}>
-      {topButton && (
-        <Button
-          label={topButton.label}
-          variant={topButton.variant || 'primary'}
-          size="lg"
-          onPress={topButton.onPress}
-          disabled={topButton.disabled}
-        />
-      )}
-      
-      {midButton && (
-        <Button
-          label={midButton.label}
-          variant={midButton.variant || 'secondary'}
-          size="lg"
-          onPress={midButton.onPress}
-          disabled={midButton.disabled}
-        />
-      )}
-      
-      {bottomButton && (
-        <Button
-          label={bottomButton.label}
-          variant={bottomButton.variant || 'secondary'}
-          size="lg"
-          onPress={bottomButton.onPress}
-          disabled={bottomButton.disabled}
-        />
-      )}
-    </View>
-  );
+  return <View style={styles.container}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    gap: SpacingM2, // 8px gap between buttons
-    paddingBottom: SpacingM10, // 40px bottom padding
-    paddingTop: SpacingM4, // 16px top padding
+    width: "100%",
+    gap: SpacingM2,
+    paddingTop: SpacingM4,
+    paddingBottom: SpacingM10,
   },
 });
 

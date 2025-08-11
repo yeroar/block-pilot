@@ -8,15 +8,16 @@ import BottomContext from "../cc-components/CurrencyInput/BottomContext";
 import CustomKeyboard from "../cc-components/Keyboard/CustomKeyboard";
 import { ArrowNarrowLeftIcon } from "../cc-components/assets/BlueSkyIcons/ArrowNarrowLeftIcon";
 import { InfoCircleIcon } from "../cc-components/assets/BlueSkyIcons/InfoCircleIcon";
-import { ScanIcon } from "../cc-components/assets/BlueSkyIcons/ScanIcon"; 
+import { ScanIcon } from "../cc-components/assets/BlueSkyIcons/ScanIcon";
 import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
 
 import {
-  SpacingM4,   // 16
-  SpacingM6,   // 24
+  SpacingM4, // 16
+  SpacingM6, // 24
   SpacingM10,
 } from "../generated-tokens/tokens";
 import Button from "../cc-components/Button/Button";
+import ActionBar from "../cc-components/ActionBar/ActionBar";
 
 const TransferScreen: React.FC = () => {
   return (
@@ -25,10 +26,7 @@ const TransferScreen: React.FC = () => {
       <FoldPageViewHeader
         title="Title"
         leftComponent={
-          <StackControl 
-            variant="left" 
-            leadingSlot={<ArrowNarrowLeftIcon />} 
-          />
+          <StackControl variant="left" leadingSlot={<ArrowNarrowLeftIcon />} />
         }
         rightComponent={
           <StackControl
@@ -40,30 +38,42 @@ const TransferScreen: React.FC = () => {
       />
 
       {/* Main content: currency input, keypad, button */}
-      
-        <View style={styles.amountBlock}>
-          <CurrencyInput
-            amount="$100"
-            topSlot={
-              <TopContext
-                leadingIcon={<CalendarIcon width={16} height={16} />} //EDIT
-                label="Weekly"
-              />
-            }
-            bottomSlot={<BottomContext content="maxButton" />}
-          />
+
+      <View style={styles.amountBlock}>
+        <CurrencyInput
+          amount="$100"
+          topSlot={
+            <TopContext
+              leadingIcon={<CalendarIcon width={16} height={16} />} //EDIT
+              label="Weekly"
+            />
+          }
+          bottomSlot={<BottomContext content="maxButton" />}
+        />
 
         <CustomKeyboard />
       </View>
 
-        <View style={styles.footer}>
-          <Button
-            label="Preview Button"
-            variant="primary"
-            size="lg"
-            onPress={() => {}}
-          />
-        </View>
+      <ActionBar>
+        <Button
+          label="Preview Button"
+          variant="primary"
+          size="lg"
+          onPress={() => {}}
+        ></Button>
+        <Button
+          label="Preview Button"
+          variant="secondary"
+          size="lg"
+          onPress={() => {}}
+        ></Button>
+        <Button
+          label="Preview Button"
+          variant="secondary"
+          size="lg"
+          onPress={() => {}}
+        ></Button>
+      </ActionBar>
     </View>
   );
 };
@@ -77,11 +87,6 @@ const styles = StyleSheet.create({
   amountBlock: {
     flex: 1,
     justifyContent: "space-between",
-  },
-  footer: {
-    width: "100%",
-    paddingTop: SpacingM6, // 48px spacing below header
-    paddingBottom: SpacingM10, // 24px spacing at bottom
   },
 });
 
