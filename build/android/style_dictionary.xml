@@ -70,7 +70,7 @@
   <color name="gray_alpha_800">#29605947</color>
   <color name="gray_alpha_900">#293f3a2e</color>
   <color name="gray_alpha_1000">#291f1c16</color>
-  <color name="layer_background">#fffbf5e4</color>
+  <color name="layer_background">#ffffdd33</color>
   <color name="layer_primary">#fffdf8ef</color>
   <color name="layer_secondary">#fffffdfa</color>
   <color name="layer_secondary_pressed">#29c3bb9e</color>

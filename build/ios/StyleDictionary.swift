@@ -86,7 +86,7 @@ public class {
     public static let Green700 = [UIColor colorWithRed:0.035f green:0.463f blue:0.294f alpha:1.000f]
     public static let Green800 = [UIColor colorWithRed:0.016f green:0.349f blue:0.216f alpha:1.000f]
     public static let Green900 = [UIColor colorWithRed:0.008f green:0.235f blue:0.141f alpha:1.000f]
-    public static let LayerBackground = [UIColor colorWithRed:0.984f green:0.961f blue:0.894f alpha:1.000f]
+    public static let LayerBackground = [UIColor colorWithRed:1.000f green:0.867f blue:0.200f alpha:1.000f]
     public static let LayerBackgroundPressed = [UIColor colorWithRed:0.765f green:0.733f blue:0.620f alpha:0.161f]
     public static let LayerPrimary = [UIColor colorWithRed:0.992f green:0.973f blue:0.937f alpha:1.000f]
     public static let LayerPrimaryPressed = [UIColor colorWithRed:0.765f green:0.733f blue:0.620f alpha:0.161f]
