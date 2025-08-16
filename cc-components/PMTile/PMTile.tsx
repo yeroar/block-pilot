@@ -1,10 +1,18 @@
 import React from "react";
-import { View, StyleSheet, ViewStyle, Text } from "react-native"; 
+import { View, StyleSheet, ViewStyle, Text } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
-import { FoldText } from "../Primitives/FoldText"; 
-import { ObjectPrimaryBoldDefault,  ObjectPrimarySubtleDefault, SpacingM1, SpacingM2, SpacingM3, SpacingM10, BorderRadiusBr1 } from "../../generated-tokens/tokens";
+import { FoldText } from "../Primitives/FoldText";
+import {
+  ObjectPrimaryBoldDefault,
+  ObjectPrimarySubtleDefault,
+  SpacingM1,
+  SpacingM2,
+  SpacingM3,
+  SpacingM10,
+  BorderRadiusBr1,
+} from "../../generated-tokens/tokens";
 
-export type ActionTileProps = {
+export type PMTileProps = {
   label: string;
   selected?: boolean;
   leadingIcon?: boolean;
@@ -16,7 +24,7 @@ export type ActionTileProps = {
   textStyle?: ViewStyle;
 };
 
-export default function ActionTile({
+export default function PMTile({
   label,
   selected = false,
   leadingIcon = false,
@@ -27,15 +35,17 @@ export default function ActionTile({
   style,
   textStyle,
   ...rest
-}: ActionTileProps) {
+}: PMTileProps) {
   // If a slot is provided, always show it
   const showLeading = leadingIcon || !!leadingSlot;
   const showTrailing = trailingIcon || !!trailingSlot;
-  const backgroundColor = selected ? ObjectPrimaryBoldDefault : ObjectPrimarySubtleDefault;
+  const backgroundColor = selected
+    ? ObjectPrimaryBoldDefault
+    : ObjectPrimarySubtleDefault;
 
   return (
     <FoldPressable onPress={onPress} style={style} {...rest}>
-      <View style={[styles.container, { backgroundColor }]}> 
+      <View style={[styles.container, { backgroundColor }]}>
         {showLeading && leadingSlot}
         <FoldText type="body-sm-bold-v2" style={textStyle}>
           {label}

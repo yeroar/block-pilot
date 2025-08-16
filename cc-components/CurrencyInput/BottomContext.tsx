@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import ActionTile from "../ActionTile/ActionTile";
+import ActionTile from "../PMTile/PMTile";
 import Button from "../Button/Button";
 import { FoldText } from "../Primitives/FoldText";
 import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
@@ -9,14 +9,16 @@ import {
   ObjectPrimarySubtleDefault,
   BorderRadiusBr1,
   SpacingM3,
-  SpacingM8
+  SpacingM8,
 } from "../../generated-tokens/tokens";
 
 interface BottomContextProps {
   content?: "maxButton" | "empty" | "payment" | "addPayment";
 }
 
-const BottomContext: React.FC<BottomContextProps> = ({ content = "maxButton" }) => {
+const BottomContext: React.FC<BottomContextProps> = ({
+  content = "maxButton",
+}) => {
   if (!content || content === "empty") return null;
 
   return (
@@ -25,7 +27,7 @@ const BottomContext: React.FC<BottomContextProps> = ({ content = "maxButton" }) 
         <Button
           size="xs"
           variant="secondary"
-          labelSlot={<FoldText type="body-sm-bold-v2">Max $100</FoldText>}
+          label="Max $100"
           onPress={() => console.log("Max button pressed")}
         />
       )}
