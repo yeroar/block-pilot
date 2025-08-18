@@ -140,83 +140,82 @@ export const BorderRadiusBr0 = 0;
 export const BorderRadiusBr1 = 6;
 export const BorderRadiusBr2 = 12;
 export const BorderRadiusRounded = 1000;
-export const FontFamiliesGeist = "Geist";
 
 export const MobileTitle01 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 36,
   fontSize: 32,
 };
 export const MobileTitle02 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 28,
   fontSize: 24,
 };
 export const MobileTitle03 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 24,
   fontSize: 20,
 };
 export const MobileTitle04 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 20,
   fontSize: 18,
 };
 export const MobileTitle05 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 16,
   fontSize: 14,
 };
 export const MobileBody01 = {
   fontFamily: "Geist",
-  fontWeight: "Regular",
+  fontWeight: 400,
   lineHeight: 24,
   fontSize: 16,
 };
 export const MobileBody02 = {
   fontFamily: "Geist",
-  fontWeight: "Regular",
+  fontWeight: 400,
   lineHeight: 20,
   fontSize: 14,
 };
 export const MobileBody03 = {
   fontFamily: "Geist",
-  fontWeight: "Regular",
+  fontWeight: 400,
   lineHeight: 16,
   fontSize: 12,
 };
 export const MobileButton01 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 16,
   fontSize: 16,
 };
 export const MobileButton02 = {
   fontFamily: "Geist",
-  fontWeight: "Medium",
+  fontWeight: 500,
   lineHeight: 12,
   fontSize: 12,
 };
 export const MobileBalance01 = {
   fontFamily: "Geist",
-  fontWeight: "Light",
+  fontWeight: 300,
   lineHeight: 40,
   fontSize: 40,
 };
 export const MobileBalance02 = {
   fontFamily: "Geist",
-  fontWeight: "Regular",
+  fontWeight: 400,
   lineHeight: 32,
   fontSize: 28,
 };
 export const MobileBalance03 = {
   fontFamily: "Geist",
-  fontWeight: "Regular",
+  fontWeight: 400,
   lineHeight: 18,
   fontSize: 18,
 };
@@ -233,3 +232,11 @@ export const M1000 = 40;
 export const M1200 = 48;
 export const M1400 = 56;
 export const M1600 = 64;
+
+export const CurrencyInput = {
+  fontWeight: 600,
+  fontFamily: "Geist",
+  fontSize: 44,
+  lineHeight: 57,
+  letterSpacing: "-1",
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ViewStyle, Text } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
 import {

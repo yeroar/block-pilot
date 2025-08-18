@@ -20,8 +20,8 @@ import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon"
 import {
   LayerBackground,
   SpacingM4,
-  SpacingM6,
   SpacingM12,
+  SpacingM3,
 } from "../generated-tokens/tokens";
 
 const TransferScreen: React.FC = () => {
@@ -33,11 +33,7 @@ const TransferScreen: React.FC = () => {
           <StackControl variant="left" leadingSlot={<ArrowNarrowLeftIcon />} />
         }
         rightComponent={
-          <StackControl
-            variant="right"
-            leadingSlot={<ScanIcon />}
-            trailingSlot={<InfoCircleIcon />}
-          />
+          <StackControl variant="right" trailingSlot={<InfoCircleIcon />} />
         }
       />
 
@@ -78,13 +74,12 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    justifyContent: "space-between",
+    gap: SpacingM3, // 24
     paddingTop: SpacingM12, // 48 under header
-    paddingBottom: SpacingM12, // 48 above ActionBar baseline
   },
   amountSection: {
+    flex: 1,
     alignItems: "center",
-    gap: SpacingM6, // 24 between top/bottom contexts internally
   },
 });
 

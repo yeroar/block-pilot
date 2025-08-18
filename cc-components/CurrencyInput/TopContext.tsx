@@ -1,13 +1,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { ObjectAccentBoldDefault, SpacingM1, SpacingM10, SpacingM4 } from "../../generated-tokens/tokens";
+import {
+  ObjectAccentBoldDefault,
+  SpacingM1,
+  SpacingM5,
+} from "../../generated-tokens/tokens";
 import { FoldText } from "../Primitives/FoldText";
 
 interface TopContextProps {
   leadingSlot?: boolean; // ignored in simplified logic
-  isEmpty?: boolean;     // ignored in simplified logic
+  isEmpty?: boolean; // ignored in simplified logic
   leadingIcon?: React.ReactNode;
-  label?: string;        // string-only
+  label?: string; // string-only
 }
 
 const TopContext: React.FC<TopContextProps> = ({ leadingIcon, label }) => {
@@ -26,7 +30,7 @@ const TopContext: React.FC<TopContextProps> = ({ leadingIcon, label }) => {
       <View style={styles.topContext}>
         <View style={styles.inline}>
           <View style={styles.iconMargin}>{leadingIcon}</View>
-          <FoldText type="body-sm-bold-v2">{trimmed}</FoldText>
+          <FoldText type="body-md-bold-v2">{trimmed}</FoldText>
         </View>
       </View>
     );
@@ -35,14 +39,14 @@ const TopContext: React.FC<TopContextProps> = ({ leadingIcon, label }) => {
   // label only
   return (
     <View style={styles.topContext}>
-      <FoldText type="body-sm-bold-v2">{trimmed}</FoldText>
+      <FoldText type="body-md-bold-v2">{trimmed}</FoldText>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   topContext: {
-    height: SpacingM10,
+    height: SpacingM5,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",

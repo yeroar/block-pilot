@@ -2,26 +2,30 @@ import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import KeyboardButton from "../KeyboardButton/KeyboardButton";
 import { DeleteIcon } from "../assets/BlueSkyIcons/DeleteIcon";
-import { SpacingM16, SpacingM4, SpacingM8 } from "../../generated-tokens/tokens";
+import {
+  SpacingM16,
+  SpacingM4,
+  SpacingM8,
+} from "../../generated-tokens/tokens";
 
 const KEYS = [
   ["1", "2", "3"],
   ["4", "5", "6"],
   ["7", "8", "9"],
-  [".", "0", "←"]
+  [".", "0", "←"],
 ];
 
 export default function CustomKeyboard({ onKeyPress }) {
   // Calculate screen width minus padding
-  const screenWidth = Dimensions.get('window').width;
-  
+  const screenWidth = Dimensions.get("window").width;
+
   return (
     <View style={styles.keyboardContainer}>
       {KEYS.map((row, rowIndex) => (
         <View key={`row-${rowIndex}`} style={styles.keyboardRow}>
           {row.map((key, keyIndex) => (
-            <View 
-              key={key} 
+            <View
+              key={key}
               style={[
                 styles.keyCell,
                 { width: screenWidth / 3 }, // Divide available width by 3

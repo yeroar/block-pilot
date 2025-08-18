@@ -32,6 +32,7 @@ public class {
     public static let BorderRadiusRounded = 1000
     public static let BorderSecondary = [UIColor colorWithRed:0.961f green:0.937f blue:0.839f alpha:1.000f]
     public static let BorderTertiary = [UIColor colorWithRed:0.984f green:0.961f blue:0.894f alpha:1.000f]
+    public static let CurrencyInput = [object Object]
     public static let FaceAccent = [UIColor colorWithRed:0.173f green:0.376f blue:0.706f alpha:1.000f]
     public static let FaceDisabled = [UIColor colorWithRed:0.765f green:0.745f blue:0.671f alpha:1.000f]
     public static let FaceInverse = [UIColor colorWithRed:1.000f green:0.992f blue:0.980f alpha:1.000f]

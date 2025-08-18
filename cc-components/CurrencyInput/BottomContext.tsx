@@ -10,6 +10,7 @@ import {
   BorderRadiusBr1,
   SpacingM3,
   SpacingM8,
+  ObjectAccentBoldDefault,
 } from "../../generated-tokens/tokens";
 
 interface BottomContextProps {

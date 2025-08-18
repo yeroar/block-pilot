@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FoldText } from '../Primitives/FoldText';
-import FoldPressable from '../Primitives/FoldPressable';
+import React from "react";
+import { View, StyleSheet, Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FoldText } from "../Primitives/FoldText";
+import FoldPressable from "../Primitives/FoldPressable";
 import {
   ObjectPrimaryBoldDefault,
   ObjectPrimaryBoldPressed,
@@ -11,9 +11,9 @@ import {
   ObjectDisabledDisabled,
   FacePrimary,
   FaceDisabled,
-} from '../../generated-tokens/tokens';
-import StackControl from './StackControl';
-import { XCloseIcon } from '../assets/BlueSkyIcons/XCloseIcon';
+} from "../../generated-tokens/tokens";
+import StackControl from "./StackControl";
+import { XCloseIcon } from "../assets/BlueSkyIcons/XCloseIcon";
 
 const TOKENS = {
   colors: {
@@ -28,18 +28,18 @@ const TOKENS = {
 };
 
 type FoldPageViewHeaderProps = {
-  title?: string
-  subTitle?: string
-  leftIcon?: string
-  rightIcon?: string
-  onLeftPress?: () => void
-  onRightPress?: () => void
-  leftComponent?: React.ReactNode
-  rightComponent?: React.ReactNode
-  backgroundColor?: string
-  rightIconColor?: string
-  titleColor?: string
-}
+  title?: string;
+  subTitle?: string;
+  leftIcon?: string;
+  rightIcon?: string;
+  onLeftPress?: () => void;
+  onRightPress?: () => void;
+  leftComponent?: React.ReactNode;
+  rightComponent?: React.ReactNode;
+  backgroundColor?: string;
+  rightIconColor?: string;
+  titleColor?: string;
+};
 
 const HEADER_HEIGHT = 48;
 const SIDE_WIDTH = 88;
@@ -55,21 +55,21 @@ const FoldPageViewHeader = ({
   rightComponent,
   backgroundColor,
   rightIconColor,
-  titleColor
+  titleColor,
 }: FoldPageViewHeaderProps) => {
   const insets = useSafeAreaInsets();
   const headerTextColor = titleColor || TOKENS.colors.textPrimary;
 
   // Center max width = screen - 176 (88 per side)
-  const centerMaxWidth = Dimensions.get('window').width - 176;
+  const centerMaxWidth = Dimensions.get("window").width - 176;
 
-  const iconStyles = { margin: 12};
+  const iconStyles = { margin: 12 };
 
   return (
     <View
       style={{
-        width: '100%',
-        backgroundColor: backgroundColor || 'transparent',
+        width: "100%",
+        backgroundColor: backgroundColor || "transparent",
         height: HEADER_HEIGHT + insets.top,
         paddingTop: insets.top,
       }}
@@ -97,10 +97,14 @@ const FoldPageViewHeader = ({
         {/* Center (flex:1, capped to screen - 176) */}
         <View style={[styles.center, { maxWidth: centerMaxWidth }]}>
           <FoldText
-            type="header-sm-v2"
-            style={{ textAlign: 'center', color: headerTextColor }}
+            type="header-md-v2"
+            style={{
+              textAlign: "center",
+              paddingTop: 4,
+              color: headerTextColor,
+            }}
           >
-            {title || 'Default Title'}
+            {title || "Default Title"}
           </FoldText>
         </View>
 
@@ -130,32 +134,32 @@ const FoldPageViewHeader = ({
       </View>
     </View>
   );
-}
+};
 
-export default FoldPageViewHeader
+export default FoldPageViewHeader;
 
 const styles = StyleSheet.create({
   row: {
     height: HEADER_HEIGHT,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   leftSide: {
     width: SIDE_WIDTH,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   center: {
     flex: 1,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   rightSide: {
     width: SIDE_WIDTH,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
 });
