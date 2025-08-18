@@ -125,118 +125,296 @@ export const BorderFocused = "#4f86da";
 export const BorderInverse = "#fffdfa";
 export const BorderTertiary = "#fbf5e4";
 export const SpacingM0 = 0;
-export const SpacingM4 = 16;
-export const SpacingM6 = 24;
-export const SpacingM3 = 12;
-export const SpacingM12 = 48;
-export const SpacingM2 = 8;
-export const SpacingM8 = 32;
-export const SpacingM10 = 40;
-export const SpacingM1 = 4;
-export const SpacingM5 = 20;
-export const SpacingM14 = 56;
-export const SpacingM16 = 64;
-export const BorderRadiusBr0 = 0;
-export const BorderRadiusBr1 = 6;
-export const BorderRadiusBr2 = 12;
-export const BorderRadiusRounded = 1000;
-
-export const MobileTitle01 = {
+export const SpacingM4 = "16px";
+export const SpacingM6 = "24px";
+export const SpacingM3 = "12px";
+export const SpacingM12 = "48px";
+export const SpacingM2 = "8px";
+export const SpacingM8 = "32px";
+export const SpacingM10 = "40px";
+export const SpacingM1 = "4px";
+export const SpacingM5 = "20px";
+export const SpacingM14 = "56px";
+export const SpacingM16 = "64px";
+export const BorderRadiusBr0 = "0px";
+export const BorderRadiusBr1 = "6px";
+export const BorderRadiusBr2 = "12px";
+export const BorderRadiusRounded = "1000px";
+export const FontFamiliesGeist = "Geist";
+export const LineHeights0 = "44";
+export const LineHeights1 = "36";
+export const LineHeights2 = "28";
+export const LineHeights3 = "24";
+export const LineHeights4 = "20";
+export const LineHeights5 = "16";
+export const LineHeights6 = "24";
+export const LineHeights7 = "24";
+export const LineHeights8 = "20";
+export const LineHeights9 = "20";
+export const LineHeights10 = "16";
+export const LineHeights11 = "16";
+export const LineHeights12 = "12";
+export const LineHeights13 = "16";
+export const LineHeights14 = "12";
+export const LineHeights15 = "40";
+export const LineHeights16 = "32";
+export const LineHeights17 = "18";
+export const FontWeightsGeist0 = "Regular";
+export const FontWeightsGeist1 = "Medium";
+export const FontWeightsGeist2 = "SemiBold";
+export const FontWeightsGeist3 = "Light";
+export const FontSize0 = "40";
+export const FontSize1 = "32";
+export const FontSize2 = "24";
+export const FontSize3 = "20";
+export const FontSize4 = "18";
+export const FontSize5 = "14";
+export const FontSize6 = "16";
+export const FontSize7 = "16";
+export const FontSize8 = "14";
+export const FontSize9 = "14";
+export const FontSize10 = "12";
+export const FontSize11 = "12";
+export const FontSize12 = "10";
+export const FontSize13 = "16";
+export const FontSize14 = "12";
+export const FontSize15 = "40";
+export const FontSize16 = "28";
+export const FontSize17 = "18";
+export const LetterSpacing0 = "0";
+export const LetterSpacing1 = "0";
+export const LetterSpacing2 = "0";
+export const LetterSpacing3 = "0";
+export const LetterSpacing4 = "0";
+export const LetterSpacing5 = "0";
+export const LetterSpacing6 = "0";
+export const LetterSpacing7 = "0";
+export const LetterSpacing8 = "0";
+export const LetterSpacing9 = "0";
+export const LetterSpacing10 = "0";
+export const LetterSpacing11 = "0";
+export const LetterSpacing12 = "0";
+export const LetterSpacing13 = "0";
+export const LetterSpacing14 = "0";
+export const LetterSpacing15 = "0";
+export const LetterSpacing16 = "0";
+export const LetterSpacing17 = "0";
+export const ParagraphSpacing0 = "0";
+export const ParagraphSpacing1 = "0";
+export const ParagraphSpacing2 = "0";
+export const ParagraphSpacing3 = "0";
+export const ParagraphSpacing4 = "0";
+export const ParagraphSpacing5 = "0";
+export const ParagraphSpacing6 = "0";
+export const ParagraphSpacing7 = "0";
+export const ParagraphSpacing8 = "0";
+export const ParagraphSpacing9 = "0";
+export const ParagraphSpacing10 = "0";
+export const ParagraphSpacing11 = "0";
+export const ParagraphSpacing12 = "0";
+export const ParagraphSpacing13 = "0";
+export const ParagraphSpacing14 = "0";
+export const ParagraphSpacing15 = "0";
+export const ParagraphSpacing16 = "0";
+export const ParagraphSpacing17 = "0";
+export const AppHeaderXlV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 36,
-  fontSize: 32,
+  fontWeight: "Regular",
+  lineHeight: "44",
+  fontSize: "40",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileTitle02 = {
+export const AppHeaderLgV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 28,
-  fontSize: 24,
+  fontWeight: "Regular",
+  lineHeight: "36",
+  fontSize: "32",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileTitle03 = {
+export const AppHeaderMdV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 24,
-  fontSize: 20,
+  fontWeight: "Regular",
+  lineHeight: "28",
+  fontSize: "24",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileTitle04 = {
+export const AppHeaderSmV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 20,
-  fontSize: 18,
+  fontWeight: "Medium",
+  lineHeight: "24",
+  fontSize: "20",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileTitle05 = {
+export const AppHeaderXsV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 16,
-  fontSize: 14,
+  fontWeight: "Medium",
+  lineHeight: "20",
+  fontSize: "18",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileBody01 = {
+export const AppHeaderXxsV2 = {
   fontFamily: "Geist",
-  fontWeight: 400,
-  lineHeight: 24,
-  fontSize: 16,
+  fontWeight: "SemiBold",
+  lineHeight: "16",
+  fontSize: "14",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileBody02 = {
+export const AppBodyLgV2 = {
   fontFamily: "Geist",
-  fontWeight: 400,
-  lineHeight: 20,
-  fontSize: 14,
+  fontWeight: "Regular",
+  lineHeight: "24",
+  fontSize: "16",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileBody03 = {
+export const AppBodyLgBoldV2 = {
   fontFamily: "Geist",
-  fontWeight: 400,
-  lineHeight: 16,
-  fontSize: 12,
+  fontWeight: "Medium",
+  lineHeight: "24",
+  fontSize: "16",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileButton01 = {
+export const AppBodyMdV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 16,
-  fontSize: 16,
+  fontWeight: "Regular",
+  lineHeight: "20",
+  fontSize: "14",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileButton02 = {
+export const AppBodyMdBoldV2 = {
   fontFamily: "Geist",
-  fontWeight: 500,
-  lineHeight: 12,
-  fontSize: 12,
+  fontWeight: "Medium",
+  lineHeight: "20",
+  fontSize: "14",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileBalance01 = {
+export const AppBodySmV2 = {
   fontFamily: "Geist",
-  fontWeight: 300,
-  lineHeight: 40,
-  fontSize: 40,
+  fontWeight: "Regular",
+  lineHeight: "16",
+  fontSize: "12",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileBalance02 = {
+export const AppBodySmBoldV2 = {
   fontFamily: "Geist",
-  fontWeight: 400,
-  lineHeight: 32,
-  fontSize: 28,
+  fontWeight: "Medium",
+  lineHeight: "16",
+  fontSize: "12",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const MobileBalance03 = {
+export const AppCaption = {
   fontFamily: "Geist",
-  fontWeight: 400,
-  lineHeight: 18,
-  fontSize: 18,
+  fontWeight: "Regular",
+  lineHeight: "12",
+  fontSize: "10",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
-export const M0 = 0;
-export const M100 = 4;
-export const M150 = 6;
-export const M200 = 8;
-export const M300 = 12;
-export const M400 = 16;
-export const M500 = 20;
-export const M600 = 24;
-export const M800 = 32;
-export const M1000 = 40;
-export const M1200 = 48;
-export const M1400 = 56;
-export const M1600 = 64;
-
-export const CurrencyInput = {
-  fontWeight: 600,
+export const AppButtonLgV2 = {
   fontFamily: "Geist",
-  fontSize: 44,
-  lineHeight: 57,
-  letterSpacing: "-1",
+  fontWeight: "Medium",
+  lineHeight: "16",
+  fontSize: "16",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
 };
+export const AppButtonSmV2 = {
+  fontFamily: "Geist",
+  fontWeight: "Medium",
+  lineHeight: "12",
+  fontSize: "12",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
+};
+export const AppBalanceLgV2 = {
+  fontFamily: "Geist",
+  fontWeight: "Light",
+  lineHeight: "40",
+  fontSize: "40",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
+};
+export const AppBalanceMdV2 = {
+  fontFamily: "Geist",
+  fontWeight: "Regular",
+  lineHeight: "32",
+  fontSize: "28",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
+};
+export const AppBalanceSmV2 = {
+  fontFamily: "Geist",
+  fontWeight: "Regular",
+  lineHeight: "18",
+  fontSize: "18",
+  letterSpacing: "0",
+  paragraphSpacing: "0",
+  paragraphIndent: "0px",
+  textCase: "none",
+  textDecoration: "none",
+};
+export const TextCaseNone = "none";
+export const TextDecorationNone = "none";
+export const ParagraphIndent0 = "0px";
