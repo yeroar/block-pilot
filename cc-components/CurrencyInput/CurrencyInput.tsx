@@ -17,7 +17,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
   return (
     <View style={styles.container}>
       {topSlot}
-      <FoldText type="currency-input" style={styles.amount}>
+      <FoldText type="header-xl-v2" style={styles.amount}>
         {amount}
       </FoldText>
       {bottomSlot}

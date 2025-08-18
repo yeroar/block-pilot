@@ -142,4 +142,23 @@
   <integer name="border_radius_br_1">6</integer>
   <integer name="border_radius_br_2">12</integer>
   <integer name="border_radius_rounded">1000</integer>
+  <string name="header_xl_v2">[object Object]</string>
+  <string name="header_lg_v2">[object Object]</string>
+  <string name="header_md_v2">[object Object]</string>
+  <string name="header_sm_v2">[object Object]</string>
+  <string name="header_xs_v2">[object Object]</string>
+  <string name="header_xxs_v2">[object Object]</string>
+  <string name="body_lg_v2">[object Object]</string>
+  <string name="body_lg_bold_v2">[object Object]</string>
+  <string name="body_md_v2">[object Object]</string>
+  <string name="body_md_bold_v2">[object Object]</string>
+  <string name="body_sm_v2">[object Object]</string>
+  <string name="body_sm_bold_v2">[object Object]</string>
+  <string name="caption">[object Object]</string>
+  <string name="button_lg_v2">[object Object]</string>
+  <string name="button_sm_v2">[object Object]</string>
+  <string name="balance_lg_v2">[object Object]</string>
+  <string name="balance_md_v2">[object Object]</string>
+  <string name="balance_sm_v2">[object Object]</string>
+  <string name="font_families_geist">Geist</string>
 </resources>

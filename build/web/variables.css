@@ -141,4 +141,23 @@
   --border-radius-br-1: 6;
   --border-radius-br-2: 12;
   --border-radius-rounded: 1000;
+  --header-xl-v2: [object Object];
+  --header-lg-v2: [object Object];
+  --header-md-v2: [object Object];
+  --header-sm-v2: [object Object];
+  --header-xs-v2: [object Object];
+  --header-xxs-v2: [object Object];
+  --body-lg-v2: [object Object];
+  --body-lg-bold-v2: [object Object];
+  --body-md-v2: [object Object];
+  --body-md-bold-v2: [object Object];
+  --body-sm-v2: [object Object];
+  --body-sm-bold-v2: [object Object];
+  --caption: [object Object];
+  --button-lg-v2: [object Object];
+  --button-sm-v2: [object Object];
+  --balance-lg-v2: [object Object];
+  --balance-md-v2: [object Object];
+  --balance-sm-v2: [object Object];
+  --font-families-geist: Geist;
 }

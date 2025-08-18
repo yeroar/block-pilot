@@ -1,22 +1,23 @@
 import React from "react";
 import { Text, TextStyle, StyleProp, TextProps } from "react-native";
 import {
-  MobileTitle01,
-  MobileTitle02,
-  MobileBody01,
-  MobileBody02,
-  MobileButton01,
-  MobileBalance01,
-  MobileBalance02,
-  MobileBalance03,
+  HeaderMdV2,
+  HeaderSmV2,
+  HeaderXsV2,
+  HeaderLgV2,
+  HeaderXlV2,
+  ButtonSmV2,
+  ButtonLgV2,
+  BalanceLgV2,
+  BalanceMdV2,
+  BalanceSmV2,
+  BodyLgBoldV2,
+  BodyLgV2,
+  BodyMdV2,
+  BodyMdBoldV2,
+  BodySmV2,
+  BodySmBoldV2,
   FacePrimary,
-  MobileTitle04,
-  MobileTitle03,
-  MobileTitle05,
-  MobileBody03,
-  MobileButton02,
-  // add token style
-  CurrencyInput as TokenCurrencyInput,
 } from "../../generated-tokens/tokens";
 
 export const groupedTypes = {
@@ -86,30 +87,27 @@ function normalizeTextStyle(style: any): TextStyle {
 
 export const typeStyles: Record<FoldTextType, TextStyle> = {
   // --- Headings v2 ---
-  "header-xl-v2": normalizeTextStyle(MobileTitle01),
-  "header-lg-v2": normalizeTextStyle(MobileTitle02),
-  "header-md-v2": normalizeTextStyle(MobileTitle03),
-  "header-sm-v2": normalizeTextStyle(MobileTitle04),
-  "header-xs-v2": normalizeTextStyle(MobileTitle05),
+  "header-xl-v2": normalizeTextStyle(HeaderXlV2),
+  "header-lg-v2": normalizeTextStyle(HeaderLgV2),
+  "header-md-v2": normalizeTextStyle(HeaderMdV2),
+  "header-sm-v2": normalizeTextStyle(HeaderSmV2),
+  "header-xs-v2": normalizeTextStyle(HeaderXsV2),
   // --- Body v2 ---
-  "body-lg-v2": normalizeTextStyle(MobileBody01),
-  "body-lg-bold-v2": normalizeTextStyle(MobileTitle05), // change to BOLD
-  "body-md-v2": normalizeTextStyle(MobileBody02),
-  "body-md-bold-v2": normalizeTextStyle(MobileTitle05), // change to BOLD
-  "body-sm-v2": normalizeTextStyle(MobileBody03),
-  "body-sm-bold-v2": normalizeTextStyle(MobileTitle05), // change to BOLD
+  "body-lg-v2": normalizeTextStyle(BodyLgV2),
+  "body-lg-bold-v2": normalizeTextStyle(BodyLgBoldV2), // change to BOLD
+  "body-md-v2": normalizeTextStyle(BodyMdV2),
+  "body-md-bold-v2": normalizeTextStyle(BodyMdBoldV2), // change to BOLD
+  "body-sm-v2": normalizeTextStyle(BodySmV2),
+  "body-sm-bold-v2": normalizeTextStyle(BodySmBoldV2), // change to BOLD
 
   // --- Balance v2 ---
-  "balance-lg-v2": normalizeTextStyle(MobileBalance01),
-  "balance-md-v2": normalizeTextStyle(MobileBalance02),
-  "balance-sm-v2": normalizeTextStyle(MobileBalance03),
+  "balance-lg-v2": normalizeTextStyle(BalanceLgV2),
+  "balance-md-v2": normalizeTextStyle(BalanceMdV2),
+  "balance-sm-v2": normalizeTextStyle(BalanceSmV2),
 
   // --- Button v2 ---
-  "button-lrg-v2": normalizeTextStyle(MobileButton01),
-  "button-sm-v2": normalizeTextStyle(MobileButton02),
-
-  // --- Input / Currency ---
-  "currency-input": normalizeTextStyle(TokenCurrencyInput),
+  "button-lrg-v2": normalizeTextStyle(ButtonLgV2),
+  "button-sm-v2": normalizeTextStyle(ButtonSmV2),
 };
 
 // FoldText component to render styled text based on the provided type

@@ -9,6 +9,9 @@
 import SwiftUI
 
 public class {
+    public static let BalanceLgV2 = [object Object]
+    public static let BalanceMdV2 = [object Object]
+    public static let BalanceSmV2 = [object Object]
     public static let Blue100 = [UIColor colorWithRed:0.816f green:0.929f blue:1.000f alpha:1.000f]
     public static let Blue1000 = [UIColor colorWithRed:0.004f green:0.051f blue:0.122f alpha:1.000f]
     public static let Blue200 = [UIColor colorWithRed:0.714f green:0.871f blue:1.000f alpha:1.000f]
@@ -20,6 +23,12 @@ public class {
     public static let Blue700 = [UIColor colorWithRed:0.086f green:0.267f blue:0.561f alpha:1.000f]
     public static let Blue800 = [UIColor colorWithRed:0.039f green:0.184f blue:0.412f alpha:1.000f]
     public static let Blue900 = [UIColor colorWithRed:0.016f green:0.118f blue:0.267f alpha:1.000f]
+    public static let BodyLgBoldV2 = [object Object]
+    public static let BodyLgV2 = [object Object]
+    public static let BodyMdBoldV2 = [object Object]
+    public static let BodyMdV2 = [object Object]
+    public static let BodySmBoldV2 = [object Object]
+    public static let BodySmV2 = [object Object]
     public static let BorderDisabled = [UIColor colorWithRed:0.992f green:0.973f blue:0.937f alpha:1.000f]
     public static let BorderFocused = [UIColor colorWithRed:0.310f green:0.525f blue:0.855f alpha:1.000f]
     public static let BorderInverse = [UIColor colorWithRed:1.000f green:0.992f blue:0.980f alpha:1.000f]
@@ -32,6 +41,9 @@ public class {
     public static let BorderRadiusRounded = 1000
     public static let BorderSecondary = [UIColor colorWithRed:0.961f green:0.937f blue:0.839f alpha:1.000f]
     public static let BorderTertiary = [UIColor colorWithRed:0.984f green:0.961f blue:0.894f alpha:1.000f]
+    public static let ButtonLgV2 = [object Object]
+    public static let ButtonSmV2 = [object Object]
+    public static let Caption = [object Object]
     public static let FaceAccent = [UIColor colorWithRed:0.173f green:0.376f blue:0.706f alpha:1.000f]
     public static let FaceDisabled = [UIColor colorWithRed:0.765f green:0.745f blue:0.671f alpha:1.000f]
     public static let FaceInverse = [UIColor colorWithRed:1.000f green:0.992f blue:0.980f alpha:1.000f]
@@ -40,6 +52,7 @@ public class {
     public static let FacePrimary = [UIColor colorWithRed:0.247f green:0.243f blue:0.227f alpha:1.000f]
     public static let FaceSecondary = [UIColor colorWithRed:0.376f green:0.369f blue:0.341f alpha:1.000f]
     public static let FaceTertiary = [UIColor colorWithRed:0.506f green:0.494f blue:0.451f alpha:1.000f]
+    public static let FontFamiliesGeist = Geist
     public static let GrayAlpha100 = [UIColor colorWithRed:0.961f green:0.937f blue:0.839f alpha:0.161f]
     public static let GrayAlpha1000 = [UIColor colorWithRed:0.122f green:0.110f blue:0.086f alpha:0.161f]
     public static let GrayAlpha200 = [UIColor colorWithRed:0.894f green:0.867f blue:0.761f alpha:0.161f]
@@ -73,6 +86,12 @@ public class {
     public static let Green700 = [UIColor colorWithRed:0.035f green:0.463f blue:0.294f alpha:1.000f]
     public static let Green800 = [UIColor colorWithRed:0.016f green:0.349f blue:0.216f alpha:1.000f]
     public static let Green900 = [UIColor colorWithRed:0.008f green:0.235f blue:0.141f alpha:1.000f]
+    public static let HeaderLgV2 = [object Object]
+    public static let HeaderMdV2 = [object Object]
+    public static let HeaderSmV2 = [object Object]
+    public static let HeaderXlV2 = [object Object]
+    public static let HeaderXsV2 = [object Object]
+    public static let HeaderXxsV2 = [object Object]
     public static let LayerBackground = [UIColor colorWithRed:0.984f green:0.961f blue:0.894f alpha:1.000f]
     public static let LayerBackgroundPressed = [UIColor colorWithRed:0.765f green:0.733f blue:0.620f alpha:0.161f]
     public static let LayerPrimary = [UIColor colorWithRed:0.992f green:0.973f blue:0.937f alpha:1.000f]

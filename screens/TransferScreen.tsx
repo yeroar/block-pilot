@@ -22,18 +22,17 @@ import {
   SpacingM4,
   SpacingM12,
   SpacingM3,
+  SpacingM6,
 } from "../generated-tokens/tokens";
+import { ChevronLeftIcon } from "../cc-components/assets/BlueSkyIcons/ChevronLeftIcon";
 
 const TransferScreen: React.FC = () => {
   return (
     <View style={styles.screen}>
       <FoldPageViewHeader
-        title="Title"
+        title="Buy bitcoin"
         leftComponent={
-          <StackControl variant="left" leadingSlot={<ArrowNarrowLeftIcon />} />
-        }
-        rightComponent={
-          <StackControl variant="right" trailingSlot={<InfoCircleIcon />} />
+          <StackControl variant="left" leadingSlot={<ChevronLeftIcon />} />
         }
       />
 
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    gap: SpacingM3, // 24
+    gap: SpacingM6, // 24
     paddingTop: SpacingM12, // 48 under header
   },
   amountSection: {

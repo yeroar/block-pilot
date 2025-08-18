@@ -97,7 +97,7 @@ const FoldPageViewHeader = ({
         {/* Center (flex:1, capped to screen - 176) */}
         <View style={[styles.center, { maxWidth: centerMaxWidth }]}>
           <FoldText
-            type="header-md-v2"
+            type="header-xs-v2"
             style={{
               textAlign: "center",
               paddingTop: 4,
