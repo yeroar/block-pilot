@@ -108,6 +108,7 @@ export const typeStyles: Record<FoldTextType, TextStyle> = {
   // --- Button v2 ---
   "button-lrg-v2": normalizeTextStyle(ButtonLgV2),
   "button-sm-v2": normalizeTextStyle(ButtonSmV2),
+  "currency-input": undefined,
 };
 
 // FoldText component to render styled text based on the provided type
