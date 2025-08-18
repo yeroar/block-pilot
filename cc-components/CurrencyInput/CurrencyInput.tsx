@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { FoldText } from "../Primitives/FoldText";
 import { SpacingM12 } from "../../generated-tokens/tokens";
 
 interface CurrencyInputProps {
@@ -8,11 +9,17 @@ interface CurrencyInputProps {
   bottomSlot?: React.ReactNode;
 }
 
-const CurrencyInput: React.FC<CurrencyInputProps> = ({ amount = "$0", topSlot, bottomSlot }) => {
+const CurrencyInput: React.FC<CurrencyInputProps> = ({
+  amount = "$0",
+  topSlot,
+  bottomSlot,
+}) => {
   return (
     <View style={styles.container}>
       {topSlot}
-      <Text style={styles.amount}>{amount}</Text>
+      <FoldText type="header-xl-v2" style={styles.amount}>
+        {amount}
+      </FoldText>
       {bottomSlot}
     </View>
   );
@@ -26,8 +33,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   amount: {
-    fontSize: 72,
-    fontWeight: "bold",
     textAlign: "center",
   },
 });

@@ -17,10 +17,10 @@ import {
   ObjectSecondaryPressed,
   BorderRadiusBr1,
   SpacingM0,
-  SpacingM1,
   SpacingM3,
   SpacingM14,
   LayerPrimaryPressed,
+  SpacingM8,
 } from "../../generated-tokens/tokens";
 
 const TOKENS = {
@@ -39,7 +39,8 @@ const TOKENS = {
   spacing: {
     vertical: SpacingM0,
     horizontal: SpacingM3,
-    height: SpacingM14,
+    heightLG: SpacingM14,
+    heightXS: SpacingM8,
   },
   borderRadius: BorderRadiusBr1,
 };
@@ -95,8 +96,7 @@ const Button = ({
     : TOKENS.colors.textDefault;
 
   const isXs = size === "xs";
-  const paddingHorizontal = isXs ? SpacingM1 : TOKENS.spacing.horizontal;
-  const height = isXs ? 40 : TOKENS.spacing.height; // Figma: Spacing/m-10 = 40
+  const height = isXs ? TOKENS.spacing.heightXS : TOKENS.spacing.heightLG;
   const textType: Parameters<typeof FoldText>[0]["type"] = isXs
     ? "body-sm-bold-v2"
     : "button-lrg-v2";
@@ -115,7 +115,7 @@ const Button = ({
           backgroundColor: pressed && !isDisabled ? bgPressed : bgDefault,
           borderRadius: TOKENS.borderRadius,
           paddingVertical: TOKENS.spacing.vertical,
-          paddingHorizontal,
+          paddingHorizontal: TOKENS.spacing.horizontal,
           height,
           opacity: isDisabled ? 0.5 : 1,
           width,
