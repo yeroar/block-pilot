@@ -3,10 +3,7 @@
     "id": "_primitives-mode 1",
     "name": "Mode 1",
     "group": "_Primitives",
-    "selectedTokenSets": {
-      "map": "disabled",
-      "core": "disabled"
-    },
+    "selectedTokenSets": {},
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
       "Cream.50": "6ead4b3d2b22839a794290cc93eab7a2f48b3db4",
@@ -132,10 +129,7 @@
     "id": "theme-v2.1",
     "name": "v2.1",
     "group": "Theme",
-    "selectedTokenSets": {
-      "map": "disabled",
-      "core": "disabled"
-    },
+    "selectedTokenSets": {},
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
       "Layer.background": "c69a6997e60829664aeab93b248e212ab126364e",
@@ -218,10 +212,7 @@
     "id": "_primitives 2.0-mode 1",
     "name": "Mode 1",
     "group": "_Primitives 2.0",
-    "selectedTokenSets": {
-      "map": "disabled",
-      "core": "disabled"
-    },
+    "selectedTokenSets": {},
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
       "Yellow.50": "3fe80ad81641953ef0618a39d174412922a1246d",
