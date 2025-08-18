@@ -645,15 +645,11 @@
   },
   "CurrencyInput": {
     "value": {
+      "fontWeight": "{fontWeights.medium}",
       "fontFamily": "{fontFamilies.geist}",
-      "fontWeight": "{fontWeights.geist-0}",
-      "lineHeight": "{lineHeights.0}",
-      "fontSize": "{fontSize.0}",
-      "letterSpacing": "{letterSpacing.0}",
-      "paragraphSpacing": "{paragraphSpacing.0}",
-      "paragraphIndent": "{paragraphIndent.0}",
-      "textCase": "{textCase.none}",
-      "textDecoration": "{textDecoration.none}"
+      "fontSize": "44",
+      "lineHeight": "57",
+      "letterSpacing": "-1"
     },
     "type": "typography"
   }
