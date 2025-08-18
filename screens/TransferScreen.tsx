@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
@@ -21,49 +21,15 @@ import {
   SpacingM6,
   SpacingM12,
 } from "../generated-tokens/tokens";
+import { useShakeX } from "../cc-components/CurrencyInput/animations";
 
 const TransferScreen: React.FC = () => {
   // support decimals
   const [amountStr, setAmountStr] = useState<string>("0");
   const MAX_AMOUNT = 10000;
 
-  // tiny shake animation for the amount when exceeding MAX
-  const shakeX = useRef(new Animated.Value(0)).current;
-  const triggerShake = () => {
-    shakeX.setValue(0);
-    Animated.sequence([
-      Animated.timing(shakeX, {
-        toValue: -6,
-        duration: 35,
-        useNativeDriver: true,
-      }),
-      Animated.timing(shakeX, {
-        toValue: 6,
-        duration: 35,
-        useNativeDriver: true,
-      }),
-      Animated.timing(shakeX, {
-        toValue: -4,
-        duration: 35,
-        useNativeDriver: true,
-      }),
-      Animated.timing(shakeX, {
-        toValue: 4,
-        duration: 35,
-        useNativeDriver: true,
-      }),
-      Animated.timing(shakeX, {
-        toValue: -2,
-        duration: 35,
-        useNativeDriver: true,
-      }),
-      Animated.timing(shakeX, {
-        toValue: 0,
-        duration: 35,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
+  // use shared shake hook
+  const { shakeX, triggerShake } = useShakeX();
 
   const onKeyPress = (k: string) => {
     if (!k) return;
