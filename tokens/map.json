@@ -642,5 +642,19 @@
   "m-1600": {
     "value": "64",
     "type": "spacing"
+  },
+  "CurrencyInput": {
+    "value": {
+      "fontFamily": "{fontFamilies.geist}",
+      "fontWeight": "{fontWeights.geist-0}",
+      "lineHeight": "{lineHeights.0}",
+      "fontSize": "{fontSize.0}",
+      "letterSpacing": "{letterSpacing.0}",
+      "paragraphSpacing": "{paragraphSpacing.0}",
+      "paragraphIndent": "{paragraphIndent.0}",
+      "textCase": "{textCase.none}",
+      "textDecoration": "{textDecoration.none}"
+    },
+    "type": "typography"
   }
 }
