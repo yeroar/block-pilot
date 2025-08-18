@@ -3,7 +3,10 @@
     "id": "_primitives-mode 1",
     "name": "Mode 1",
     "group": "_Primitives",
-    "selectedTokenSets": {},
+    "selectedTokenSets": {
+      "map": "disabled",
+      "core": "disabled"
+    },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
       "Cream.50": "6ead4b3d2b22839a794290cc93eab7a2f48b3db4",
@@ -130,7 +133,8 @@
     "name": "v2.1",
     "group": "Theme",
     "selectedTokenSets": {
-      "map": "enabled"
+      "map": "disabled",
+      "core": "disabled"
     },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {
@@ -215,7 +219,8 @@
     "name": "Mode 1",
     "group": "_Primitives 2.0",
     "selectedTokenSets": {
-      "core": "enabled"
+      "map": "disabled",
+      "core": "disabled"
     },
     "$figmaStyleReferences": {},
     "$figmaVariableReferences": {

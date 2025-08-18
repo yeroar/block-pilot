@@ -1,6 +1,7 @@
 {
   "tokenSetOrder": [
     "map",
-    "core"
+    "core",
+    ""
   ]
 }
