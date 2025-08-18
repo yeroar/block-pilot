@@ -91,7 +91,8 @@ const Button = ({
       ? ObjectSecondaryPressed
       : LayerPrimaryPressed;
 
-  const textColor = disabled
+  // use disabled-aware text color
+  const textColor = isDisabled
     ? TOKENS.colors.textDisabled
     : TOKENS.colors.textDefault;
 
@@ -112,12 +113,17 @@ const Button = ({
       style={({ pressed }) => [
         styles.button,
         {
-          backgroundColor: pressed && !isDisabled ? bgPressed : bgDefault,
+          // disabled background + remove opacity dim
+          backgroundColor: isDisabled
+            ? TOKENS.colors.bgDisabled
+            : pressed
+            ? bgPressed
+            : bgDefault,
           borderRadius: TOKENS.borderRadius,
           paddingVertical: TOKENS.spacing.vertical,
           paddingHorizontal: TOKENS.spacing.horizontal,
           height,
-          opacity: isDisabled ? 0.5 : 1,
+          opacity: 1,
           width,
           alignSelf,
         },
