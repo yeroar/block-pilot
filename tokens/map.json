@@ -310,69 +310,73 @@
   },
   "Spacing": {
     "m-0": {
-      "value": 0,
-      "type": "number"
-    },
-    "m-4": {
-      "value": 16,
-      "type": "number"
-    },
-    "m-6": {
-      "value": 24,
-      "type": "number"
-    },
-    "m-3": {
-      "value": 12,
-      "type": "number"
-    },
-    "m-12": {
-      "value": 48,
-      "type": "number"
-    },
-    "m-2": {
-      "value": 8,
-      "type": "number"
-    },
-    "m-8": {
-      "value": 32,
-      "type": "number"
-    },
-    "m-10": {
-      "value": 40,
+      "value": "0",
       "type": "number"
     },
     "m-1": {
-      "value": 4,
+      "value": "4",
+      "type": "number"
+    },
+    "m-2": {
+      "value": "8",
+      "type": "number"
+    },
+    "m-3": {
+      "value": "12",
+      "type": "number"
+    },
+    "m-4": {
+      "value": "16",
       "type": "number"
     },
     "m-5": {
-      "value": 20,
+      "value": "20",
+      "type": "number"
+    },
+    "m-6": {
+      "value": "24",
+      "type": "number"
+    },
+    "m-8": {
+      "value": "32",
+      "type": "number"
+    },
+    "m-10": {
+      "value": "40",
+      "type": "number"
+    },
+    "m-12": {
+      "value": "48",
       "type": "number"
     },
     "m-14": {
-      "value": 56,
+      "value": "56",
       "type": "number"
     },
     "m-16": {
-      "value": 64,
+      "value": "64",
       "type": "number"
     }
   },
   "BorderRadius": {
-    "br-0": {
-      "value": 0,
+    "none": {
+      "value": "0",
       "type": "number"
     },
-    "br-1": {
-      "value": 6,
+    "sm": {
+      "value": "6",
       "type": "number"
     },
-    "br-2": {
-      "value": 12,
+    "default": {
+      "value": "12",
       "type": "number"
     },
     "rounded": {
-      "value": 1000,
+      "value": "1000",
+      "type": "number"
+    },
+    "xs": {
+      "value": "3",
       "type": "number"
     }
   },
