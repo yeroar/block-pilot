@@ -9,6 +9,7 @@ import TopContext from "../cc-components/CurrencyInput/TopContext";
 import BottomContext from "../cc-components/CurrencyInput/BottomContext";
 import ActionBar from "../cc-components/ActionBar/ActionBar";
 import Button from "../cc-components/Button/Button";
+import Chip from "../cc-components/Chip/Chip";
 
 import { ChevronLeftIcon } from "../cc-components/assets/BlueSkyIcons/ChevronLeftIcon";
 import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
@@ -55,6 +56,12 @@ export default function PreviewBuy({
           />
         </View>
 
+        {/* Chips row */}
+        <View style={styles.chipsRow}>
+          <Chip label="Default" onPress={() => {}} />
+          <Chip label="Primary" bold onPress={() => {}} />
+        </View>
+
         {/* No CustomKeyboard on this screen */}
 
         <ActionBar>
@@ -87,5 +94,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     alignSelf: "stretch",
+  },
+  chipsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: SpacingM4,
   },
 });

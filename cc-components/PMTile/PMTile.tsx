@@ -9,7 +9,7 @@ import {
   SpacingM2,
   SpacingM3,
   SpacingM10,
-  BorderRadiusBr1,
+  BorderRadiusRounded,
 } from "../../generated-tokens/tokens";
 
 export type PMTileProps = {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: SpacingM10,
     paddingHorizontal: SpacingM3,
-    borderRadius: BorderRadiusBr1,
+    borderRadius: BorderRadiusRounded,
     gap: SpacingM1,
   },
   icon: {
