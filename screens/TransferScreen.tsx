@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Animated } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../cc-components/FoldPageViewHeader/StackControl";
 
 import CurrencyInput from "../cc-components/CurrencyInput/CurrencyInput";
 import TopContext from "../cc-components/CurrencyInput/TopContext";
-import BottomContext from "../cc-components/CurrencyInput/BottomContext";
 
 import CustomKeyboard from "../cc-components/Keyboard/CustomKeyboard";
 import ActionBar from "../cc-components/ActionBar/ActionBar";
@@ -24,6 +24,7 @@ import {
 import { useShakeX } from "../cc-components/CurrencyInput/animations";
 
 const TransferScreen: React.FC = () => {
+  const navigation = useNavigation<any>();
   // support decimals
   const [amountStr, setAmountStr] = useState<string>("0");
   const MAX_AMOUNT = 10000;
@@ -118,7 +119,11 @@ const TransferScreen: React.FC = () => {
             label="Preview buy"
             variant="primary"
             size="lg"
-            onPress={() => {}}
+            onPress={() => {
+              if (!previewDisabled) {
+                navigation.navigate("PreviewBuy", { amountStr });
+              }
+            }}
             disabled={previewDisabled}
           />
         </ActionBar>
