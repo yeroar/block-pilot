@@ -35,10 +35,11 @@ public class {
     public static let BorderNegative = [UIColor colorWithRed:1.000f green:0.255f blue:0.200f alpha:1.000f]
     public static let BorderPositive = [UIColor colorWithRed:0.078f green:0.580f blue:0.380f alpha:1.000f]
     public static let BorderPrimary = [UIColor colorWithRed:0.902f green:0.749f blue:0.141f alpha:1.000f]
-    public static let BorderRadiusBr0 = 0
-    public static let BorderRadiusBr1 = 6
-    public static let BorderRadiusBr2 = 12
+    public static let BorderRadiusDefault = 12
+    public static let BorderRadiusNone = 0
     public static let BorderRadiusRounded = 1000
+    public static let BorderRadiusSm = 6
+    public static let BorderRadiusXs = 3
     public static let BorderSecondary = [UIColor colorWithRed:0.961f green:0.937f blue:0.839f alpha:1.000f]
     public static let BorderTertiary = [UIColor colorWithRed:0.984f green:0.961f blue:0.894f alpha:1.000f]
     public static let ButtonLgV2 = [object Object]

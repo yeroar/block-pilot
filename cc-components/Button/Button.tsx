@@ -15,7 +15,7 @@ import {
   FaceDisabled,
   ObjectSecondaryDefault,
   ObjectSecondaryPressed,
-  BorderRadiusBr1,
+  BorderRadiusSm,
   SpacingM0,
   SpacingM3,
   SpacingM14,
@@ -42,7 +42,7 @@ const TOKENS = {
     heightLG: SpacingM14,
     heightXS: SpacingM8,
   },
-  borderRadius: BorderRadiusBr1,
+  borderRadius: BorderRadiusSm,
 };
 
 interface ButtonProps {

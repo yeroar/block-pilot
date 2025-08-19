@@ -2,16 +2,9 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import ActionTile from "../PMTile/PMTile";
 import Button from "../Button/Button";
-import { FoldText } from "../Primitives/FoldText";
 import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
-import {
-  ObjectPrimarySubtleDefault,
-  BorderRadiusBr1,
-  SpacingM3,
-  SpacingM8,
-  ObjectAccentBoldDefault,
-} from "../../generated-tokens/tokens";
+import { SpacingM8 } from "../../generated-tokens/tokens";
 
 interface BottomContextProps {
   content?: "maxButton" | "empty" | "payment" | "addPayment";

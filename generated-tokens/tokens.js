@@ -125,128 +125,128 @@ export const BorderFocused = "#4f86da";
 export const BorderInverse = "#fffdfa";
 export const BorderTertiary = "#fbf5e4";
 export const SpacingM0 = 0;
-export const SpacingM4 = 16;
-export const SpacingM6 = 24;
-export const SpacingM3 = 12;
-export const SpacingM12 = 48;
+export const SpacingM1 = 4;
 export const SpacingM2 = 8;
+export const SpacingM3 = 12;
+export const SpacingM4 = 16;
+export const SpacingM5 = 20;
+export const SpacingM6 = 24;
 export const SpacingM8 = 32;
 export const SpacingM10 = 40;
-export const SpacingM1 = 4;
-export const SpacingM5 = 20;
+export const SpacingM12 = 48;
 export const SpacingM14 = 56;
 export const SpacingM16 = 64;
-export const BorderRadiusBr0 = 0;
-export const BorderRadiusBr1 = 6;
-export const BorderRadiusBr2 = 12;
+export const BorderRadiusNone = 0;
+export const BorderRadiusSm = 6;
+export const BorderRadiusDefault = 12;
 export const BorderRadiusRounded = 1000;
+export const BorderRadiusXs = 3;
 export const HeaderXlV2 = {
-  fontWeight: "500",
-  lineHeight: "44",
-  fontSize: "40",
+  fontWeight: "400",
+  lineHeight: 44,
+  fontSize: 40,
   fontFamily: "Geist",
-  letterSpacing: "-1",
 };
 export const HeaderLgV2 = {
   fontWeight: "400",
-  lineHeight: "36",
-  fontSize: "32",
+  lineHeight: 36,
+  fontSize: 32,
   fontFamily: "Geist",
 };
 export const HeaderMdV2 = {
   fontWeight: "400",
-  lineHeight: "28",
-  fontSize: "24",
+  lineHeight: 28,
+  fontSize: 24,
   fontFamily: "Geist",
 };
 export const HeaderSmV2 = {
   fontWeight: "500",
-  lineHeight: "24",
-  fontSize: "20",
+  lineHeight: 24,
+  fontSize: 20,
   fontFamily: "Geist",
 };
 export const HeaderXsV2 = {
   fontFamily: "Geist",
-  fontWeight: "600",
-  lineHeight: "20",
-  fontSize: "18",
+  fontWeight: "500",
+  lineHeight: 20,
+  fontSize: 18,
 };
 export const HeaderXxsV2 = {
   fontFamily: "Geist",
   fontWeight: "600",
-  fontSize: "14",
-  lineHeight: "16",
+  fontSize: 14,
+  lineHeight: 16,
 };
 export const BodyLgV2 = {
   fontFamily: "Geist",
   fontWeight: "400",
-  fontSize: "16",
-  lineHeight: "24",
+  fontSize: 16,
+  lineHeight: 24,
 };
 export const BodyLgBoldV2 = {
   fontFamily: "Geist",
   fontWeight: "500",
-  fontSize: "16",
-  lineHeight: "24",
+  fontSize: 16,
+  lineHeight: 24,
 };
 export const BodyMdV2 = {
   fontFamily: "Geist",
   fontWeight: "400",
-  lineHeight: "20",
-  fontSize: "14",
+  lineHeight: 20,
+  fontSize: 14,
 };
 export const BodyMdBoldV2 = {
   fontFamily: "Geist",
   fontWeight: "500",
-  lineHeight: "20",
-  fontSize: "14",
+  lineHeight: 20,
+  fontSize: 14,
 };
 export const BodySmV2 = {
   fontFamily: "Geist",
   fontWeight: "400",
-  lineHeight: "16",
-  fontSize: "12",
+  lineHeight: 16,
+  fontSize: 12,
 };
 export const BodySmBoldV2 = {
   fontFamily: "Geist",
   fontWeight: "500",
-  lineHeight: "16",
-  fontSize: "12",
+  lineHeight: 16,
+  fontSize: 12,
 };
 export const Caption = {
   fontFamily: "Geist",
   fontWeight: "400",
-  lineHeight: "12",
-  fontSize: "10",
+  lineHeight: 12,
+  fontSize: 10,
 };
 export const ButtonLgV2 = {
   fontFamily: "Geist",
   fontWeight: "500",
-  lineHeight: "16",
-  fontSize: "16",
+  lineHeight: 16,
+  fontSize: 16,
 };
 export const ButtonSmV2 = {
   fontFamily: "Geist",
   fontWeight: "500",
-  lineHeight: "12",
-  fontSize: "12",
+  lineHeight: 12,
+  fontSize: 12,
 };
 export const BalanceLgV2 = {
   fontFamily: "Geist",
   fontWeight: "300",
-  lineHeight: "44",
-  fontSize: "40",
+  lineHeight: 44,
+  fontSize: 40,
 };
 export const BalanceMdV2 = {
   fontFamily: "Geist",
   fontWeight: "400",
-  lineHeight: "32",
-  fontSize: "28",
+  lineHeight: 32,
+  fontSize: 28,
 };
 export const BalanceSmV2 = {
   fontFamily: "Geist",
   fontWeight: "400",
-  lineHeight: "18",
-  fontSize: "18",
+  lineHeight: 18,
+  fontSize: 18,
 };
 export const FontFamiliesGeist = "Geist";

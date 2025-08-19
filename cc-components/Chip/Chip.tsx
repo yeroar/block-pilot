@@ -16,7 +16,7 @@ import {
   SpacingM1,
   SpacingM2,
   FaceAccent,
-  BorderRadiusBr1,
+  BorderRadiusXs,
 } from "../../generated-tokens/tokens";
 
 export type ChipProps = {
@@ -71,7 +71,7 @@ export default function Chip({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BorderRadiusBr1, // border-radii/xsmall
+    borderRadius: BorderRadiusXs, // border-radii/xsmall
     paddingHorizontal: SpacingM2, // m/2
     alignSelf: "flex-start",
   },
