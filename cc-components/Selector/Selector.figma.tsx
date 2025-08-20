@@ -1,0 +1,37 @@
+import React from "react";
+import Selector from "./Selector";
+import figma from "@figma/code-connect";
+import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
+
+figma.connect(
+  Selector,
+  "https://www.figma.com/design/P2LVZrKxzm5EdYUKyZsXDA/%F0%9F%94%B5--MCP?node-id=7186%3A1127",
+  {
+    props: {
+      variant: figma.enum("variant", {
+        navigation: "navigation",
+        radio: "radio",
+        checbox: "checkbox", // Note: keeping Figma's typo for consistency
+      }),
+      title: figma.string("title"),
+      subtext: figma.string("subtext"),
+      footnote: figma.string("footnote"),
+      showLeadingIcon: figma.boolean("leadingElement"),
+      leadingSlot: figma.boolean("leadingElement", {
+        true: figma.instance("leadingSlot"),
+        false: undefined,
+      }),
+    },
+    example: (props) => (
+      <Selector
+        variant={props.variant}
+        title={props.title}
+        subtext={props.subtext}
+        footnote={props.footnote}
+        showLeadingIcon={props.showLeadingIcon}
+        leadingSlot={props.leadingSlot}
+        feeText="n.nn% fee"
+      />
+    ),
+  }
+);
