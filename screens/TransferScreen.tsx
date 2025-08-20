@@ -141,10 +141,9 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     gap: SpacingM6, // 24
-    paddingTop: SpacingM12, // 48 under header
-    justifyContent: "space-between",
   },
   amountSection: {
+    paddingVertical: SpacingM12, // 48 under header
     flex: 1,
     alignItems: "center",
     alignSelf: "stretch",

@@ -9,7 +9,6 @@ import TopContext from "../cc-components/CurrencyInput/TopContext";
 import BottomContext from "../cc-components/CurrencyInput/BottomContext";
 import ActionBar from "../cc-components/ActionBar/ActionBar";
 import Button from "../cc-components/Button/Button";
-import Chip from "../cc-components/Chip/Chip";
 
 import { ChevronLeftIcon } from "../cc-components/assets/BlueSkyIcons/ChevronLeftIcon";
 import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
@@ -19,7 +18,10 @@ import {
   SpacingM4,
   SpacingM6,
   SpacingM12,
+  SpacingM0,
 } from "../generated-tokens/tokens";
+
+import ConfirmationTradeBitcoin from "../cc-components/Confirmation/ConfirmationTradeBitcoin";
 
 type RouteParams = { amountStr?: string };
 
@@ -42,7 +44,7 @@ export default function PreviewBuy({
       />
 
       <View style={styles.body}>
-        <View style={styles.amountSection}>
+        <View>
           <CurrencyInput
             amount={`$${amountStr}`}
             topSlot={
@@ -51,18 +53,21 @@ export default function PreviewBuy({
                 label="Weekly"
               />
             }
-            // Show PMTile "add payment" via BottomContext
             bottomSlot={<BottomContext content="addPayment" />}
           />
         </View>
 
-        {/* Chips row */}
-        <View style={styles.chipsRow}>
-          <Chip label="Default" onPress={() => {}} />
-          <Chip label="Primary" bold onPress={() => {}} />
+        <View style={styles.confirmationRow}>
+          <ConfirmationTradeBitcoin
+            price="$100,000.00"
+            amount="$99.00"
+            feePercentLabel="1%"
+            feeValue="+ $1.00"
+          />
         </View>
 
-        {/* No CustomKeyboard on this screen */}
+        {/* Flex spacer pushes the ActionBar down */}
+        <View style={{ flex: 1 }} />
 
         <ActionBar>
           <Button
@@ -86,18 +91,10 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    gap: SpacingM6,
-    paddingTop: SpacingM12,
-    justifyContent: "space-between",
+    paddingVertical: SpacingM12,
+    gap: SpacingM6, // use gap instead of space-between
   },
-  amountSection: {
-    flex: 1,
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
-  chipsRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: SpacingM4,
+  confirmationRow: {
+    paddingVertical: SpacingM0,
   },
 });

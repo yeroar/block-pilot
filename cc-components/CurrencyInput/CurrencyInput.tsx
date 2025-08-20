@@ -43,7 +43,6 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    flexGrow: 1,
     alignSelf: "stretch",
     gap: SpacingM4,
     alignItems: "center",
