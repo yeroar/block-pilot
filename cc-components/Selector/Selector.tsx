@@ -28,6 +28,8 @@ export interface SelectorProps {
   footnote?: string;
   feeText?: string;
   leadingSlot?: React.ReactNode;
+  subtextSlot?: React.ReactNode;
+  footnoteSlot?: React.ReactNode;
   showLeadingIcon?: boolean;
   selected?: boolean;
   onPress?: () => void;
@@ -35,14 +37,16 @@ export interface SelectorProps {
 }
 
 const Selector: React.FC<SelectorProps> = ({
-  variant = "navigation",
-  title = "Title",
-  subtext = "Subtext",
-  footnote = "Footnote",
-  feeText = "n.nn% fee",
+  variant,
+  title,
+  subtext,
+  footnote,
+  feeText,
   leadingSlot,
-  showLeadingIcon = true,
-  selected = false,
+  subtextSlot,
+  footnoteSlot,
+  showLeadingIcon,
+  selected,
   onPress,
   style,
 }) => {
@@ -58,15 +62,10 @@ const Selector: React.FC<SelectorProps> = ({
     }
   };
 
-  const renderLeadingIcon = () => {
-    if (!showLeadingIcon) return null;
-
-    return (
-      <View style={styles.iconContainer}>
-        {leadingSlot || <CreditCardIcon width={20} height={20} />}
-      </View>
-    );
-  };
+  // Simplified render logic
+  const showLeading = showLeadingIcon || !!leadingSlot;
+  const showSubtext = subtext || !!subtextSlot;
+  const showFootnote = footnote || !!footnoteSlot;
 
   return (
     <FoldPressable
@@ -77,7 +76,9 @@ const Selector: React.FC<SelectorProps> = ({
         <View style={styles.content}>
           {/* Left Column */}
           <View style={styles.leftCol}>
-            {renderLeadingIcon()}
+            {showLeading && (
+              <View style={styles.iconContainer}>{leadingSlot}</View>
+            )}
 
             <View style={styles.textContent}>
               {/* Title Row with Fee Chip */}
@@ -91,16 +92,16 @@ const Selector: React.FC<SelectorProps> = ({
               </View>
 
               {/* Subtext */}
-              {subtext && (
+              {showSubtext && (
                 <FoldText type="body-md-v2" style={styles.subtextText}>
-                  {subtext}
+                  {subtextSlot || subtext}
                 </FoldText>
               )}
 
               {/* Footnote */}
-              {footnote && (
+              {showFootnote && (
                 <FoldText type="body-md-v2" style={styles.footnoteText}>
-                  {footnote}
+                  {footnoteSlot || footnote}
                 </FoldText>
               )}
             </View>

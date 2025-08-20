@@ -14,8 +14,14 @@ figma.connect(
         checbox: "checkbox", // Note: keeping Figma's typo for consistency
       }),
       title: figma.string("title"),
-      subtext: figma.string("subtext"),
-      footnote: figma.string("footnote"),
+      subtext: figma.boolean("hasSubtext", {
+        true: figma.string("subtext"),
+        false: undefined,
+      }),
+      footnote: figma.boolean("hasFootnote", {
+        true: figma.string("footnote"),
+        false: undefined,
+      }),
       showLeadingIcon: figma.boolean("leadingElement"),
       leadingSlot: figma.boolean("leadingElement", {
         true: figma.instance("leadingSlot"),
