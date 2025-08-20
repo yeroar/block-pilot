@@ -16,10 +16,7 @@ import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon"
 import {
   LayerBackground,
   SpacingM4,
-  SpacingM6,
-  SpacingM12,
   SpacingM0,
-  SpacingM10,
 } from "../generated-tokens/tokens";
 
 import ConfirmationTradeBitcoin from "../cc-components/Confirmation/ConfirmationTradeBitcoin";
@@ -34,6 +31,13 @@ export default function PreviewBuy({
   const amountStr = route?.params?.amountStr ?? "0";
   const amountNum = parseFloat(amountStr) || 0;
   const previewDisabled = amountNum < 10;
+
+  const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+
+  const handlePaymentChange = (paymentId: string) => {
+    setSelectedPayment(paymentId);
+    console.log("Payment selected:", paymentId);
+  };
 
   return (
     <View style={styles.screen}>
@@ -54,7 +58,12 @@ export default function PreviewBuy({
                 label="Weekly"
               />
             }
-            bottomSlot={<BottomContext content="addPayment" />}
+            bottomSlot={
+              <BottomContext
+                content="addPayment"
+                onPaymentChange={handlePaymentChange}
+              />
+            }
           />
         </View>
 
