@@ -7,9 +7,9 @@ import {
   ObjectPrimarySubtleDefault,
   SpacingM1,
   SpacingM2,
-  SpacingM3,
-  SpacingM10,
   BorderRadiusRounded,
+  SpacingM4,
+  SpacingM8,
 } from "../../generated-tokens/tokens";
 
 export type PMTileProps = {
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    height: SpacingM10,
-    paddingHorizontal: SpacingM3,
+    height: SpacingM8,
+    paddingHorizontal: SpacingM4,
     borderRadius: BorderRadiusRounded,
     gap: SpacingM1,
   },

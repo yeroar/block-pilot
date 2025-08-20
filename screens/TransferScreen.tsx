@@ -113,21 +113,20 @@ const TransferScreen: React.FC = () => {
         </View>
 
         <CustomKeyboard onKeyPress={onKeyPress} />
-
-        <ActionBar>
-          <Button
-            label="Preview buy"
-            variant="primary"
-            size="lg"
-            onPress={() => {
-              if (!previewDisabled) {
-                navigation.navigate("PreviewBuy", { amountStr });
-              }
-            }}
-            disabled={previewDisabled}
-          />
-        </ActionBar>
       </View>
+      <ActionBar>
+        <Button
+          label="Preview buy"
+          variant="primary"
+          size="lg"
+          onPress={() => {
+            if (!previewDisabled) {
+              navigation.navigate("PreviewBuy", { amountStr });
+            }
+          }}
+          disabled={previewDisabled}
+        />
+      </ActionBar>
     </View>
   );
 };
@@ -143,7 +142,6 @@ const styles = StyleSheet.create({
     gap: SpacingM6, // 24
   },
   amountSection: {
-    paddingVertical: SpacingM12, // 48 under header
     flex: 1,
     alignItems: "center",
     alignSelf: "stretch",

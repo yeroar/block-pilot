@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import FoldPressable from "../Primitives/FoldPressable";
 import { SpacingM0, SpacingM6 } from "../../generated-tokens/tokens";
 
 type StackControlProps = {
@@ -8,6 +10,8 @@ type StackControlProps = {
   trailingSlot?: ReactNode;
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  onLeftPress?: () => void; // кастомное действие для левой иконки
+  onRightPress?: () => void; // кастомное действие для правой иконки
 };
 
 const StackControl: React.FC<StackControlProps> = ({
@@ -16,9 +20,27 @@ const StackControl: React.FC<StackControlProps> = ({
   trailingSlot,
   children,
   style,
+  onLeftPress,
+  onRightPress,
 }) => {
+  const navigation = useNavigation<any>();
   const showLeading = !!leadingSlot;
   const showTrailing = !!trailingSlot;
+
+  const handleLeftPress = () => {
+    if (onLeftPress) {
+      onLeftPress();
+    } else if (navigation?.canGoBack?.()) {
+      navigation.goBack();
+    }
+  };
+
+  const handleRightPress = () => {
+    if (onRightPress) {
+      onRightPress();
+    }
+    // По умолчанию правая иконка не делает навигацию назад
+  };
 
   return (
     <View
@@ -29,8 +51,22 @@ const StackControl: React.FC<StackControlProps> = ({
         style,
       ]}
     >
-      {showLeading && leadingSlot}
-      {showTrailing && trailingSlot}
+      {showLeading && (
+        <FoldPressable
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          onPress={variant === "left" ? handleLeftPress : handleRightPress}
+        >
+          {leadingSlot}
+        </FoldPressable>
+      )}
+      {showTrailing && (
+        <FoldPressable
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          onPress={variant === "right" ? handleRightPress : handleLeftPress}
+        >
+          {trailingSlot}
+        </FoldPressable>
+      )}
       {!showLeading && !showTrailing ? children : null}
     </View>
   );
@@ -40,7 +76,6 @@ const styles = StyleSheet.create({
   base: {
     flexDirection: "row",
     alignItems: "flex-start",
-    // gap between icons: 24px
     gap: SpacingM6,
   },
   left: {

@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: BorderRadiusSm,
     padding: SpacingM4,
+    marginVertical: SpacingM4,
     width: "100%",
   },
   list: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
@@ -19,6 +19,7 @@ import {
   SpacingM6,
   SpacingM12,
   SpacingM0,
+  SpacingM10,
 } from "../generated-tokens/tokens";
 
 import ConfirmationTradeBitcoin from "../cc-components/Confirmation/ConfirmationTradeBitcoin";
@@ -43,8 +44,8 @@ export default function PreviewBuy({
         }
       />
 
-      <View style={styles.body}>
-        <View>
+      <View style={[styles.body]}>
+        <View style={styles.amountSection}>
           <CurrencyInput
             amount={`$${amountStr}`}
             topSlot={
@@ -57,28 +58,23 @@ export default function PreviewBuy({
           />
         </View>
 
-        <View style={styles.confirmationRow}>
-          <ConfirmationTradeBitcoin
-            price="$100,000.00"
-            amount="$99.00"
-            feePercentLabel="1%"
-            feeValue="+ $1.00"
-          />
-        </View>
-
-        {/* Flex spacer pushes the ActionBar down */}
-        <View style={{ flex: 1 }} />
-
-        <ActionBar>
-          <Button
-            label="Preview buy"
-            variant="primary"
-            size="lg"
-            onPress={() => {}}
-            disabled={previewDisabled}
-          />
-        </ActionBar>
+        <ConfirmationTradeBitcoin
+          price="$100,000.00"
+          amount="$99.00"
+          feePercentLabel="1%"
+          feeValue="+ $1.00"
+        />
       </View>
+
+      <ActionBar>
+        <Button
+          label="Preview buy"
+          variant="primary"
+          size="lg"
+          onPress={() => {}}
+          disabled={previewDisabled}
+        />
+      </ActionBar>
     </View>
   );
 }
@@ -91,10 +87,10 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingVertical: SpacingM12,
-    gap: SpacingM6, // use gap instead of space-between
+    gap: SpacingM0, // use gap instead of space-between
   },
-  confirmationRow: {
-    paddingVertical: SpacingM0,
+  amountSection: {
+    alignItems: "center",
+    alignSelf: "stretch",
   },
 });
