@@ -6,82 +6,86 @@ import Selector from "../Selector/Selector";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import Chip from "../Chip/Chip";
-import {
-  SpacingM4,
-  SpacingM6,
-  LayerSecondary,
-  BorderRadiusDefault,
-} from "../../generated-tokens/tokens";
+import { SpacingM6, BorderRadiusDefault } from "../../generated-tokens/tokens";
 
-// Add Payment Content Example (navigation selectors)
-export const AddPaymentContentExample = () => (
+// Minimal objects used by EmptyPaymentContentExample to drive selection
+const bankMethod = {
+  key: "bank" as const,
+  icon: <BankIcon width={20} height={20} />,
+  title: "Bank account",
+  subtitle: "Fund your purchase via ACH",
+  subsubtitle: "Deposit fee waived",
+};
+
+const cardMethod = {
+  key: "card" as const,
+  icon: <CreditCardIcon width={20} height={20} />,
+  title: "Debit card",
+  subtitle: "Link your debit card",
+  subsubtitle: "n.n% deposit fee ($n.nn min)",
+};
+
+// Shown first: lets user choose bank or card
+export const EmptyPaymentContentExample = ({
+  onSelect,
+}: {
+  onSelect?: (pm: { key: "bank" | "card" }) => void;
+}) => (
   <View style={styles.content}>
     <Selector
       variant="navigation"
-      title="Bank account"
-      subtext="Fund your purchase via ACH"
-      footnote="Deposit fee waived"
-      showLeadingIcon={<BankIcon width={20} height={20} />}
-      hasChip={<Chip label="5%" />}
+      title={bankMethod.title}
+      subtext={bankMethod.subtitle}
+      footnote={bankMethod.subsubtitle}
+      showLeadingIcon={bankMethod.icon}
+      onPress={() => onSelect?.({ key: "bank" })}
     />
-
     <Selector
       variant="navigation"
-      title="Debit card"
-      subtext="Link your debit card"
-      footnote="[n.n]% deposit fee ($[n.nn] min)"
-      showLeadingIcon={<CreditCardIcon width={20} height={20} />}
-      hasChip={<Chip label="5%" />}
+      title={cardMethod.title}
+      subtext={cardMethod.subtitle}
+      footnote={cardMethod.subsubtitle}
+      showLeadingIcon={cardMethod.icon}
+      onPress={() => onSelect?.({ key: "card" })}
     />
   </View>
 );
 
-// Empty Payment Content Example (navigation selectors - existing payment methods)
-export const EmptyPaymentContentExample = () => (
-  <View style={styles.content}>
-    <Selector
-      variant="navigation"
-      title="Bank account"
-      subtext="Fund your purchase via ACH"
-      footnote="Deposit fee waved"
-      showLeadingIcon={<BankIcon width={20} height={20} />}
-    />
-    <Selector
-      variant="navigation"
-      title="Debit card"
-      subtext="Link your debit card"
-      footnote="[n.n]% deposit fee ($[n.nn] min)"
-      showLeadingIcon={<CreditCardIcon width={20} height={20} />}
-    />
-  </View>
-);
-
-// Radio Payment Selection Example (with selection state)
-export const RadioPaymentContentExample = ({
+// Simple radio mockup for card selection
+export const CardPaymentContentExample = ({
   selectedPayment,
   onRadioSelect,
 }: {
   selectedPayment: string | null;
-  onRadioSelect: (paymentId: string) => void;
+  onRadioSelect: (paymentId: "visa" | "mastercard" | "amex") => void;
 }) => (
   <View style={styles.content}>
     <Selector
       variant="radio"
-      title="Debit card"
-      subtext="Link your debit card"
-      footnote="[n.n]% deposit fee ($[n.nn] min)"
+      title="Visa Debit Card"
+      subtext="****1234"
+      footnote="Expires 12/26"
       showLeadingIcon={<CreditCardIcon width={20} height={20} />}
-      selected={selectedPayment === "credit"}
-      onPress={() => onRadioSelect("credit")}
+      selected={selectedPayment === "visa"}
+      onPress={() => onRadioSelect("visa")}
     />
     <Selector
       variant="radio"
-      title="Bank account"
-      subtext="Fund your purchase via ACH"
-      footnote="Deposit fee waved"
-      showLeadingIcon={<BankIcon width={20} height={20} />}
-      selected={selectedPayment === "bank"}
-      onPress={() => onRadioSelect("bank")}
+      title="Mastercard Credit"
+      subtext="****5678"
+      footnote="Expires 08/27"
+      showLeadingIcon={<CreditCardIcon width={20} height={20} />}
+      selected={selectedPayment === "mastercard"}
+      onPress={() => onRadioSelect("mastercard")}
+    />
+    <Selector
+      variant="radio"
+      title="American Express"
+      subtext="****9012"
+      footnote="Expires 03/28"
+      showLeadingIcon={<CreditCardIcon width={20} height={20} />}
+      selected={selectedPayment === "amex"}
+      onPress={() => onRadioSelect("amex")}
     />
   </View>
 );
@@ -125,7 +129,7 @@ export const InteractiveAddPaymentExample = () => {
       )}
 
       <PMTileBottomSheet
-        variant="add-payment"
+        variant="default"
         visible={visible}
         title="Add payment method"
         onClose={() => setVisible(false)}

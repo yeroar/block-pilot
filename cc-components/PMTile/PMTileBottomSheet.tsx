@@ -22,11 +22,7 @@ import {
   SpacingM5,
 } from "../../generated-tokens/tokens";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  AddPaymentContentExample,
-  EmptyPaymentContentExample,
-  RadioPaymentContentExample,
-} from "./PMTileBottomSheet.examples";
+import { EmptyPaymentContentExample } from "./PMTileBottomSheet.examples";
 
 interface PMTileBottomSheetProps {
   visible: boolean;
@@ -34,7 +30,8 @@ interface PMTileBottomSheetProps {
   onSelectPayment?: (paymentId: string) => void;
   onAddPayment?: () => void;
   title?: string;
-  variant?: "default" | "add-payment" | "radio-selection";
+  // keep variant/renderContent optional for compatibility, but unused
+  variant?: "default";
   renderContent?: () => React.ReactElement;
 }
 
@@ -44,59 +41,13 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
   onSelectPayment,
   onAddPayment,
   title = "Add payment method",
-  variant = "default",
-  renderContent,
 }) => {
-  // Only keep state that's actually used for radio selection
-  const [selectedPayment, setSelectedPayment] = useState<string | null>(
-    "credit"
-  );
-
   const insets = useSafeAreaInsets();
-
-  // Handle radio selection (single choice)
-  const handleRadioSelect = (paymentId: string) => {
-    setSelectedPayment(paymentId);
-    onSelectPayment?.(paymentId);
-  };
-
-  const handleAddPayment = () => {
-    onAddPayment?.();
-    onClose();
-  };
-
-  // Content based on variant
-  const renderDefaultContent = () => {
-    switch (variant) {
-      case "add-payment":
-        return <AddPaymentContentExample />;
-
-      case "radio-selection":
-        return (
-          <RadioPaymentContentExample
-            selectedPayment={selectedPayment}
-            onRadioSelect={handleRadioSelect}
-          />
-        );
-
-      default:
-        return <EmptyPaymentContentExample />;
-    }
-  };
-
-  // Show action bar only for radio selection variant
-  const showActionBar = variant === "radio-selection";
-  const getActionButtonText = () => {
-    if (variant === "radio-selection") {
-      return "Use this account";
-    }
-    return "Continue";
-  };
 
   return (
     <Modal
       visible={visible}
-      transparent={true}
+      transparent
       animationType="slide"
       onRequestClose={onClose}
     >
@@ -105,7 +56,6 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
           <TouchableWithoutFeedback>
             <View style={styles.bottomSheet}>
               <View style={styles.grabber} />
-
               <View
                 style={{
                   marginTop: -insets.top + SpacingM5,
@@ -125,19 +75,13 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
               </View>
 
               <View style={styles.body}>
-                {renderContent ? renderContent() : renderDefaultContent()}
-
-                {showActionBar && (
-                  <ActionBar>
-                    <Button
-                      label={getActionButtonText()}
-                      variant="primary"
-                      size="lg"
-                      onPress={onClose}
-                      disabled={!selectedPayment}
-                    />
-                  </ActionBar>
-                )}
+                <EmptyPaymentContentExample
+                  onSelect={(pm) => {
+                    // forward only the key to keep the BottomContext API intact
+                    onSelectPayment?.(pm.key);
+                    onClose();
+                  }}
+                />
               </View>
             </View>
           </TouchableWithoutFeedback>
