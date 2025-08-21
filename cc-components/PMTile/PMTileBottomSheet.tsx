@@ -24,7 +24,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   AddPaymentContentExample,
-  DefaultPaymentContentExample,
+  EmptyPaymentContentExample,
   RadioPaymentContentExample,
 } from "./PMTileBottomSheet.examples";
 
@@ -65,7 +65,7 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
     onClose();
   };
 
-  // Default content based on variant
+  // Content based on variant
   const renderDefaultContent = () => {
     switch (variant) {
       case "add-payment":
@@ -79,9 +79,8 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
           />
         );
 
-      case "default":
       default:
-        return <DefaultPaymentContentExample />;
+        return <EmptyPaymentContentExample />;
     }
   };
 
