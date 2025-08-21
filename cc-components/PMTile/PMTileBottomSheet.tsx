@@ -10,7 +10,6 @@ import StackControl from "../FoldPageViewHeader/StackControl";
 import ActionBar from "../ActionBar/ActionBar";
 import Button from "../Button/Button";
 import { ChevronLeftIcon } from "../assets/BlueSkyIcons/ChevronLeftIcon";
-import { XCloseIcon } from "../assets/BlueSkyIcons/XCloseIcon";
 import {
   LayerBackground,
   SpacingM4,
@@ -20,9 +19,14 @@ import {
   SpacingM1,
   BorderRadiusDefault,
   ObjectPrimaryBoldDefault,
+  SpacingM5,
 } from "../../generated-tokens/tokens";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Selector from "../Selector/Selector";
+import {
+  AddPaymentContentExample,
+  DefaultPaymentContentExample,
+  RadioPaymentContentExample,
+} from "./PMTileBottomSheet.examples";
 
 interface PMTileBottomSheetProps {
   visible: boolean;
@@ -30,6 +34,8 @@ interface PMTileBottomSheetProps {
   onSelectPayment?: (paymentId: string) => void;
   onAddPayment?: () => void;
   title?: string;
+  variant?: "default" | "add-payment" | "radio-selection";
+  renderContent?: () => React.ReactElement;
 }
 
 const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
@@ -37,20 +43,14 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
   onClose,
   onSelectPayment,
   onAddPayment,
-  title = "Payment Methods",
+  title = "Add payment method",
+  variant = "default",
+  renderContent,
 }) => {
-  // Radio selection state (single selection)
+  // Only keep state that's actually used for radio selection
   const [selectedPayment, setSelectedPayment] = useState<string | null>(
     "credit"
   );
-
-  // Checkbox selection state (multiple selections)
-  const [checkboxSelections, setCheckboxSelections] = useState<
-    Record<string, boolean>
-  >({
-    sms: true,
-    email: false,
-  });
 
   const insets = useSafeAreaInsets();
 
@@ -60,17 +60,38 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
     onSelectPayment?.(paymentId);
   };
 
-  // Handle checkbox selection (multiple choice)
-  const handleCheckboxToggle = (checkboxId: string) => {
-    setCheckboxSelections((prev) => ({
-      ...prev,
-      [checkboxId]: !prev[checkboxId],
-    }));
-  };
-
   const handleAddPayment = () => {
     onAddPayment?.();
     onClose();
+  };
+
+  // Default content based on variant
+  const renderDefaultContent = () => {
+    switch (variant) {
+      case "add-payment":
+        return <AddPaymentContentExample />;
+
+      case "radio-selection":
+        return (
+          <RadioPaymentContentExample
+            selectedPayment={selectedPayment}
+            onRadioSelect={handleRadioSelect}
+          />
+        );
+
+      case "default":
+      default:
+        return <DefaultPaymentContentExample />;
+    }
+  };
+
+  // Show action bar only for radio selection variant
+  const showActionBar = variant === "radio-selection";
+  const getActionButtonText = () => {
+    if (variant === "radio-selection") {
+      return "Use this account";
+    }
+    return "Continue";
   };
 
   return (
@@ -84,11 +105,14 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
         <View style={styles.overlay}>
           <TouchableWithoutFeedback>
             <View style={styles.bottomSheet}>
-              {/* Grabber */}
               <View style={styles.grabber} />
 
-              {/* Navigation Header using existing FoldPageViewHeader */}
-              <View style={{ marginTop: -insets.top }}>
+              <View
+                style={{
+                  marginTop: -insets.top + SpacingM5,
+                  marginBottom: SpacingM5,
+                }}
+              >
                 <FoldPageViewHeader
                   title={title}
                   leftComponent={
@@ -98,69 +122,23 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
                       onLeftPress={onClose}
                     />
                   }
-                  rightComponent={
-                    <StackControl
-                      variant="right"
-                      leadingSlot={<XCloseIcon width={24} height={24} />}
-                      onLeftPress={onClose}
-                    />
-                  }
                 />
               </View>
 
-              {/* Body Content */}
               <View style={styles.body}>
-                <View style={styles.content}>
-                  {/* Radio Selection - Payment Methods (single choice) */}
-                  <Selector
-                    variant="radio"
-                    title="Credit Card"
-                    subtext="**** 1234"
-                    selected={selectedPayment === "credit"}
-                    onPress={() => handleRadioSelect("credit")}
-                  />
-                  <Selector
-                    variant="radio"
-                    title="Bank Transfer"
-                    subtext="Wells Fargo ****0823"
-                    selected={selectedPayment === "bank"}
-                    onPress={() => handleRadioSelect("bank")}
-                  />
+                {renderContent ? renderContent() : renderDefaultContent()}
 
-                  {/* Checkbox Selection - Notifications (multiple choice) */}
-                  <Selector
-                    variant="checkbox"
-                    title="SMS Notifications"
-                    subtext="Get updates via text"
-                    selected={checkboxSelections.sms}
-                    onPress={() => handleCheckboxToggle("sms")}
-                  />
-                  <Selector
-                    variant="checkbox"
-                    title="Email Notifications"
-                    subtext="Get updates via email"
-                    selected={checkboxSelections.email}
-                    onPress={() => handleCheckboxToggle("email")}
-                  />
-
-                  {/* Navigation - Add Payment Method */}
-                  <Selector
-                    variant="navigation"
-                    title="Add Payment Method"
-                    onPress={handleAddPayment}
-                  />
-                </View>
-
-                {/* Action Bar */}
-                <ActionBar>
-                  <Button
-                    label="Continue"
-                    variant="primary"
-                    size="lg"
-                    onPress={onClose}
-                    disabled={!selectedPayment}
-                  />
-                </ActionBar>
+                {showActionBar && (
+                  <ActionBar>
+                    <Button
+                      label={getActionButtonText()}
+                      variant="primary"
+                      size="lg"
+                      onPress={onClose}
+                      disabled={!selectedPayment}
+                    />
+                  </ActionBar>
+                )}
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -183,7 +161,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: SpacingM4,
     position: "relative",
   },
-
   grabber: {
     position: "absolute",
     top: -SpacingM1 * 3,
@@ -194,7 +171,6 @@ const styles = StyleSheet.create({
     backgroundColor: ObjectPrimaryBoldDefault,
     borderRadius: SpacingM2 + SpacingM1,
   },
-
   body: {
     paddingBottom: SpacingM10,
     gap: SpacingM6,

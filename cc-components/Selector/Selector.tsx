@@ -8,9 +8,12 @@ import {
   FacePrimary,
   SpacingM2,
   SpacingM4,
-  SpacingM6,
   BorderRadiusDefault,
   ObjectSecondaryDefault,
+  LayerSecondary,
+  SpacingM0,
+  FaceSecondary,
+  Yellow800,
 } from "../../generated-tokens/tokens";
 import {
   renderTrailingIcon,
@@ -27,7 +30,7 @@ export interface SelectorProps {
   leadingSlot?: React.ReactNode;
   subtextSlot?: React.ReactNode;
   footnoteSlot?: React.ReactNode;
-  showLeadingIcon?: boolean;
+  showLeadingIcon?: boolean | React.ReactNode;
   selected?: boolean;
   onPress?: () => void;
   style?: ViewStyle;
@@ -47,10 +50,21 @@ const Selector: React.FC<SelectorProps> = ({
   onPress,
   style,
 }) => {
-  // Simplified render logic
-  const showLeading = showLeadingIcon || !!leadingSlot;
+  // Simplified render logic with flexible showLeadingIcon support
+  const showLeading = !!showLeadingIcon || !!leadingSlot;
   const showSubtext = subtext || !!subtextSlot;
   const showFootnote = footnote || !!footnoteSlot;
+
+  // Render the leading icon - prioritize showLeadingIcon, then leadingSlot, then default
+  const renderLeadingIcon = () => {
+    if (React.isValidElement(showLeadingIcon)) {
+      return showLeadingIcon;
+    }
+    if (leadingSlot) {
+      return leadingSlot;
+    }
+    return <CreditCardIcon width={20} height={20} />;
+  };
 
   // Get dynamic styles based on selection state
   const selectionStyle = getSelectionStyle(variant, selected);
@@ -62,46 +76,39 @@ const Selector: React.FC<SelectorProps> = ({
 
   return (
     <FoldPressable onPress={onPress} style={containerStyle}>
-      <View style={styles.listItem}>
-        <View style={styles.content}>
-          {/* Left Column */}
-          <View style={styles.leftCol}>
-            {showLeading && (
-              <View style={styles.iconContainer}>
-                {leadingSlot || <CreditCardIcon width={20} height={20} />}
-              </View>
-            )}
+      <View style={styles.content}>
+        {/* Leading Icon */}
+        {showLeading && (
+          <View style={styles.iconContainer}>{renderLeadingIcon()}</View>
+        )}
 
-            <View style={styles.textContent}>
-              {/* Title Row with Chip */}
-              <View style={styles.titleRow}>
-                <FoldText type="body-md-bold-v2" style={styles.title}>
-                  {title}
-                </FoldText>
-                {hasChip && hasChip}
-              </View>
-
-              {/* Subtext */}
-              {showSubtext && (
-                <FoldText type="body-md-v2" style={styles.subtext}>
-                  {subtextSlot || subtext}
-                </FoldText>
-              )}
-
-              {/* Footnote */}
-              {showFootnote && (
-                <FoldText type="body-sm-v2" style={styles.footnote}>
-                  {footnoteSlot || footnote}
-                </FoldText>
-              )}
-            </View>
+        {/* Text Content */}
+        <View style={styles.textContent}>
+          {/* Title Row with Chip */}
+          <View style={styles.titleRow}>
+            <FoldText type="body-md-bold-v2" style={styles.title}>
+              {title}
+            </FoldText>
+            {hasChip && hasChip}
           </View>
 
-          {/* Right Column - Trailing Element */}
-          <View style={styles.rightCol}>
-            {renderTrailingIcon(variant, selected)}
-          </View>
+          {/* Subtext */}
+          {showSubtext && (
+            <FoldText type="body-md-v2" style={styles.subtext}>
+              {subtextSlot || subtext}
+            </FoldText>
+          )}
+
+          {/* Footnote */}
+          {showFootnote && (
+            <FoldText type="body-md-v2" style={styles.footnote}>
+              {footnoteSlot || footnote}
+            </FoldText>
+          )}
         </View>
+
+        {/* Trailing Icon - Centered vertically */}
+        {renderTrailingIcon(variant, selected)}
       </View>
     </FoldPressable>
   );
@@ -110,32 +117,25 @@ const Selector: React.FC<SelectorProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    borderRadius: BorderRadiusDefault,
-  },
-  listItem: {
-    paddingVertical: SpacingM4,
-    paddingHorizontal: SpacingM4,
+    padding: SpacingM4,
   },
   content: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center", // Center all items vertically
     justifyContent: "space-between",
-  },
-  leftCol: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: SpacingM2,
+    gap: SpacingM4,
   },
   iconContainer: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
+    backgroundColor: ObjectSecondaryDefault,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 8, // Add some border radius for better visual
   },
   textContent: {
     flex: 1,
-    gap: SpacingM2,
+    gap: SpacingM0,
   },
   titleRow: {
     flexDirection: "row",
@@ -146,14 +146,10 @@ const styles = StyleSheet.create({
     color: FacePrimary,
   },
   subtext: {
-    color: FacePrimary,
+    color: FaceSecondary,
   },
   footnote: {
-    color: FacePrimary,
-  },
-  rightCol: {
-    justifyContent: "center",
-    alignItems: "center",
+    color: Yellow800,
   },
 });
 

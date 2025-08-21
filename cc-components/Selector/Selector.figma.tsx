@@ -22,8 +22,7 @@ figma.connect(
         true: figma.string("footnote"),
         false: undefined,
       }),
-      showLeadingIcon: figma.boolean("leadingElement"),
-      leadingSlot: figma.boolean("leadingElement", {
+      showLeadingIcon: figma.boolean("leadingElement", {
         true: figma.instance("leadingSlot"),
         false: undefined,
       }),
@@ -43,7 +42,6 @@ figma.connect(
         subtext={props.subtext}
         footnote={props.footnote}
         showLeadingIcon={props.showLeadingIcon}
-        leadingSlot={props.leadingSlot}
         hasChip={props.hasChip}
         selected={props.selected}
       />
