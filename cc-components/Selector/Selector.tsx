@@ -2,13 +2,11 @@ import React from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
-import Chip from "../Chip/Chip";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import {
   FacePrimary,
   SpacingM2,
   SpacingM4,
-  BorderRadiusDefault,
   ObjectSecondaryDefault,
   LayerSecondary,
   SpacingM0,

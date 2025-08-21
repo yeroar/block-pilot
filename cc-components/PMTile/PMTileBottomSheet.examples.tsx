@@ -7,7 +7,12 @@ import {
   BorderRadiusDefault,
   SpacingM6,
   SpacingM4,
+  SpacingM10,
+  SpacingM0,
+  SpacingM16,
 } from "../../generated-tokens/tokens";
+import ActionBar from "../ActionBar/ActionBar";
+import Button from "../Button/Button";
 
 // Minimal items for selection
 const bankMethod = {
@@ -82,35 +87,84 @@ export const CardsPaymentContentExample = ({
   ];
 
   return (
-    <View style={[styles.content, styles.cardList]}>
+    <View style={styles.content}>
       {cards.map((c) => (
-        <Pressable
+        <Selector
           key={c.id}
-          style={[styles.cardRow]}
-          onPress={() => {
-            setSelectedCard(c.id);
-            onSelect?.(c.id);
-          }}
-          accessibilityRole="radio"
-          accessibilityState={{ selected: selectedCard === c.id }}
-        >
-          <View style={styles.cardLeft}>{c.icon}</View>
-          <View style={styles.cardMiddle}>
-            <Text style={styles.cardTitle}>{c.title}</Text>
-            <Text style={styles.cardSubtitle}>{c.subtitle}</Text>
-          </View>
-          <View style={styles.cardRight}>
-            <View
-              style={[
-                styles.radioOuter,
-                selectedCard === c.id && styles.radioOuterSelected,
-              ]}
-            >
-              {selectedCard === c.id && <View style={styles.radioInner} />}
-            </View>
-          </View>
-        </Pressable>
+          variant="radio"
+          title={c.title}
+          subtext={c.subtitle}
+          showLeadingIcon={c.icon}
+          selected={selectedCard === c.id}
+          onPress={() => setSelectedCard(c.id)}
+        />
       ))}
+
+      <ActionBar>
+        <Button
+          label="Use this payment card"
+          variant="primary"
+          size="lg"
+          onPress={() => selectedCard && onSelect?.(selectedCard)}
+          disabled={!selectedCard}
+        />
+      </ActionBar>
+    </View>
+  );
+};
+
+// New: bank accounts list with same confirmation action
+export const BankPaymentContentExample = ({
+  onSelect,
+}: {
+  onSelect?: (accountId: string) => void;
+}) => {
+  const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
+
+  const accounts = [
+    {
+      id: "chase",
+      title: "Chase Checking",
+      subtitle: "****0823",
+      icon: <BankIcon width={20} height={20} />,
+    },
+    {
+      id: "wells",
+      title: "Wells Fargo Savings",
+      subtitle: "****1234",
+      icon: <BankIcon width={20} height={20} />,
+    },
+    {
+      id: "boa",
+      title: "Bank of America Checking",
+      subtitle: "****5678",
+      icon: <BankIcon width={20} height={20} />,
+    },
+  ];
+
+  return (
+    <View style={styles.content}>
+      {accounts.map((a) => (
+        <Selector
+          key={a.id}
+          variant="radio"
+          title={a.title}
+          subtext={a.subtitle}
+          showLeadingIcon={a.icon}
+          selected={selectedAccount === a.id}
+          onPress={() => setSelectedAccount(a.id)}
+        />
+      ))}
+
+      <ActionBar>
+        <Button
+          label="Use this account"
+          variant="primary"
+          size="lg"
+          onPress={() => selectedAccount && onSelect?.(selectedAccount)}
+          disabled={!selectedAccount}
+        />
+      </ActionBar>
     </View>
   );
 };
@@ -119,13 +173,11 @@ const styles = StyleSheet.create({
   content: {
     borderRadius: BorderRadiusDefault,
     overflow: "hidden",
-    marginBottom: SpacingM6,
+    marginBottom: SpacingM16, // decreased bottom spacing per request
     gap: 1,
     backgroundColor: "transparent",
   },
-  cardList: {
-    paddingVertical: SpacingM4,
-  },
+
   cardRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -133,6 +185,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#ECECEC",
+    backgroundColor: "transparent",
   },
   cardLeft: {
     width: 36,

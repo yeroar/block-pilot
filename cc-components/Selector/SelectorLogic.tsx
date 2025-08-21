@@ -38,8 +38,17 @@ export const getSelectionStyle = (
   variant: SelectorVariant,
   selected: boolean
 ) => {
-  // No background color change - only icon changes
-  return {};
+  // unified container style for all variants to ensure consistent layout
+  const base = {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  } as const;
+
+  // return the same base for navigation, radio and checkbox (no variant-specific background)
+  return base;
 };
 
 export const isSelectable = (variant: SelectorVariant): boolean => {
