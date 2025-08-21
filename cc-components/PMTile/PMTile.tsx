@@ -229,6 +229,7 @@ export default function PMTile({
       return (
         <BottomSheetView style={[styles.sheetContent]}>
           <FoldPageViewHeader
+            style={{ marginTop: -insets.top, marginBottom: SpacingM6 }}
             title={getTitle()}
             leftComponent={
               <StackControl
@@ -361,13 +362,14 @@ const styles = StyleSheet.create({
     backgroundColor: LayerBackground,
   },
   handleIndicator: {
-    backgroundColor: ObjectPrimaryBoldDefault,
+    backgroundColor: "transparent",
+    height: 0, // hide the visible handle indicator
   },
   sheetContent: {
     paddingHorizontal: SpacingM4,
   },
+
   sheetBody: {
     paddingBottom: SpacingM16,
-    paddingHorizontal: SpacingM4,
   },
 });
