@@ -5,9 +5,11 @@ import { FoldText } from "../Primitives/FoldText";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
+  BottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ObjectPrimaryBoldDefault,
   ObjectPrimarySubtleDefault,
@@ -16,6 +18,11 @@ import {
   SpacingM4,
   SpacingM8,
   LayerBackground,
+  SpacingM5,
+  SpacingM0,
+  SpacingM3,
+  SpacingM16,
+  SpacingM6,
 } from "../../generated-tokens/tokens";
 import { EmptyPaymentContentExample } from "./PMTileBottomSheet.examples";
 import FoldPageViewHeader from "../FoldPageViewHeader/FoldPageViewHeader";
@@ -23,6 +30,13 @@ import StackControl from "../FoldPageViewHeader/StackControl";
 import { ChevronLeftIcon } from "../assets/BlueSkyIcons/ChevronLeftIcon";
 import ActionBar from "../ActionBar/ActionBar";
 import Button from "../Button/Button";
+
+export type PaymentMethod = {
+  key: "bank" | "card";
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+};
 
 export type PMTileProps = {
   label?: string;
@@ -35,7 +49,7 @@ export type PMTileProps = {
   style?: ViewStyle;
   textStyle?: ViewStyle;
   enablePaymentSelection?: boolean;
-  onPaymentSelect?: (pm: any) => void;
+  onPaymentSelect?: (pm: PaymentMethod) => void;
 };
 
 export default function PMTile({
@@ -52,13 +66,19 @@ export default function PMTile({
   onPaymentSelect,
   ...rest
 }: PMTileProps) {
-  const [selectedPayment, setSelectedPayment] = useState(null);
+  const insets = useSafeAreaInsets();
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>({
+    key: "card",
+    icon: <CreditCardIcon width={20} height={20} />,
+    title: "Add payment method",
+    subtitle: "",
+  });
   const [sheetMode, setSheetMode] = useState<"select" | "bank" | "card">(
     "select"
   );
 
   // Bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   // Snap points for the bottom sheet
   const snapPoints = useMemo(() => ["50%", "90%"], []);
@@ -79,19 +99,19 @@ export default function PMTile({
       if (sheetMode === "bank") {
         const bankDetails = {
           chase: {
-            key: "bank",
+            key: "bank" as const,
             icon: <BankIcon width={20} height={20} />,
             title: "Chase Checking",
             subtitle: "****0823",
           },
           wells: {
-            key: "bank",
+            key: "bank" as const,
             icon: <BankIcon width={20} height={20} />,
             title: "Wells Fargo Savings",
             subtitle: "****1234",
           },
           boa: {
-            key: "bank",
+            key: "bank" as const,
             icon: <BankIcon width={20} height={20} />,
             title: "Bank of America Checking",
             subtitle: "****5678",
@@ -105,19 +125,19 @@ export default function PMTile({
       } else if (sheetMode === "card") {
         const cardDetails = {
           visa: {
-            key: "card",
+            key: "card" as const,
             icon: <CreditCardIcon width={20} height={20} />,
             title: "Visa Debit Card",
             subtitle: "****1234",
           },
           mastercard: {
-            key: "card",
+            key: "card" as const,
             icon: <CreditCardIcon width={20} height={20} />,
             title: "Mastercard Credit",
             subtitle: "****5678",
           },
           amex: {
-            key: "card",
+            key: "card" as const,
             icon: <CreditCardIcon width={20} height={20} />,
             title: "American Express",
             subtitle: "****9012",
@@ -130,7 +150,7 @@ export default function PMTile({
         }
       }
 
-      bottomSheetRef.current?.close();
+      bottomSheetRef.current?.dismiss();
     },
     [sheetMode, onPaymentSelect]
   );
@@ -149,14 +169,17 @@ export default function PMTile({
   const handlePress = useCallback(() => {
     if (enablePaymentSelection) {
       // Determine which sheet to open based on current selection
-      if (!selectedPayment) {
+      if (
+        !selectedPayment.title ||
+        selectedPayment.title === "Select payment method"
+      ) {
         setSheetMode("select");
       } else if (selectedPayment.key === "bank") {
         setSheetMode("bank");
       } else if (selectedPayment.key === "card") {
         setSheetMode("card");
       }
-      bottomSheetRef.current?.expand();
+      bottomSheetRef.current?.present();
     } else {
       onPress?.();
     }
@@ -177,72 +200,97 @@ export default function PMTile({
 
   // Render sheet content based on mode
   const renderSheetContent = useCallback(() => {
-    const showActionBar = false; // no card radio mock for now
-    const showBackButton = sheetMode !== "select";
+    try {
+      const showActionBar = false;
+      const showBackButton = sheetMode !== "select";
 
-    const getTitle = () => {
-      switch (sheetMode) {
-        case "card":
-          return "Select Payment Method";
-        case "bank":
-          return "Select Payment Method";
-        default:
-          return "Select Payment Method";
-      }
-    };
+      const getTitle = () => {
+        switch (sheetMode) {
+          case "card":
+            return "Select Payment Card";
+          case "bank":
+            return "Select Bank Account";
+          default:
+            return "Add payment method";
+        }
+      };
 
-    const handleLeftPress = () => {
-      if (showBackButton) {
-        handleBackToSelect();
-      } else {
-        bottomSheetRef.current?.close();
-      }
-    };
+      const handleLeftPress = () => {
+        if (showBackButton) {
+          handleBackToSelect();
+        } else {
+          bottomSheetRef.current?.dismiss();
+        }
+      };
 
-    // Always render the simple selector
-    const renderContent = () => (
-      <EmptyPaymentContentExample onSelect={handleSelectPm} />
-    );
-
-    return (
-      <BottomSheetView style={styles.sheetContent}>
-        <FoldPageViewHeader
-          title={getTitle()}
-          leftComponent={
-            <StackControl
-              variant="left"
-              leadingSlot={<ChevronLeftIcon width={24} height={24} />}
-              onLeftPress={handleLeftPress}
-            />
-          }
-        />
-        <View style={styles.sheetBody}>
-          {renderContent()}
-          {showActionBar && (
-            <ActionBar>
-              <Button
-                label="Use this payment method"
-                variant="primary"
-                size="lg"
-                onPress={() => bottomSheetRef.current?.close()}
+      return (
+        <BottomSheetView>
+          <FoldPageViewHeader
+            style={[
+              styles.sheetContent,
+              {
+                marginTop: -insets.top,
+                marginBottom: SpacingM6,
+              },
+            ]}
+            title={getTitle()}
+            leftComponent={
+              <StackControl
+                variant="left"
+                leadingSlot={<ChevronLeftIcon width={24} height={24} />}
+                onLeftPress={handleLeftPress}
               />
-            </ActionBar>
-          )}
-        </View>
-      </BottomSheetView>
-    );
-  }, [sheetMode, handleSelectPm, handleBackToSelect]);
+            }
+          />
+          <View style={styles.sheetBody}>
+            {/* Always render non-null content */}
+            <EmptyPaymentContentExample onSelect={handleSelectPm} />
+
+            {showActionBar && (
+              <ActionBar>
+                <Button
+                  label="Use this payment method"
+                  variant="primary"
+                  size="lg"
+                  onPress={() => bottomSheetRef.current?.dismiss()}
+                />
+              </ActionBar>
+            )}
+          </View>
+        </BottomSheetView>
+      );
+    } catch (error) {
+      // Absolutely guarantee non-null children
+      return (
+        <BottomSheetView style={styles.sheetContent}>
+          <View
+            style={{
+              minHeight: 100,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FoldText type="body-sm-bold-v2">Add payment method</FoldText>
+          </View>
+        </BottomSheetView>
+      );
+    }
+  }, [sheetMode, handleSelectPm, handleBackToSelect, insets.top]);
 
   // Display logic for payment selection mode
   const displayLabel =
-    enablePaymentSelection && selectedPayment ? selectedPayment.title : label;
+    enablePaymentSelection && selectedPayment.title !== "Select payment method"
+      ? selectedPayment.title
+      : label;
 
   const displayLeadingSlot =
-    enablePaymentSelection && selectedPayment
+    enablePaymentSelection && selectedPayment.title !== "Select payment method"
       ? selectedPayment.icon
       : leadingSlot;
 
-  const isSelected = enablePaymentSelection ? !!selectedPayment : selected;
+  const isSelected = enablePaymentSelection
+    ? selectedPayment.title !== "Select payment method"
+    : selected;
 
   // Show slots if enabled or provided
   const showLeading = leadingIcon || !!displayLeadingSlot;
@@ -264,21 +312,24 @@ export default function PMTile({
         </View>
       </FoldPressable>
 
-      {/* Payment selection bottom sheet */}
-      {enablePaymentSelection && (
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={-1}
-          snapPoints={snapPoints}
-          enablePanDownToClose
-          backdropComponent={renderBackdrop}
-          onClose={handleSheetClose}
-          backgroundStyle={styles.sheetBackground}
-          handleIndicatorStyle={styles.handleIndicator}
-        >
-          {renderSheetContent()}
-        </BottomSheet>
-      )}
+      {/* Always mount the modal - control content via enablePaymentSelection */}
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        enablePanDownToClose
+        backdropComponent={renderBackdrop}
+        onDismiss={handleSheetClose}
+        backgroundStyle={styles.sheetBackground}
+        handleIndicatorStyle={styles.handleIndicator}
+      >
+        {enablePaymentSelection ? (
+          renderSheetContent()
+        ) : (
+          <BottomSheetView style={styles.sheetContent}>
+            <View style={{ minHeight: 1 }} />
+          </BottomSheetView>
+        )}
+      </BottomSheetModal>
     </>
   );
 }
@@ -291,7 +342,6 @@ const styles = StyleSheet.create({
     height: SpacingM8,
     paddingHorizontal: SpacingM4,
     borderRadius: BorderRadiusRounded,
-    gap: SpacingM1,
   },
   sheetBackground: {
     backgroundColor: LayerBackground,
@@ -300,11 +350,10 @@ const styles = StyleSheet.create({
     backgroundColor: ObjectPrimaryBoldDefault,
   },
   sheetContent: {
-    flex: 1,
     paddingHorizontal: SpacingM4,
   },
   sheetBody: {
-    flex: 1,
-    paddingBottom: SpacingM4,
+    paddingBottom: SpacingM16,
+    paddingHorizontal: SpacingM4,
   },
 });

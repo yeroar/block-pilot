@@ -23,7 +23,16 @@ const StackControl: React.FC<StackControlProps> = ({
   onLeftPress,
   onRightPress,
 }) => {
-  const navigation = useNavigation<any>();
+  // Make navigation optional
+  let navigation = null;
+  try {
+    navigation = useNavigation();
+  } catch (error) {
+    if (__DEV__) {
+      console.warn("Navigation context not available:", error);
+    }
+    navigation = null;
+  }
   const showLeading = !!leadingSlot;
   const showTrailing = !!trailingSlot;
 

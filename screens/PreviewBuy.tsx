@@ -17,9 +17,11 @@ import {
   LayerBackground,
   SpacingM4,
   SpacingM0,
+  SpacingM2,
 } from "../generated-tokens/tokens";
 
 import ConfirmationTradeBitcoin from "../cc-components/Confirmation/ConfirmationTradeBitcoin";
+import PMTile from "../cc-components/PMTile/PMTile";
 
 type RouteParams = { amountStr?: string };
 
@@ -47,7 +49,12 @@ export default function PreviewBuy({
           <StackControl variant="left" leadingSlot={<ChevronLeftIcon />} />
         }
       />
-
+      <PMTile
+        label="test"
+        selected={true}
+        enablePaymentSelection={true}
+        onPaymentSelect={(pm) => console.log("Payment selected:", pm)}
+      />
       <View style={[styles.body]}>
         <View style={styles.amountSection}>
           <CurrencyInput
@@ -92,11 +99,12 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: LayerBackground,
-    paddingHorizontal: SpacingM4,
+    paddingHorizontal: SpacingM2, // moved from App.js
   },
   body: {
     flex: 1,
-    gap: SpacingM0, // use gap instead of space-between
+    gap: SpacingM0,
+    paddingHorizontal: SpacingM4, // additional padding if needed
   },
   amountSection: {
     alignItems: "center",

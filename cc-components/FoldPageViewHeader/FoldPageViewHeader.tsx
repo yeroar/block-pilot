@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FoldText } from "../Primitives/FoldText";
 import FoldPressable from "../Primitives/FoldPressable";
@@ -27,7 +33,7 @@ const TOKENS = {
   },
 };
 
-type FoldPageViewHeaderProps = {
+interface FoldPageViewHeaderProps {
   title?: string;
   subTitle?: string;
   leftIcon?: string;
@@ -39,12 +45,13 @@ type FoldPageViewHeaderProps = {
   backgroundColor?: string;
   rightIconColor?: string;
   titleColor?: string;
-};
+  style?: StyleProp<ViewStyle>; // added
+}
 
 const HEADER_HEIGHT = 48;
 const SIDE_WIDTH = 88;
 
-const FoldPageViewHeader = ({
+export default function FoldPageViewHeader({
   title,
   subTitle,
   leftIcon,
@@ -56,7 +63,8 @@ const FoldPageViewHeader = ({
   backgroundColor,
   rightIconColor,
   titleColor,
-}: FoldPageViewHeaderProps) => {
+  style, // added
+}: FoldPageViewHeaderProps) {
   const insets = useSafeAreaInsets();
   const headerTextColor = titleColor || TOKENS.colors.textPrimary;
 
@@ -67,12 +75,15 @@ const FoldPageViewHeader = ({
 
   return (
     <View
-      style={{
-        width: "100%",
-        backgroundColor: backgroundColor || "transparent",
-        height: HEADER_HEIGHT + insets.top,
-        paddingTop: insets.top,
-      }}
+      style={[
+        {
+          width: "100%",
+          backgroundColor: backgroundColor || "transparent",
+          height: HEADER_HEIGHT + insets.top,
+          paddingTop: insets.top,
+        },
+        style,
+      ]}
     >
       <View style={styles.row}>
         {/* Left (88 wide) */}
@@ -134,9 +145,7 @@ const FoldPageViewHeader = ({
       </View>
     </View>
   );
-};
-
-export default FoldPageViewHeader;
+}
 
 const styles = StyleSheet.create({
   row: {
