@@ -24,7 +24,10 @@ import {
   SpacingM16,
   SpacingM6,
 } from "../../generated-tokens/tokens";
-import { EmptyPaymentContentExample } from "./PMTileBottomSheet.examples";
+import {
+  EmptyPaymentContentExample,
+  CardsPaymentContentExample,
+} from "./PMTileBottomSheet.examples";
 import FoldPageViewHeader from "../FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../FoldPageViewHeader/StackControl";
 import { ChevronLeftIcon } from "../assets/BlueSkyIcons/ChevronLeftIcon";
@@ -224,15 +227,8 @@ export default function PMTile({
       };
 
       return (
-        <BottomSheetView>
+        <BottomSheetView style={[styles.sheetContent]}>
           <FoldPageViewHeader
-            style={[
-              styles.sheetContent,
-              {
-                marginTop: -insets.top,
-                marginBottom: SpacingM6,
-              },
-            ]}
             title={getTitle()}
             leftComponent={
               <StackControl
@@ -243,8 +239,20 @@ export default function PMTile({
             }
           />
           <View style={styles.sheetBody}>
-            {/* Always render non-null content */}
-            <EmptyPaymentContentExample onSelect={handleSelectPm} />
+            {sheetMode === "select" && (
+              <EmptyPaymentContentExample onSelect={handleSelectPm} />
+            )}
+
+            {sheetMode === "card" && (
+              <CardsPaymentContentExample
+                onSelect={(cardId) => handleSpecificPaymentSelect(cardId)}
+              />
+            )}
+
+            {sheetMode === "bank" && (
+              // render bank-specific list or reuse a bank example component
+              <EmptyPaymentContentExample onSelect={handleSelectPm} />
+            )}
 
             {showActionBar && (
               <ActionBar>
@@ -275,7 +283,13 @@ export default function PMTile({
         </BottomSheetView>
       );
     }
-  }, [sheetMode, handleSelectPm, handleBackToSelect, insets.top]);
+  }, [
+    sheetMode,
+    handleSelectPm,
+    handleSpecificPaymentSelect,
+    handleBackToSelect,
+    insets.top,
+  ]);
 
   // Display logic for payment selection mode
   const displayLabel =
