@@ -27,6 +27,14 @@ figma.connect(
         true: figma.instance("leadingSlot"),
         false: undefined,
       }),
+      hasChip: figma.boolean("hasChip", {
+        true: figma.children("Chip"),
+        false: undefined,
+      }),
+      selected: figma.enum("selected", {
+        true: true,
+        false: false,
+      }),
     },
     example: (props) => (
       <Selector
@@ -36,7 +44,8 @@ figma.connect(
         footnote={props.footnote}
         showLeadingIcon={props.showLeadingIcon}
         leadingSlot={props.leadingSlot}
-        feeText="n.nn% fee"
+        hasChip={props.hasChip}
+        selected={props.selected}
       />
     ),
   }

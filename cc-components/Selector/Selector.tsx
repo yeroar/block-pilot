@@ -3,30 +3,27 @@ import { View, StyleSheet, ViewStyle } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
 import Chip from "../Chip/Chip";
-import { ChevronRightIcon } from "../assets/BlueSkyIcons/ChevronRightIcon";
-import { CircleIcon } from "../assets/BlueSkyIcons/CircleIcon";
-import { SquareIcon } from "../assets/BlueSkyIcons/SquareIcon";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import {
   FacePrimary,
-  FaceSecondary,
-  ObjectSecondaryDefault,
-  LayerSecondary,
-  SpacingM4,
-  SpacingM3,
   SpacingM2,
-  SpacingM1,
+  SpacingM4,
+  SpacingM6,
   BorderRadiusDefault,
+  ObjectSecondaryDefault,
 } from "../../generated-tokens/tokens";
-
-export type SelectorVariant = "navigation" | "radio" | "checkbox";
+import {
+  renderTrailingIcon,
+  getSelectionStyle,
+  SelectorVariant,
+} from "./SelectorLogic";
 
 export interface SelectorProps {
   variant?: SelectorVariant;
   title?: string;
   subtext?: string;
   footnote?: string;
-  feeText?: string;
+  hasChip?: React.ReactNode;
   leadingSlot?: React.ReactNode;
   subtextSlot?: React.ReactNode;
   footnoteSlot?: React.ReactNode;
@@ -37,79 +34,72 @@ export interface SelectorProps {
 }
 
 const Selector: React.FC<SelectorProps> = ({
-  variant,
+  variant = "navigation",
   title,
   subtext,
   footnote,
-  feeText,
+  hasChip,
   leadingSlot,
   subtextSlot,
   footnoteSlot,
-  showLeadingIcon,
-  selected,
+  showLeadingIcon = false,
+  selected = false,
   onPress,
   style,
 }) => {
-  const renderTrailingElement = () => {
-    switch (variant) {
-      case "radio":
-        return <CircleIcon width={20} height={20} />;
-      case "checkbox":
-        return <SquareIcon width={20} height={20} />;
-      case "navigation":
-      default:
-        return <ChevronRightIcon width={20} height={20} />;
-    }
-  };
-
   // Simplified render logic
   const showLeading = showLeadingIcon || !!leadingSlot;
   const showSubtext = subtext || !!subtextSlot;
   const showFootnote = footnote || !!footnoteSlot;
 
+  // Get dynamic styles based on selection state
+  const selectionStyle = getSelectionStyle(variant, selected);
+  const containerStyle = StyleSheet.flatten([
+    styles.container,
+    selectionStyle,
+    style,
+  ]);
+
   return (
-    <FoldPressable
-      onPress={onPress}
-      style={StyleSheet.flatten([styles.container, style])}
-    >
+    <FoldPressable onPress={onPress} style={containerStyle}>
       <View style={styles.listItem}>
         <View style={styles.content}>
           {/* Left Column */}
           <View style={styles.leftCol}>
             {showLeading && (
-              <View style={styles.iconContainer}>{leadingSlot}</View>
+              <View style={styles.iconContainer}>
+                {leadingSlot || <CreditCardIcon width={20} height={20} />}
+              </View>
             )}
 
             <View style={styles.textContent}>
-              {/* Title Row with Fee Chip */}
+              {/* Title Row with Chip */}
               <View style={styles.titleRow}>
-                <FoldText type="body-md-bold-v2" style={styles.titleText}>
+                <FoldText type="body-md-bold-v2" style={styles.title}>
                   {title}
                 </FoldText>
-                {feeText && (
-                  <Chip bold={false} label={feeText} style={styles.feeChip} />
-                )}
+                {hasChip && hasChip}
               </View>
 
               {/* Subtext */}
               {showSubtext && (
-                <FoldText type="body-md-v2" style={styles.subtextText}>
+                <FoldText type="body-md-v2" style={styles.subtext}>
                   {subtextSlot || subtext}
                 </FoldText>
               )}
 
               {/* Footnote */}
               {showFootnote && (
-                <FoldText type="body-md-v2" style={styles.footnoteText}>
+                <FoldText type="body-sm-v2" style={styles.footnote}>
                   {footnoteSlot || footnote}
                 </FoldText>
               )}
             </View>
           </View>
 
-          {/* Trailing Element */}
-          <View style={styles.trailingContainer}>
-            {renderTrailingElement()}
+          {/* Right Column - Trailing Element */}
+          <View style={styles.rightCol}>
+            {renderTrailingIcon(variant, selected)}
           </View>
         </View>
       </View>
@@ -119,56 +109,51 @@ const Selector: React.FC<SelectorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: LayerSecondary,
-    paddingHorizontal: SpacingM4,
-    paddingVertical: SpacingM4,
+    width: "100%",
+    borderRadius: BorderRadiusDefault,
   },
   listItem: {
-    width: "100%",
+    paddingVertical: SpacingM4,
+    paddingHorizontal: SpacingM4,
   },
   content: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
-    gap: SpacingM3,
   },
   leftCol: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
-    gap: SpacingM4,
+    alignItems: "flex-start",
+    gap: SpacingM2,
   },
   iconContainer: {
-    backgroundColor: ObjectSecondaryDefault,
-    padding: 10,
-    borderRadius: BorderRadiusDefault,
-    alignItems: "center",
+    width: 20,
+    height: 20,
     justifyContent: "center",
+    alignItems: "center",
   },
   textContent: {
     flex: 1,
-    gap: SpacingM1,
+    gap: SpacingM2,
   },
   titleRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: SpacingM1,
+    gap: SpacingM2,
   },
-  titleText: {
+  title: {
     color: FacePrimary,
   },
-  feeChip: {
-    alignSelf: "flex-start",
+  subtext: {
+    color: FacePrimary,
   },
-  subtextText: {
-    color: FaceSecondary,
+  footnote: {
+    color: FacePrimary,
   },
-  footnoteText: {
-    color: "#7a5700", // Yellow/800 from design tokens
-  },
-  trailingContainer: {
-    alignItems: "center",
+  rightCol: {
     justifyContent: "center",
+    alignItems: "center",
   },
 });
 

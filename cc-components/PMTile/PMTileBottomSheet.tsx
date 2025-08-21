@@ -5,13 +5,10 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from "react-native";
-import PMTile from "./PMTile";
 import FoldPageViewHeader from "../FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../FoldPageViewHeader/StackControl";
 import ActionBar from "../ActionBar/ActionBar";
 import Button from "../Button/Button";
-import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
-import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 import { ChevronLeftIcon } from "../assets/BlueSkyIcons/ChevronLeftIcon";
 import { XCloseIcon } from "../assets/BlueSkyIcons/XCloseIcon";
 import {
@@ -25,6 +22,7 @@ import {
   ObjectPrimaryBoldDefault,
 } from "../../generated-tokens/tokens";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Selector from "../Selector/Selector";
 
 interface PMTileBottomSheetProps {
   visible: boolean;
@@ -41,13 +39,33 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
   onAddPayment,
   title = "Payment Methods",
 }) => {
-  const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+  // Radio selection state (single selection)
+  const [selectedPayment, setSelectedPayment] = useState<string | null>(
+    "credit"
+  );
+
+  // Checkbox selection state (multiple selections)
+  const [checkboxSelections, setCheckboxSelections] = useState<
+    Record<string, boolean>
+  >({
+    sms: true,
+    email: false,
+  });
+
   const insets = useSafeAreaInsets();
 
-  const handleSelectPayment = (paymentId: string) => {
+  // Handle radio selection (single choice)
+  const handleRadioSelect = (paymentId: string) => {
     setSelectedPayment(paymentId);
     onSelectPayment?.(paymentId);
-    onClose();
+  };
+
+  // Handle checkbox selection (multiple choice)
+  const handleCheckboxToggle = (checkboxId: string) => {
+    setCheckboxSelections((prev) => ({
+      ...prev,
+      [checkboxId]: !prev[checkboxId],
+    }));
   };
 
   const handleAddPayment = () => {
@@ -93,26 +111,42 @@ const PMTileBottomSheet: React.FC<PMTileBottomSheetProps> = ({
               {/* Body Content */}
               <View style={styles.body}>
                 <View style={styles.content}>
-                  {/* Existing Payment Methods */}
-                  <PMTile
-                    leadingSlot={<BankIcon width={16} height={16} />}
-                    label="Wells Fargo ---- 0823"
-                    selected={selectedPayment === "wells-fargo"}
-                    onPress={() => handleSelectPayment("wells-fargo")}
+                  {/* Radio Selection - Payment Methods (single choice) */}
+                  <Selector
+                    variant="radio"
+                    title="Credit Card"
+                    subtext="**** 1234"
+                    selected={selectedPayment === "credit"}
+                    onPress={() => handleRadioSelect("credit")}
+                  />
+                  <Selector
+                    variant="radio"
+                    title="Bank Transfer"
+                    subtext="Wells Fargo ****0823"
+                    selected={selectedPayment === "bank"}
+                    onPress={() => handleRadioSelect("bank")}
                   />
 
-                  <PMTile
-                    leadingSlot={<BankIcon width={16} height={16} />}
-                    label="Chase ---- 1234"
-                    selected={selectedPayment === "chase"}
-                    onPress={() => handleSelectPayment("chase")}
+                  {/* Checkbox Selection - Notifications (multiple choice) */}
+                  <Selector
+                    variant="checkbox"
+                    title="SMS Notifications"
+                    subtext="Get updates via text"
+                    selected={checkboxSelections.sms}
+                    onPress={() => handleCheckboxToggle("sms")}
+                  />
+                  <Selector
+                    variant="checkbox"
+                    title="Email Notifications"
+                    subtext="Get updates via email"
+                    selected={checkboxSelections.email}
+                    onPress={() => handleCheckboxToggle("email")}
                   />
 
-                  {/* Add Payment Method */}
-                  <PMTile
-                    label="Add payment method"
-                    trailingSlot={<PlusCircleIcon width={16} height={16} />}
-                    selected={false}
+                  {/* Navigation - Add Payment Method */}
+                  <Selector
+                    variant="navigation"
+                    title="Add Payment Method"
                     onPress={handleAddPayment}
                   />
                 </View>

@@ -31,6 +31,7 @@ figma.connect(
 
       showChip: figma.boolean("showChip", {
         true: figma.children("Chip"),
+        false: undefined,
       }),
     },
     example: (props) => {

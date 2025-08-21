@@ -23,8 +23,8 @@ export type LineItemProps = {
   varTrailingIcon?: boolean;
   varTrailingSlot?: React.ReactNode;
 
-  // accept a Chip node or boolean (true => default chip)
-  showChip?: boolean | React.ReactNode;
+  // Just a React node, no boolean needed
+  showChip?: React.ReactNode;
 
   containerStyle?: StyleProp<ViewStyle>;
 };
@@ -45,7 +45,7 @@ export default function LineItem({
   varTrailingIcon = false,
   varTrailingSlot,
 
-  showChip, // no default; can be boolean or ReactNode
+  showChip, // no default; just render directly
 
   containerStyle,
 }: LineItemProps) {
@@ -53,14 +53,6 @@ export default function LineItem({
   const showTrailing = trailingIcon || !!trailingSlot;
   const showVarLeading = varLeadingIcon || !!varLeadingSlot;
   const showVarTrailing = varTrailingIcon || !!varTrailingSlot;
-
-  // resolve chip node: true -> default chip, node -> as passed
-  const chipNode =
-    showChip === true ? (
-      <Chip label="[n]%" />
-    ) : (
-      (showChip as React.ReactNode | null) ?? null
-    );
 
   return (
     <View style={[styles.row, containerStyle]}>
@@ -71,7 +63,7 @@ export default function LineItem({
           {label}
         </FoldText>
 
-        {chipNode}
+        {showChip}
 
         {showTrailing && trailingSlot}
       </View>
