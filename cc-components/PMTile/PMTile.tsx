@@ -17,10 +17,7 @@ import {
   SpacingM8,
   LayerBackground,
 } from "../../generated-tokens/tokens";
-import {
-  EmptyPaymentContentExample,
-  CardPaymentContentExample,
-} from "./PMTileBottomSheet.examples";
+import { EmptyPaymentContentExample } from "./PMTileBottomSheet.examples";
 import FoldPageViewHeader from "../FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../FoldPageViewHeader/StackControl";
 import { ChevronLeftIcon } from "../assets/BlueSkyIcons/ChevronLeftIcon";
@@ -180,15 +177,15 @@ export default function PMTile({
 
   // Render sheet content based on mode
   const renderSheetContent = useCallback(() => {
-    const showActionBar = sheetMode === "card"; // only show for card mock
+    const showActionBar = false; // no card radio mock for now
     const showBackButton = sheetMode !== "select";
 
     const getTitle = () => {
       switch (sheetMode) {
         case "card":
-          return "Select Payment Card";
+          return "Select Payment Method";
         case "bank":
-          return "Select Payment Method"; // fallback title for simplified flow
+          return "Select Payment Method";
         default:
           return "Select Payment Method";
       }
@@ -202,22 +199,10 @@ export default function PMTile({
       }
     };
 
-    const renderContent = () => {
-      switch (sheetMode) {
-        case "card":
-          return (
-            <CardPaymentContentExample
-              selectedPayment={"visa"}
-              onRadioSelect={handleSpecificPaymentSelect}
-            />
-          );
-        // Fallback bank to default selector list in this simplified pass
-        case "bank":
-          return <EmptyPaymentContentExample onSelect={handleSelectPm} />;
-        default:
-          return <EmptyPaymentContentExample onSelect={handleSelectPm} />;
-      }
-    };
+    // Always render the simple selector
+    const renderContent = () => (
+      <EmptyPaymentContentExample onSelect={handleSelectPm} />
+    );
 
     return (
       <BottomSheetView style={styles.sheetContent}>
@@ -231,10 +216,8 @@ export default function PMTile({
             />
           }
         />
-
         <View style={styles.sheetBody}>
           {renderContent()}
-
           {showActionBar && (
             <ActionBar>
               <Button
@@ -248,12 +231,7 @@ export default function PMTile({
         </View>
       </BottomSheetView>
     );
-  }, [
-    sheetMode,
-    handleSelectPm,
-    handleSpecificPaymentSelect,
-    handleBackToSelect,
-  ]);
+  }, [sheetMode, handleSelectPm, handleBackToSelect]);
 
   // Display logic for payment selection mode
   const displayLabel =
