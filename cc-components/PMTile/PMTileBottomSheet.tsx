@@ -181,7 +181,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: BorderRadiusDefault,
     borderTopRightRadius: BorderRadiusDefault,
     paddingHorizontal: SpacingM4,
-    minHeight: 400,
     position: "relative",
   },
 
@@ -197,12 +196,10 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    flex: 1,
     paddingBottom: SpacingM10,
     gap: SpacingM6,
   },
   content: {
-    flex: 1,
     gap: SpacingM2,
   },
 });
