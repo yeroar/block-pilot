@@ -54,7 +54,7 @@ export default function PreviewBuy({
       <View style={[styles.body]}>
         <View style={styles.amountSection}>
           <CurrencyInput
-            amount={`$${amountStr}`}
+            amount={`$${amountStr}` + ".00"}
             topSlot={<TopContext variant="btc" fiatAmount={`$${amountStr}`} />}
             bottomSlot={
               <BottomContext
@@ -68,9 +68,8 @@ export default function PreviewBuy({
 
         <ConfirmationTradeBitcoin
           price="$100,000.00"
-          amount="$99.00"
+          amount={`$${amountStr}` + ".00"}
           feePercentLabel="1%"
-          feeValue="+ $1.00"
         />
       </View>
 

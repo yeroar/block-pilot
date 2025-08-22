@@ -17,24 +17,54 @@ type Props = {
   price?: string; // e.g. "$100,000.00"
   amount?: string; // e.g. "$99.00"
   feePercentLabel?: string; // chip label, e.g. "1%"
-  feeValue?: string; // e.g. "+ $1.00"
+  feePercent?: number; // optional numeric percent to calculate fee
+  feeValue?: string; // optional precomputed fee string, e.g. "+ $1.00"
 };
 
 const ConfirmationTradeBitcoin: React.FC<Props> = ({
   price = "$100,000.00",
   amount = "$99.00",
   feePercentLabel = "1%",
-  feeValue = "+ $1.00",
+  feePercent,
+  feeValue,
 }) => {
+  // parse amount like "$99.00" -> 99
+  const parseMoney = (s?: string) => {
+    if (!s) return 0;
+    const n = parseFloat(s.replace(/[^0-9.]/g, ""));
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const amountNum = parseMoney(amount);
+
+  // determine numeric percent (prefer explicit prop)
+  const numericPercent =
+    typeof feePercent === "number"
+      ? feePercent
+      : (() => {
+          if (!feePercentLabel) return 0;
+          const parsed = parseFloat(feePercentLabel.replace(/[^0-9.]/g, ""));
+          return Number.isFinite(parsed) ? parsed : 0;
+        })();
+
+  // compute fee if not provided
+  const computedFee = amountNum * (numericPercent / 100);
+  const computedFeeValue = `+ $${computedFee.toFixed(2)}`;
+
+  const feeValueToShow = feeValue ?? computedFeeValue;
+  const feePercentLabelToShow =
+    feePercentLabel ??
+    (Number.isFinite(numericPercent) ? `${numericPercent}%` : "0%");
+
   return (
     <View style={styles.card}>
       <View style={styles.list}>
         <LineItem label="Bitcoin price" variable={price} />
         <LineItem label="Amount" variable={amount} />
         <LineItem
-          label="Amount"
-          variable={feeValue}
-          showChip={<Chip label={feePercentLabel} onPress={() => {}} />}
+          label="Fee"
+          variable={feeValueToShow}
+          showChip={<Chip label={feePercentLabelToShow} onPress={() => {}} />}
         />
       </View>
 
