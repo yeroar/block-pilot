@@ -31,7 +31,7 @@ const BottomContext: React.FC<BottomContextProps> = ({
       {content === "payment" && (
         <PMTile
           leadingSlot={selectedPayment?.icon}
-          label={selectedPayment?.subtitle || "Payment method"}
+          label={selectedPayment?.title + " " + selectedPayment?.subtitle}
           selected={true} // show selected state when payment is chosen
           enablePaymentSelection={true}
           onPaymentSelect={onPaymentSelect}

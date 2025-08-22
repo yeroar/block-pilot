@@ -49,7 +49,13 @@ const TopContext: React.FC<TopContextProps> = ({
 
   const showBtc =
     activeVariant === "btc" || (activeVariant === "auto" && btc !== null);
-  const primaryLabel = showBtc ? btcSymbolLabel ?? trimmed : trimmed;
+  // When we should show BTC, always render a BTC-formatted label.
+  // If fiat parsed to null -> treat as 0 and show "~฿0.000000".
+  const primaryLabel = showBtc
+    ? btc !== null
+      ? `~฿${btc.toFixed(6)}`
+      : "~฿0.000000"
+    : trimmed;
 
   const displayIcon = showBtc ? (
     <FoldText type="body-sm-bold-v2" style={{ marginRight: SpacingM1 }}>

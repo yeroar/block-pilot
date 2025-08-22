@@ -55,15 +55,7 @@ export default function PreviewBuy({
         <View style={styles.amountSection}>
           <CurrencyInput
             amount={`$${amountStr}`}
-            topSlot={
-              <TopContext
-                // choose variant: if a payment selected, show cash mode; otherwise show BTC conversion
-                variant={selectedPayment ? "cash" : "btc"}
-                label={selectedPayment?.title}
-                paymentType={selectedPayment?.key || null}
-                fiatAmount={`$${amountStr}`}
-              />
-            }
+            topSlot={<TopContext variant="btc" fiatAmount={`$${amountStr}`} />}
             bottomSlot={
               <BottomContext
                 content={selectedPayment ? "payment" : "addPayment"}

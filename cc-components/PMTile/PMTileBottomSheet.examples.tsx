@@ -73,14 +73,14 @@ export const CardsPaymentContentExample = ({
       id: "wells",
       title: "Wells Fargo",
       subtitle: "---- 0823",
-      icon: <BankIcon width={20} height={20} />,
+      icon: <CreditCardIcon width={20} height={20} />,
       chip: "5%",
     },
     {
       id: "chase",
       title: "Chase",
       subtitle: "---- 1234",
-      icon: <BankIcon width={20} height={20} />,
+      icon: <CreditCardIcon width={20} height={20} />,
       chip: "5%",
     },
   ];
@@ -130,14 +130,14 @@ export const BankPaymentContentExample = ({
       id: "wells",
       title: "Wells Fargo",
       subtitle: "---- 0823",
-      icon: <BankIcon width={20} height={20} />,
+      icon: <CreditCardIcon width={20} height={20} />,
       chip: "5%",
     },
     {
       id: "chase",
       title: "Chase",
       subtitle: "---- 1234",
-      icon: <BankIcon width={20} height={20} />,
+      icon: <CreditCardIcon width={20} height={20} />,
       chip: "5%",
     },
   ];
