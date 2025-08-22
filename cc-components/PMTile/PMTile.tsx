@@ -267,7 +267,7 @@ export default function PMTile({
       ? label
       : enablePaymentSelection &&
         selectedPayment.title !== "Select payment method"
-      ? selectedPayment.title
+      ? selectedPayment?.title
       : label;
 
   // Show slots if enabled or provided

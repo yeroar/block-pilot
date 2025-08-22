@@ -14,51 +14,64 @@ interface TopContextProps {
   isEmpty?: boolean;
   leadingIcon?: React.ReactNode;
   label?: string;
-  paymentType?: "bank" | "card" | null; // new prop to determine payment type
+  paymentType?: "bank" | "card" | null;
+  fiatAmount?: string;
 }
 
 const TopContext: React.FC<TopContextProps> = ({
   leadingIcon,
   label,
   paymentType,
+  fiatAmount,
 }) => {
   const trimmed = typeof label === "string" ? label.trim() : "";
-  const hasLabel = trimmed.length > 0;
-  // const hasIcon = !!leadingIcon;
 
-  // Determine icon based on payment type or fallback to provided icon
-  const displayIcon =
-    paymentType === "bank" ? (
-      <BankIcon width={16} height={16} />
-    ) : paymentType === "card" ? (
-      <CreditCardIcon width={16} height={16} />
-    ) : (
-      leadingIcon
-    );
+  // parse fiat -> btc
+  const parseFiat = (s?: string) => {
+    if (!s) return null;
+    const n = parseFloat(s.replace(/[^0-9.]/g, ""));
+    return Number.isFinite(n) ? n : null;
+  };
+  const fiat = parseFiat(fiatAmount);
+  const BTC_PRICE = 100000;
+  const btc = fiat ? fiat / BTC_PRICE : null;
+
+  // primary label uses BTC conversion when available, otherwise provided label
+  const btcSymbolLabel = btc ? `~฿${btc.toFixed(6)}` : null;
+  const primaryLabel = btcSymbolLabel ?? trimmed;
+
+  // when we have btc conversion, show a small ฿ symbol instead of icon
+  const displayIcon = btc ? (
+    <FoldText type="body-sm-bold-v2" style={{ marginRight: SpacingM1 }}>
+      ฿
+    </FoldText>
+  ) : paymentType === "bank" ? (
+    <BankIcon width={16} height={16} />
+  ) : paymentType === "card" ? (
+    <CreditCardIcon width={16} height={16} />
+  ) : (
+    leadingIcon
+  );
 
   const hasIcon = !!displayIcon;
 
-  // Empty: no label (icon-only is not supported)
-  if (!hasLabel) {
-    return <View style={styles.topContext} />;
-  }
+  if (!primaryLabel) return <View style={styles.topContext} />;
 
-  // icon + label
   if (hasIcon) {
     return (
       <View style={styles.topContext}>
         <View style={styles.inline}>
-          <View style={styles.iconMargin}>{displayIcon}</View>
-          <FoldText type="body-md-bold-v2">{trimmed}</FoldText>
+          <View>
+            <FoldText type="body-md-bold-v2">{primaryLabel}</FoldText>
+          </View>
         </View>
       </View>
     );
   }
 
-  // label only
   return (
     <View style={styles.topContext}>
-      <FoldText type="body-md-bold-v2">{trimmed}</FoldText>
+      <FoldText type="body-md-bold-v2">{primaryLabel}</FoldText>
     </View>
   );
 };
@@ -73,9 +86,6 @@ const styles = StyleSheet.create({
   inline: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  iconMargin: {
-    marginRight: SpacingM1,
   },
 });
 

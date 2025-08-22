@@ -11,7 +11,6 @@ import ActionBar from "../cc-components/ActionBar/ActionBar";
 import Button from "../cc-components/Button/Button";
 
 import { ChevronLeftIcon } from "../cc-components/assets/BlueSkyIcons/ChevronLeftIcon";
-import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
 
 import {
   LayerBackground,
@@ -21,7 +20,6 @@ import {
 } from "../generated-tokens/tokens";
 
 import ConfirmationTradeBitcoin from "../cc-components/Confirmation/ConfirmationTradeBitcoin";
-import PMTile from "../cc-components/PMTile/PMTile";
 import { PaymentMethod } from "../cc-components/PMTile/PMTile";
 
 type RouteParams = { amountStr?: string };
@@ -58,8 +56,9 @@ export default function PreviewBuy({
             amount={`$${amountStr}`}
             topSlot={
               <TopContext
-                leadingIcon={<CalendarIcon width={16} height={16} />}
-                label={"Weekly"}
+                // only show the Bitcoin icon when there is no fiat amount and no selected payment
+                label={selectedPayment?.title}
+                fiatAmount={`$${amountStr}`} // ensure BTC conversion appears as primary label
               />
             }
             bottomSlot={

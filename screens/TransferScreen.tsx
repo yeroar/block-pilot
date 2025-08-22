@@ -98,6 +98,7 @@ const TransferScreen: React.FC = () => {
                 <TopContext
                   leadingIcon={<CalendarIcon width={16} height={16} />}
                   label="Weekly"
+                  fiatAmount={`$${amountStr}`} // show BTC conversion in top context
                 />
               }
               bottomSlot={
