@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import ActionTile from "../PMTile/PMTile";
+import PMTile from "../PMTile/PMTile";
 import Button from "../Button/Button";
 import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
@@ -18,10 +18,6 @@ const BottomContext: React.FC<BottomContextProps> = ({
   selectedPayment,
   onPaymentSelect,
 }) => {
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
-
-  if (!content || content === "empty") return null;
-
   return (
     <View style={styles.bottomContext}>
       {content === "maxButton" && (
@@ -33,19 +29,19 @@ const BottomContext: React.FC<BottomContextProps> = ({
         />
       )}
       {content === "payment" && (
-        <ActionTile
+        <PMTile
           leadingSlot={selectedPayment?.icon}
-          label={selectedPayment?.title || "Wells Fargo ---- 0823"}
-          selected={false}
+          label={selectedPayment?.subtitle || "Payment method"}
+          selected={true} // show selected state when payment is chosen
           enablePaymentSelection={true}
           onPaymentSelect={onPaymentSelect}
         />
       )}
       {content === "addPayment" && (
-        <ActionTile
+        <PMTile
           label="Add payment method"
           trailingSlot={<PlusCircleIcon width={16} height={16} />}
-          selected={true}
+          selected={false} // not selected when no payment chosen
           enablePaymentSelection={true}
           onPaymentSelect={onPaymentSelect}
         />

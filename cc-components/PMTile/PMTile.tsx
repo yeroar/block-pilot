@@ -258,28 +258,28 @@ export default function PMTile({
     insets.top,
   ]);
 
-  // Display logic for payment selection mode
+  // Display logic for payment selection mode - prioritize props over internal state
+  const displayLeadingSlot =
+    leadingSlot || (enablePaymentSelection ? undefined : selectedPayment.icon);
+
   const displayLabel =
-    enablePaymentSelection && selectedPayment.title !== "Select payment method"
+    label !== "Select payment method"
+      ? label
+      : enablePaymentSelection &&
+        selectedPayment.title !== "Select payment method"
       ? selectedPayment.title
       : label;
-
-  const displayLeadingSlot =
-    enablePaymentSelection && selectedPayment.title !== "Select payment method"
-      ? selectedPayment.icon
-      : leadingSlot;
-
-  const isSelected = enablePaymentSelection
-    ? selectedPayment.title !== "Select payment method"
-    : selected;
 
   // Show slots if enabled or provided
   const showLeading = leadingIcon || !!displayLeadingSlot;
   const showTrailing = trailingIcon || !!trailingSlot;
 
-  const backgroundColor = isSelected
-    ? ObjectPrimaryBoldDefault
-    : ObjectPrimarySubtleDefault;
+  const backgroundColor = selected
+    ? ObjectPrimarySubtleDefault // selected payment method gets subtle color
+    : enablePaymentSelection &&
+      selectedPayment.title !== "Select payment method"
+    ? ObjectPrimaryBoldDefault // "Add payment method" when clicked gets bold color
+    : ObjectPrimarySubtleDefault; // default state gets subtle color
 
   return (
     <>

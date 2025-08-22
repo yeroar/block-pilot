@@ -6,18 +6,37 @@ import {
   SpacingM5,
 } from "../../generated-tokens/tokens";
 import { FoldText } from "../Primitives/FoldText";
+import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
+import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 
 interface TopContextProps {
-  leadingSlot?: boolean; // ignored in simplified logic
-  isEmpty?: boolean; // ignored in simplified logic
+  leadingSlot?: boolean;
+  isEmpty?: boolean;
   leadingIcon?: React.ReactNode;
-  label?: string; // string-only
+  label?: string;
+  paymentType?: "bank" | "card" | null; // new prop to determine payment type
 }
 
-const TopContext: React.FC<TopContextProps> = ({ leadingIcon, label }) => {
+const TopContext: React.FC<TopContextProps> = ({
+  leadingIcon,
+  label,
+  paymentType,
+}) => {
   const trimmed = typeof label === "string" ? label.trim() : "";
   const hasLabel = trimmed.length > 0;
-  const hasIcon = !!leadingIcon;
+  // const hasIcon = !!leadingIcon;
+
+  // Determine icon based on payment type or fallback to provided icon
+  const displayIcon =
+    paymentType === "bank" ? (
+      <BankIcon width={16} height={16} />
+    ) : paymentType === "card" ? (
+      <CreditCardIcon width={16} height={16} />
+    ) : (
+      leadingIcon
+    );
+
+  const hasIcon = !!displayIcon;
 
   // Empty: no label (icon-only is not supported)
   if (!hasLabel) {
@@ -29,7 +48,7 @@ const TopContext: React.FC<TopContextProps> = ({ leadingIcon, label }) => {
     return (
       <View style={styles.topContext}>
         <View style={styles.inline}>
-          <View style={styles.iconMargin}>{leadingIcon}</View>
+          <View style={styles.iconMargin}>{displayIcon}</View>
           <FoldText type="body-md-bold-v2">{trimmed}</FoldText>
         </View>
       </View>

@@ -59,7 +59,7 @@ export default function PreviewBuy({
             topSlot={
               <TopContext
                 leadingIcon={<CalendarIcon width={16} height={16} />}
-                label="Weekly"
+                label={"Weekly"}
               />
             }
             bottomSlot={
