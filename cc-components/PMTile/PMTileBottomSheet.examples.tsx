@@ -174,6 +174,42 @@ export const BankPaymentContentExample = ({
   );
 };
 
+export const getCardDetails = (id: string) => {
+  const cards = {
+    wells: {
+      key: "card",
+      icon: <CreditCardIcon width={20} height={20} />,
+      title: "Wells Fargo",
+      subtitle: "---- 0823",
+    },
+    chase: {
+      key: "card",
+      icon: <CreditCardIcon width={20} height={20} />,
+      title: "Chase",
+      subtitle: "---- 1234",
+    },
+  };
+  return cards[id];
+};
+
+export const getBankDetails = (id: string) => {
+  const banks = {
+    wells: {
+      key: "bank",
+      icon: <BankIcon width={20} height={20} />,
+      title: "Wells Fargo",
+      subtitle: "---- 0823",
+    },
+    chase: {
+      key: "bank",
+      icon: <BankIcon width={20} height={20} />,
+      title: "Chase",
+      subtitle: "---- 1234",
+    },
+  };
+  return banks[id];
+};
+
 const styles = StyleSheet.create({
   // Main container for the list design
   listContainer: {

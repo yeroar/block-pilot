@@ -17,6 +17,7 @@ import {
   LayerBackground,
   SpacingM5,
   BorderRadiusDefault,
+  SpacingM2,
 } from "../../generated-tokens/tokens";
 import {
   EmptyPaymentContentExample,
@@ -320,6 +321,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between", // match list rows
     height: SpacingM8,
+    paddingHorizontal: SpacingM4,
+    borderRadius: BorderRadiusDefault,
+    gap: SpacingM2,
   },
   sheetBackground: {
     backgroundColor: LayerBackground,

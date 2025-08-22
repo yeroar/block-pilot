@@ -99,12 +99,10 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: LayerBackground,
-    paddingHorizontal: SpacingM2, // moved from App.js
+    paddingHorizontal: SpacingM4,
   },
   body: {
     flex: 1,
-    gap: SpacingM0,
-    paddingHorizontal: SpacingM4, // additional padding if needed
   },
   amountSection: {
     alignItems: "center",
