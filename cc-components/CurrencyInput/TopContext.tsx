@@ -16,6 +16,7 @@ interface TopContextProps {
   label?: string;
   paymentType?: "bank" | "card" | null;
   fiatAmount?: string;
+  variant?: "btc" | "cash" | "auto"; // new
 }
 
 const TopContext: React.FC<TopContextProps> = ({
@@ -23,6 +24,7 @@ const TopContext: React.FC<TopContextProps> = ({
   label,
   paymentType,
   fiatAmount,
+  variant,
 }) => {
   const trimmed = typeof label === "string" ? label.trim() : "";
 
@@ -32,16 +34,24 @@ const TopContext: React.FC<TopContextProps> = ({
     const n = parseFloat(s.replace(/[^0-9.]/g, ""));
     return Number.isFinite(n) ? n : null;
   };
-  const fiat = parseFiat(fiatAmount);
+  const fiat = parseFiat(fiatAmount); // returns 0 for "$0"
   const BTC_PRICE = 100000;
-  const btc = fiat ? fiat / BTC_PRICE : null;
+  const btc = fiat !== null ? fiat / BTC_PRICE : null; // treat 0 as valid
 
   // primary label uses BTC conversion when available, otherwise provided label
-  const btcSymbolLabel = btc ? `~฿${btc.toFixed(6)}` : null;
-  const primaryLabel = btcSymbolLabel ?? trimmed;
+  const btcSymbolLabel = btc !== null ? `~฿${btc.toFixed(6)}` : null;
 
-  // when we have btc conversion, show a small ฿ symbol instead of icon
-  const displayIcon = btc ? (
+  // variant controls display:
+  // - "btc": show BTC conversion as primary label + ฿ icon
+  // - "cash": show provided label / payment icons
+  // - "auto": fallback to conversion when fiat is provided, otherwise label
+  const activeVariant = (variant ?? "auto") as "btc" | "cash" | "auto";
+
+  const showBtc =
+    activeVariant === "btc" || (activeVariant === "auto" && btc !== null);
+  const primaryLabel = showBtc ? btcSymbolLabel ?? trimmed : trimmed;
+
+  const displayIcon = showBtc ? (
     <FoldText type="body-sm-bold-v2" style={{ marginRight: SpacingM1 }}>
       ฿
     </FoldText>

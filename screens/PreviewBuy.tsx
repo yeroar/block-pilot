@@ -31,11 +31,12 @@ export default function PreviewBuy({
 }) {
   const amountStr = route?.params?.amountStr ?? "0";
   const amountNum = parseFloat(amountStr) || 0;
-  const previewDisabled = amountNum < 10;
 
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(
     null
   );
+  // disable preview until amount is valid AND a payment method is selected
+  const previewDisabled = amountNum < 10 || !selectedPayment;
 
   const handlePaymentSelect = (pm: PaymentMethod) => {
     setSelectedPayment(pm);
@@ -56,9 +57,11 @@ export default function PreviewBuy({
             amount={`$${amountStr}`}
             topSlot={
               <TopContext
-                // only show the Bitcoin icon when there is no fiat amount and no selected payment
+                // choose variant: if a payment selected, show cash mode; otherwise show BTC conversion
+                variant={selectedPayment ? "cash" : "btc"}
                 label={selectedPayment?.title}
-                fiatAmount={`$${amountStr}`} // ensure BTC conversion appears as primary label
+                paymentType={selectedPayment?.key || null}
+                fiatAmount={`$${amountStr}`}
               />
             }
             bottomSlot={
@@ -85,7 +88,6 @@ export default function PreviewBuy({
           variant="primary"
           size="lg"
           onPress={() => {}}
-          disabled={previewDisabled}
         />
       </ActionBar>
     </View>
