@@ -7,26 +7,23 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ObjectPrimaryBoldDefault,
   ObjectPrimarySubtleDefault,
-  SpacingM1,
-  BorderRadiusRounded,
   SpacingM4,
   SpacingM8,
   LayerBackground,
   SpacingM5,
-  SpacingM0,
-  SpacingM3,
-  SpacingM16,
-  SpacingM6,
+  BorderRadiusDefault,
 } from "../../generated-tokens/tokens";
 import {
   EmptyPaymentContentExample,
   CardsPaymentContentExample,
+  BankPaymentContentExample,
+  getCardDetails,
+  getBankDetails,
 } from "./PMTileBottomSheet.examples";
 import FoldPageViewHeader from "../FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../FoldPageViewHeader/StackControl";
@@ -100,53 +97,17 @@ export default function PMTile({
   const handleSpecificPaymentSelect = useCallback(
     (paymentId: string) => {
       if (sheetMode === "bank") {
-        const bankDetails = {
-          chase: {
-            key: "bank" as const,
-            icon: <BankIcon width={20} height={20} />,
-            title: "Chase Checking",
-            subtitle: "****0823",
-          },
-          wells: {
-            key: "bank" as const,
-            icon: <BankIcon width={20} height={20} />,
-            title: "Wells Fargo Savings",
-            subtitle: "****1234",
-          },
-          boa: {
-            key: "bank" as const,
-            icon: <BankIcon width={20} height={20} />,
-            title: "Bank of America Checking",
-            subtitle: "****5678",
-          },
-        }[paymentId];
-
+        const bankDetails = getBankDetails(paymentId) as
+          | PaymentMethod
+          | undefined;
         if (bankDetails) {
           setSelectedPayment(bankDetails);
           onPaymentSelect?.(bankDetails);
         }
       } else if (sheetMode === "card") {
-        const cardDetails = {
-          visa: {
-            key: "card" as const,
-            icon: <CreditCardIcon width={20} height={20} />,
-            title: "Visa Debit Card",
-            subtitle: "****1234",
-          },
-          mastercard: {
-            key: "card" as const,
-            icon: <CreditCardIcon width={20} height={20} />,
-            title: "Mastercard Credit",
-            subtitle: "****5678",
-          },
-          amex: {
-            key: "card" as const,
-            icon: <CreditCardIcon width={20} height={20} />,
-            title: "American Express",
-            subtitle: "****9012",
-          },
-        }[paymentId];
-
+        const cardDetails = getCardDetails(paymentId) as
+          | PaymentMethod
+          | undefined;
         if (cardDetails) {
           setSelectedPayment(cardDetails);
           onPaymentSelect?.(cardDetails);
@@ -229,7 +190,7 @@ export default function PMTile({
       return (
         <BottomSheetView style={[styles.sheetContent]}>
           <FoldPageViewHeader
-            style={{ marginTop: -insets.top, marginBottom: SpacingM6 }}
+            style={{ marginTop: -insets.top }}
             title={getTitle()}
             leftComponent={
               <StackControl
@@ -239,7 +200,9 @@ export default function PMTile({
               />
             }
           />
-          <View style={styles.sheetBody}>
+
+          {/* rounded panel wraps the list + action bar so corners clip correctly */}
+          <View style={styles.roundedPanel}>
             {sheetMode === "select" && (
               <EmptyPaymentContentExample onSelect={handleSelectPm} />
             )}
@@ -251,21 +214,23 @@ export default function PMTile({
             )}
 
             {sheetMode === "bank" && (
-              // render bank-specific list or reuse a bank example component
-              <EmptyPaymentContentExample onSelect={handleSelectPm} />
-            )}
-
-            {showActionBar && (
-              <ActionBar>
-                <Button
-                  label="Use this payment method"
-                  variant="primary"
-                  size="lg"
-                  onPress={() => bottomSheetRef.current?.dismiss()}
-                />
-              </ActionBar>
+              <BankPaymentContentExample
+                onSelect={(accountId) => handleSpecificPaymentSelect(accountId)}
+              />
             )}
           </View>
+
+          {/* moved ActionBar into its own footer view so it doesn't get mixed with the sheet body */}
+          {showActionBar && (
+            <ActionBar style={{ marginBottom: insets.bottom + SpacingM4 }}>
+              <Button
+                label="Use this payment method"
+                variant="primary"
+                size="lg"
+                onPress={() => bottomSheetRef.current?.dismiss()}
+              />
+            </ActionBar>
+          )}
         </BottomSheetView>
       );
     } catch (error) {
@@ -317,8 +282,8 @@ export default function PMTile({
 
   return (
     <>
-      <FoldPressable onPress={handlePress} style={style} {...rest}>
-        <View style={[styles.container, { backgroundColor }]}>
+      <FoldPressable onPress={handlePress} {...rest}>
+        <View style={[styles.tileContainer, { backgroundColor }]}>
           {showLeading && displayLeadingSlot}
           <FoldText type="body-sm-bold-v2" style={textStyle}>
             {displayLabel}
@@ -350,13 +315,11 @@ export default function PMTile({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  tileContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between", // match list rows
     height: SpacingM8,
-    paddingHorizontal: SpacingM4,
-    borderRadius: BorderRadiusRounded,
   },
   sheetBackground: {
     backgroundColor: LayerBackground,
@@ -369,7 +332,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: SpacingM4,
   },
 
-  sheetBody: {
-    paddingBottom: SpacingM16,
+  // panel that groups the list + action bar so corners are rounded/clipped
+  roundedPanel: {
+    overflow: "hidden",
+    marginTop: SpacingM5,
+    borderRadius: BorderRadiusDefault,
   },
 });

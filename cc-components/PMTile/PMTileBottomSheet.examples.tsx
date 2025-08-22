@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Pressable, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Selector from "../Selector/Selector";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
-import {
-  BorderRadiusDefault,
-  SpacingM6,
-  SpacingM4,
-  SpacingM10,
-  SpacingM0,
-  SpacingM16,
-} from "../../generated-tokens/tokens";
+import Chip from "../Chip/Chip";
 import ActionBar from "../ActionBar/ActionBar";
 import Button from "../Button/Button";
+import {
+  LayerSecondary,
+  BorderSecondary,
+  BorderRadiusDefault,
+  SpacingM1,
+  SpacingM16,
+} from "../../generated-tokens/tokens";
 
 // Minimal items for selection
 const bankMethod = {
@@ -31,33 +31,36 @@ const cardMethod = {
   subsubtitle: "n.n% deposit fee ($n.nn min)",
 };
 
-// Only export this example
+// Only export this example - updated to match card/bank styling
 export const EmptyPaymentContentExample = ({
   onSelect,
 }: {
   onSelect?: (pm: { key: "bank" | "card" }) => void;
 }) => (
-  <View style={styles.content}>
-    <Selector
-      variant="navigation"
-      title={bankMethod.title}
-      subtext={bankMethod.subtitle}
-      footnote={bankMethod.subsubtitle}
-      showLeadingIcon={bankMethod.icon}
-      onPress={() => onSelect?.({ key: "bank" })}
-    />
-    <Selector
-      variant="navigation"
-      title={cardMethod.title}
-      subtext={cardMethod.subtitle}
-      footnote={cardMethod.subsubtitle}
-      showLeadingIcon={cardMethod.icon}
-      onPress={() => onSelect?.({ key: "card" })}
-    />
+  <View style={[styles.listContainer, styles.addPaymentContainer]}>
+    <View style={styles.selectorList}>
+      <Selector
+        variant="navigation"
+        title={bankMethod.title}
+        subtext={bankMethod.subtitle}
+        footnote={bankMethod.subsubtitle}
+        showLeadingIcon={bankMethod.icon}
+        onPress={() => onSelect?.({ key: "bank" })}
+      />
+      <View style={styles.divider} />
+      <Selector
+        variant="navigation"
+        title={cardMethod.title}
+        subtext={cardMethod.subtitle}
+        footnote={cardMethod.subsubtitle}
+        showLeadingIcon={cardMethod.icon}
+        onPress={() => onSelect?.({ key: "card" })}
+      />
+    </View>
   </View>
 );
 
-// New: card samples rendered as radio list
+// Updated: card samples with chip indicators matching the Figma design
 export const CardsPaymentContentExample = ({
   onSelect,
 }: {
@@ -67,38 +70,39 @@ export const CardsPaymentContentExample = ({
 
   const cards = [
     {
-      id: "visa",
-      title: "Visa Debit Card",
-      subtitle: "**** 1234",
-      icon: <CreditCardIcon width={20} height={20} />,
+      id: "wells",
+      title: "Wells Fargo",
+      subtitle: "---- 0823",
+      icon: <BankIcon width={20} height={20} />,
+      chip: "5%",
     },
     {
-      id: "mastercard",
-      title: "Mastercard Credit",
-      subtitle: "**** 5678",
-      icon: <CreditCardIcon width={20} height={20} />,
-    },
-    {
-      id: "amex",
-      title: "American Express",
-      subtitle: "**** 9012",
-      icon: <CreditCardIcon width={20} height={20} />,
+      id: "chase",
+      title: "Chase",
+      subtitle: "---- 1234",
+      icon: <BankIcon width={20} height={20} />,
+      chip: "5%",
     },
   ];
 
   return (
-    <View style={styles.content}>
-      {cards.map((c) => (
-        <Selector
-          key={c.id}
-          variant="radio"
-          title={c.title}
-          subtext={c.subtitle}
-          showLeadingIcon={c.icon}
-          selected={selectedCard === c.id}
-          onPress={() => setSelectedCard(c.id)}
-        />
-      ))}
+    <View style={styles.listContainer}>
+      <View style={styles.selectorList}>
+        {cards.map((card, index) => (
+          <React.Fragment key={card.id}>
+            <Selector
+              variant="radio"
+              title={card.title}
+              subtext={card.subtitle}
+              showLeadingIcon={card.icon}
+              hasChip={<Chip label={card.chip} onPress={() => {}} />}
+              selected={selectedCard === card.id}
+              onPress={() => setSelectedCard(card.id)}
+            />
+            {index < cards.length - 1 && <View style={styles.divider} />}
+          </React.Fragment>
+        ))}
+      </View>
 
       <ActionBar>
         <Button
@@ -113,7 +117,7 @@ export const CardsPaymentContentExample = ({
   );
 };
 
-// New: bank accounts list with same confirmation action
+// Updated: bank accounts with same design pattern as cards
 export const BankPaymentContentExample = ({
   onSelect,
 }: {
@@ -123,38 +127,39 @@ export const BankPaymentContentExample = ({
 
   const accounts = [
     {
-      id: "chase",
-      title: "Chase Checking",
-      subtitle: "****0823",
-      icon: <BankIcon width={20} height={20} />,
-    },
-    {
       id: "wells",
-      title: "Wells Fargo Savings",
-      subtitle: "****1234",
+      title: "Wells Fargo",
+      subtitle: "---- 0823",
       icon: <BankIcon width={20} height={20} />,
+      chip: "5%",
     },
     {
-      id: "boa",
-      title: "Bank of America Checking",
-      subtitle: "****5678",
+      id: "chase",
+      title: "Chase",
+      subtitle: "---- 1234",
       icon: <BankIcon width={20} height={20} />,
+      chip: "5%",
     },
   ];
 
   return (
-    <View style={styles.content}>
-      {accounts.map((a) => (
-        <Selector
-          key={a.id}
-          variant="radio"
-          title={a.title}
-          subtext={a.subtitle}
-          showLeadingIcon={a.icon}
-          selected={selectedAccount === a.id}
-          onPress={() => setSelectedAccount(a.id)}
-        />
-      ))}
+    <View style={styles.listContainer}>
+      <View style={styles.selectorList}>
+        {accounts.map((account, index) => (
+          <React.Fragment key={account.id}>
+            <Selector
+              variant="radio"
+              title={account.title}
+              subtext={account.subtitle}
+              showLeadingIcon={account.icon}
+              hasChip={<Chip label={account.chip} onPress={() => {}} />}
+              selected={selectedAccount === account.id}
+              onPress={() => setSelectedAccount(account.id)}
+            />
+            {index < accounts.length - 1 && <View style={styles.divider} />}
+          </React.Fragment>
+        ))}
+      </View>
 
       <ActionBar>
         <Button
@@ -170,63 +175,31 @@ export const BankPaymentContentExample = ({
 };
 
 const styles = StyleSheet.create({
-  content: {
-    borderRadius: BorderRadiusDefault,
-    overflow: "hidden",
-    marginBottom: SpacingM16, // decreased bottom spacing per request
-    gap: 1,
-    backgroundColor: "transparent",
+  // Main container for the list design
+  listContainer: {
+    gap: SpacingM1,
   },
 
-  cardRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: SpacingM4,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ECECEC",
-    backgroundColor: "transparent",
+  // Modifier for add payment method (no action bar)
+  addPaymentContainer: {
+    marginBottom: SpacingM16,
   },
-  cardLeft: {
-    width: 36,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 12,
+
+  // Container for selector items with background and borders
+  selectorList: {
+    backgroundColor: LayerSecondary,
+    borderRadius: BorderRadiusDefault,
+    overflow: "hidden",
   },
-  cardMiddle: {
-    flex: 1,
-    justifyContent: "center",
+
+  // Divider between selector items
+  divider: {
+    height: 1,
+    backgroundColor: BorderSecondary,
   },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  cardSubtitle: {
-    fontSize: 13,
-    color: "#666",
-    marginTop: 2,
-  },
-  cardRight: {
-    width: 36,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  radioOuter: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 1.5,
-    borderColor: "#C4C4C4",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  radioOuterSelected: {
-    borderColor: "#007AFF",
-  },
-  radioInner: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: "#007AFF",
+
+  // Legacy styles kept for backward compatibility
+  content: {
+    gap: 1,
   },
 });
