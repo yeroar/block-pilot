@@ -5,31 +5,22 @@ import Button from "../Button/Button";
 import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import { SpacingM8 } from "../../generated-tokens/tokens";
+import { PaymentMethod } from "../PMTile/PMTile";
 
 interface BottomContextProps {
   content?: "maxButton" | "empty" | "payment" | "addPayment";
-  onPaymentChange?: (paymentId: string) => void;
+  selectedPayment?: PaymentMethod | null;
+  onPaymentSelect?: (pm: PaymentMethod) => void;
 }
 
 const BottomContext: React.FC<BottomContextProps> = ({
   content = "maxButton",
-  onPaymentChange,
+  selectedPayment,
+  onPaymentSelect,
 }) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   if (!content || content === "empty") return null;
-
-  const handlePMTilePress = () => {
-    setShowBottomSheet(true);
-  };
-
-  const handlePaymentSelect = (paymentId: string) => {
-    onPaymentChange?.(paymentId);
-  };
-
-  const handleAddPayment = () => {
-    console.log("Navigate to add payment flow");
-  };
 
   return (
     <View style={styles.bottomContext}>
@@ -43,10 +34,11 @@ const BottomContext: React.FC<BottomContextProps> = ({
       )}
       {content === "payment" && (
         <ActionTile
-          leadingSlot={<BankIcon width={16} height={16} />}
-          label="Wells Fargo ---- 0823"
+          leadingSlot={selectedPayment?.icon}
+          label={selectedPayment?.title || "Wells Fargo ---- 0823"}
           selected={false}
-          onPress={handlePMTilePress}
+          enablePaymentSelection={true}
+          onPaymentSelect={onPaymentSelect}
         />
       )}
       {content === "addPayment" && (
@@ -54,7 +46,8 @@ const BottomContext: React.FC<BottomContextProps> = ({
           label="Add payment method"
           trailingSlot={<PlusCircleIcon width={16} height={16} />}
           selected={true}
-          onPress={handlePMTilePress}
+          enablePaymentSelection={true}
+          onPaymentSelect={onPaymentSelect}
         />
       )}
     </View>

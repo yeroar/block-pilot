@@ -22,6 +22,7 @@ import {
 
 import ConfirmationTradeBitcoin from "../cc-components/Confirmation/ConfirmationTradeBitcoin";
 import PMTile from "../cc-components/PMTile/PMTile";
+import { PaymentMethod } from "../cc-components/PMTile/PMTile";
 
 type RouteParams = { amountStr?: string };
 
@@ -34,11 +35,13 @@ export default function PreviewBuy({
   const amountNum = parseFloat(amountStr) || 0;
   const previewDisabled = amountNum < 10;
 
-  const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(
+    null
+  );
 
-  const handlePaymentChange = (paymentId: string) => {
-    setSelectedPayment(paymentId);
-    console.log("Payment selected:", paymentId);
+  const handlePaymentSelect = (pm: PaymentMethod) => {
+    setSelectedPayment(pm);
+    console.log("Payment selected:", pm);
   };
 
   return (
@@ -48,12 +51,6 @@ export default function PreviewBuy({
         leftComponent={
           <StackControl variant="left" leadingSlot={<ChevronLeftIcon />} />
         }
-      />
-      <PMTile
-        label="test"
-        selected={true}
-        enablePaymentSelection={true}
-        onPaymentSelect={(pm) => console.log("Payment selected:", pm)}
       />
       <View style={[styles.body]}>
         <View style={styles.amountSection}>
@@ -67,8 +64,9 @@ export default function PreviewBuy({
             }
             bottomSlot={
               <BottomContext
-                content="addPayment"
-                onPaymentChange={handlePaymentChange}
+                content={selectedPayment ? "payment" : "addPayment"}
+                selectedPayment={selectedPayment}
+                onPaymentSelect={handlePaymentSelect}
               />
             }
           />
