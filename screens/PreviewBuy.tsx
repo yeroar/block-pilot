@@ -76,10 +76,11 @@ export default function PreviewBuy({
 
       <ActionBar>
         <Button
-          label="Preview buy"
+          label="Confirm buy"
           variant="primary"
           size="lg"
           onPress={() => {}}
+          disabled={previewDisabled}
         />
       </ActionBar>
     </View>
