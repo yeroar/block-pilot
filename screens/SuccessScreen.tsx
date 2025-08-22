@@ -30,25 +30,16 @@ export default function SuccessScreen({ navigation, route }: Props) {
       <FoldPageViewHeader
         title="Buy initiated"
         leftComponent={
-          <StackControl 
-            variant="left" 
-            leadingSlot={<ArrowNarrowLeftIcon />}
-          />
+          <StackControl variant="left" leadingSlot={<ArrowNarrowLeftIcon />} />
         }
         rightComponent={<StackControl variant="right" />}
       />
-      
+
       <View style={styles.body}>
         <View style={styles.amountSection}>
           <CurrencyInput
             amount={amount}
-            topSlot={
-              <TopContext 
-                label="10,000 sats"
-                variant="btc"
-                fiatAmount={amount}
-              />
-            }
+            topSlot={<TopContext variant="btc" fiatAmount={amount} />}
             bottomSlot={
               <Button
                 label="View details"
@@ -76,7 +67,7 @@ export default function SuccessScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: ObjectPrimaryBoldDefault, // Yellow background like design
+    backgroundColor: ObjectPrimaryBoldDefault, // Yellow background - no animation, instant appear
     paddingHorizontal: SpacingM4,
   },
   body: {

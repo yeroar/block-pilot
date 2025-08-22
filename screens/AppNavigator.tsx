@@ -21,7 +21,14 @@ export default function AppNavigator() {
     >
       <Stack.Screen name="Transfer" component={TransferScreen} />
       <Stack.Screen name="PreviewBuy" component={PreviewBuy} />
-      <Stack.Screen name="Success" component={SuccessScreen} />
+      <Stack.Screen
+        name="Success"
+        component={SuccessScreen}
+        options={{
+          animation: "fade", // Use fade instead of none
+          animationDuration: 0, // Make transition instant
+        }}
+      />
     </Stack.Navigator>
   );
 }
