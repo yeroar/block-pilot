@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../cc-components/FoldPageViewHeader/StackControl";
@@ -29,6 +30,7 @@ export default function PreviewBuy({
 }: {
   route?: { params?: RouteParams };
 }) {
+  const navigation = useNavigation<any>();
   const amountStr = route?.params?.amountStr ?? "0";
   const amountNum = parseFloat(amountStr) || 0;
 
@@ -78,7 +80,11 @@ export default function PreviewBuy({
           label="Confirm buy"
           variant="primary"
           size="lg"
-          onPress={() => {}}
+          onPress={() => {
+            if (!previewDisabled) {
+              navigation.navigate("Success", { amount: `$${amountStr}.00` });
+            }
+          }}
           disabled={previewDisabled}
         />
       </ActionBar>
