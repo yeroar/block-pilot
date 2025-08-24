@@ -11,6 +11,7 @@ import TopContext from "../cc-components/CurrencyInput/TopContext";
 import CustomKeyboard from "../cc-components/Keyboard/CustomKeyboard";
 import ActionBar from "../cc-components/ActionBar/ActionBar";
 import Button from "../cc-components/Button/Button";
+import Toast from "../cc-components/Toast/Toast";
 
 import { ChevronLeftIcon } from "../cc-components/assets/BlueSkyIcons/ChevronLeftIcon";
 import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
@@ -25,12 +26,30 @@ import { useShakeX } from "../cc-components/CurrencyInput/animations";
 
 const TransferScreen: React.FC = () => {
   const navigation = useNavigation<any>();
+
   // support decimals
   const [amountStr, setAmountStr] = useState<string>("0");
   const MAX_AMOUNT = 10000;
+  const [showToast, setShowToast] = useState(false);
+  const [toastConfig, setToastConfig] = useState<{
+    show: boolean;
+    variant?: "0%" | "50%" | "100%";
+    auto?: boolean;
+    dur?: number;
+  }>({ show: false });
 
   // use shared shake hook
   const { shakeX, triggerShake } = useShakeX();
+
+  // Auto-hide toast after 3 seconds
+  const showInsufficientFundsToast = () => {
+    setToastConfig({ show: true, variant: "100%", auto: true, dur: 1200 });
+    // hide after entrance + progress + small buffer (entrance 260ms + progressDuration)
+    setTimeout(
+      () => setToastConfig((c) => ({ ...c, show: false })),
+      260 + 1200 + 200
+    );
+  };
 
   const onKeyPress = (k: string) => {
     if (!k) return;
@@ -70,6 +89,7 @@ const TransferScreen: React.FC = () => {
         const num = parseFloat(candidate) || 0;
         if (num > MAX_AMOUNT) {
           triggerShake();
+          showInsufficientFundsToast();
           return prev; // block input
         }
         return candidate;
@@ -115,6 +135,7 @@ const TransferScreen: React.FC = () => {
 
         <CustomKeyboard onKeyPress={onKeyPress} />
       </View>
+
       <ActionBar>
         <Button
           label="Preview buy"
@@ -128,6 +149,20 @@ const TransferScreen: React.FC = () => {
           disabled={previewDisabled}
         />
       </ActionBar>
+
+      {/* Toast for insufficient funds */}
+      {toastConfig.show && (
+        <View style={styles.toastContainer}>
+          <Toast
+            title="Insufficient funds"
+            detail="Add funds to complete"
+            variant={toastConfig.variant}
+            autoProgress={toastConfig.auto}
+            progressDuration={toastConfig.dur}
+            animated={true}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -136,16 +171,23 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: LayerBackground,
-    paddingHorizontal: SpacingM4, // 16
+    paddingHorizontal: SpacingM4,
   },
   body: {
     flex: 1,
-    gap: SpacingM6, // 24
+    gap: SpacingM12,
   },
   amountSection: {
-    flex: 1,
     alignItems: "center",
     alignSelf: "stretch",
+    paddingVertical: SpacingM6,
+  },
+  toastContainer: {
+    position: "absolute",
+    top: 100, // Position below header
+    left: SpacingM4,
+    right: SpacingM4,
+    zIndex: 1000,
   },
 });
 
