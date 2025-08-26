@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import PMTile from "../PMTile/PMTile";
 import { ChevronDownIcon } from "../assets/BlueSkyIcons/ChevronDownIcon";
 import StandardBottomSheet from "../BottomSheet/StandardBottomSheet";
@@ -43,9 +44,10 @@ const FILTER_OPTIONS = {
   ],
   reward: [
     { id: "all", label: "All Rewards" },
-    { id: "1", label: "1% sats back" },
-    { id: "2", label: "2% sats back" },
     { id: "5", label: "5% sats back" },
+    { id: "15", label: "15% sats back" },
+    { id: "115", label: "115% sats back" },
+
     { id: "10", label: "10% sats back" },
   ],
 };
@@ -69,24 +71,11 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
   const snapPoints = useMemo(() => ["50%", "90%"], []);
 
   // Icons for location/category options — shared across sheet renderers
-  const locationIcons: Record<string, JSX.Element> = {
+  const locationIcons: Record<string, React.ReactNode> = {
     in_person: <MarkerPinIcon width={20} height={20} />,
     online: <GlobeIcon width={20} height={20} />,
     both: <HeartRoundedIcon width={20} height={20} />,
   };
-
-  // Backdrop component — prevent backdrop press from closing sheet
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        pressBehavior="none" // <- don't close on backdrop press
-      />
-    ),
-    []
-  );
 
   // Handle filter selection
   const handleFilterPress = useCallback(
@@ -148,7 +137,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
     const selectedValue =
       activeSheet === "category" ? tempSelectedCategory : tempSelectedReward;
 
-    const title = activeSheet === "category" ? "Location" : "Category";
+    const title = activeSheet === "category" ? "Location" : "Reward";
 
     return (
       // We keep the sheet body rendering separate and use StandardBottomSheet slots
@@ -195,7 +184,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
   const renderSheetHeader = () => (
     <FoldPageViewHeader
       style={{ marginTop: -insets.top }}
-      title={activeSheet === "category" ? "Location" : "Category"}
+      title={activeSheet === "category" ? "Location" : "Reward"}
       leftComponent={
         <StackControl
           variant="left"
@@ -306,16 +295,19 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
         />
       </View>
 
-      {/* Single shared StandardBottomSheet used for both category and reward */}
+      {/* Single shared StandardBottomSheet used for both category and reward
+          - headerSlot is required (FoldPageViewHeader)
+          - enableDynamicSizing makes the sheet hug header+content+footer
+          - footerSlot is optional (ActionBar) */}
       <StandardBottomSheet
         ref={sheetRef}
-        snapPoints={snapPoints}
+        enableDynamicSizing={true}
         enablePanDownToClose={false}
-        closeOnBackdropPress={false}
+        closeOnBackdropPress={true}
         onDismiss={handleSheetClose}
-        headerSlot={renderSheetHeader()}
+        headerSlot={renderSheetHeader()} // uses FoldPageViewHeader
         contentSlot={renderSheetBody()}
-        footerSlot={renderSheetFooter()}
+        footerSlot={renderSheetFooter() /* optional ActionBar */}
       />
     </>
   );

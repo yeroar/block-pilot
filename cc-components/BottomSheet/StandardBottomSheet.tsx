@@ -4,6 +4,7 @@ import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetBackdrop,
+  BottomSheetModalMethods,
 } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -32,9 +33,14 @@ export interface StandardBottomSheetProps {
   footerSlot?: React.ReactNode;
 
   /**
-   * Snap points for the bottom sheet
+   * Snap points for the bottom sheet - if not provided, will use dynamic sizing
    */
   snapPoints?: (string | number)[];
+
+  /**
+   * Use dynamic content-based sizing instead of fixed snap points
+   */
+  enableDynamicSizing?: boolean;
 
   /**
    * Enable pan down to close
@@ -58,7 +64,7 @@ export interface StandardBottomSheetProps {
 }
 
 const StandardBottomSheet = React.forwardRef<
-  BottomSheetModal,
+  BottomSheetModalMethods,
   StandardBottomSheetProps
 >(
   (
@@ -66,7 +72,8 @@ const StandardBottomSheet = React.forwardRef<
       headerSlot,
       contentSlot,
       footerSlot,
-      snapPoints = ["50%", "90%"],
+      snapPoints,
+      enableDynamicSizing = true, // default to dynamic sizing for "hug content"
       enablePanDownToClose = true,
       closeOnBackdropPress = false,
       onDismiss,
@@ -75,25 +82,47 @@ const StandardBottomSheet = React.forwardRef<
     ref
   ) => {
     const insets = useSafeAreaInsets();
-    const sheetRef = useRef<BottomSheetModal | null>(null);
+    // ref that holds the modal methods exposed by @gorhom/bottom-sheet
+    const sheetRef = useRef<BottomSheetModalMethods | null>(null);
+
+    // if using dynamic sizing we expect a header to properly position the sheet
+    if (enableDynamicSizing && !headerSlot && __DEV__) {
+      // runtime helper to catch incorrect usage early in development
+      // headerSlot is required for consistent top offset when sizing to content
+      // (you can still omit headerSlot in production but behaviour may differ)
+      // eslint-disable-next-line no-console
+      console.warn(
+        "StandardBottomSheet: enableDynamicSizing=true but no headerSlot provided. Provide a FoldPageViewHeader in headerSlot for correct layout."
+      );
+    }
+
+    // Use dynamic sizing or provided snap points
+    const snapPointsArray = useMemo(() => {
+      if (enableDynamicSizing) {
+        // For dynamic sizing, we still need valid snap points but the sheet will size to content
+        return ["100%", "100%"]; // fallback snap points when using dynamic sizing
+      }
+      return snapPoints || ["50%", "90%"];
+    }, [snapPoints, enableDynamicSizing]);
 
     // Expose methods via ref
-    React.useImperativeHandle(ref, () => ({
-      present: () => sheetRef.current?.present(),
-      dismiss: () => sheetRef.current?.dismiss(),
-      snapToIndex: (index: number) => sheetRef.current?.snapToIndex(index),
-      // added: delegate snapToPosition and forceClose to match BottomSheetModalMethods
-      snapToPosition: (position: number) =>
-        // some versions use snapToPosition; guard with optional chaining
-        (sheetRef.current as any)?.snapToPosition?.(position),
-      expand: () => sheetRef.current?.expand(),
-      collapse: () => sheetRef.current?.collapse(),
-      // added: forceClose if supported
-      forceClose: () => (sheetRef.current as any)?.forceClose?.(),
-      close: () => sheetRef.current?.close(),
-    }));
-
-    const snapPointsArray = useMemo(() => snapPoints, [snapPoints]);
+    React.useImperativeHandle(
+      ref,
+      () =>
+        ({
+          present: () => sheetRef.current?.present?.(),
+          dismiss: () => sheetRef.current?.dismiss?.(),
+          snapToIndex: (index: number) =>
+            sheetRef.current?.snapToIndex?.(index),
+          snapToPosition: (position: number) =>
+            (sheetRef.current as any)?.snapToPosition?.(position),
+          expand: () => sheetRef.current?.expand?.(),
+          collapse: () => sheetRef.current?.collapse?.(),
+          forceClose: () => (sheetRef.current as any)?.forceClose?.(),
+          close: () => (sheetRef.current as any)?.close?.(),
+        } as BottomSheetModalMethods),
+      []
+    );
 
     // Render backdrop with configurable behavior
     const renderBackdrop = useCallback(
@@ -115,8 +144,11 @@ const StandardBottomSheet = React.forwardRef<
 
     return (
       <BottomSheetModal
-        ref={sheetRef}
+        // BottomSheetModal expects a ref that resolves to BottomSheetModalMethods.
+        // sheetRef is typed as BottomSheetModalMethods | null — cast to any to satisfy JSX typing where required.
+        ref={sheetRef as any}
         snapPoints={snapPointsArray}
+        enableDynamicSizing={enableDynamicSizing}
         enablePanDownToClose={enablePanDownToClose}
         backdropComponent={renderBackdrop}
         onDismiss={handleDismiss}
@@ -124,13 +156,23 @@ const StandardBottomSheet = React.forwardRef<
         handleIndicatorStyle={styles.handleIndicator}
       >
         <BottomSheetView style={styles.container}>
-          {/* Header slot (not styled) */}
-          {headerSlot ? <View style={styles.header}>{headerSlot}</View> : null}
+          {/* Header slot */}
+          {headerSlot ? (
+            <View style={[styles.header]}>{headerSlot}</View>
+          ) : null}
 
-          {/* Content area — flexible, scrollable / takes available space */}
-          <View style={styles.contentArea}>{contentSlot}</View>
+          {/* Content area — wraps to content height when dynamic sizing enabled */}
+          <View
+            style={
+              enableDynamicSizing
+                ? styles.contentAreaDynamic
+                : styles.contentArea
+            }
+          >
+            {contentSlot}
+          </View>
 
-          {/* Footer slot — fixed bottom area, safe-area padded and visually separated */}
+          {/* Footer slot */}
           {footerSlot ? (
             <View style={[styles.footer, { paddingBottom: insets.bottom }]}>
               {footerSlot}
@@ -144,21 +186,25 @@ const StandardBottomSheet = React.forwardRef<
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // ensure header/content/footer stack vertically
+    // layout stacks header / content / footer vertically
     justifyContent: "flex-start",
+    paddingHorizontal: SpacingM4,
   },
   header: {
     width: "100%",
   },
-  // contentArea grows to fill space between header and footer
+  // Original content area for fixed snap points
   contentArea: {
     flex: 1,
     width: "100%",
   },
+  // Dynamic content area that wraps to content height
+  contentAreaDynamic: {
+    width: "100%",
+    alignSelf: "stretch",
+  },
   footer: {
     width: "100%",
-    // keep footer visually separate from content (no styling assumptions)
   },
   sheetBackground: {
     backgroundColor: LayerBackground,
