@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "../cc-components/SearchBar/SearchBar";
 import GiftCard from "../cc-components/GiftCard/GiftCard";
+import FilterLine from "../cc-components/SearchBar/FilterLine";
 
 export default function TestSearchScreen() {
   const [q, setQ] = useState("");
@@ -12,6 +13,10 @@ export default function TestSearchScreen() {
   useEffect(() => {
     setTimeout(() => testRef.current?.focus(), 100);
   }, []);
+
+  const handleFilterChange = (filterId: string, optionId: string) => {
+    console.log(`Filter ${filterId} changed to: ${optionId}`);
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -25,6 +30,10 @@ export default function TestSearchScreen() {
           testID="test-searchbar"
           autoFocus={true}
         />
+
+        <View style={{ height: 16 }} />
+
+        <FilterLine onFilterChange={handleFilterChange} />
 
         <View style={{ height: 16 }} />
 
