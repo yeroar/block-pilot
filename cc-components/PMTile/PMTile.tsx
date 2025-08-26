@@ -260,7 +260,15 @@ export default function PMTile({
 
   // Display logic for payment selection mode - prioritize props over internal state
   const displayLeadingSlot =
-    leadingSlot || (enablePaymentSelection ? undefined : selectedPayment.icon);
+    // explicit null wins (hide), undefined means fallback, otherwise use provided node
+    leadingSlot === null
+      ? undefined
+      : leadingSlot ??
+        (enablePaymentSelection ? undefined : selectedPayment.icon);
+
+  // Show leading only when explicitly requested or when a computed node exists
+  const showLeading =
+    leadingIcon === true || (!!displayLeadingSlot && leadingIcon !== false);
 
   const displayLabel =
     label !== "Select payment method"
@@ -271,7 +279,6 @@ export default function PMTile({
       : label;
 
   // Show slots if enabled or provided
-  const showLeading = leadingIcon || !!displayLeadingSlot;
   const showTrailing = trailingIcon || !!trailingSlot;
 
   const backgroundColor = selected

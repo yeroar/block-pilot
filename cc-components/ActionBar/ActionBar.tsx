@@ -13,7 +13,8 @@ import {
 import {
   SpacingM2,
   SpacingM4,
-  SpacingM10,
+  SpacingM6,
+  SpacingM8,
 } from "../../generated-tokens/tokens";
 
 type ActionBarProps = {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     gap: SpacingM2,
-    paddingVertical: SpacingM4,
+    paddingTop: SpacingM6,
   },
 });
 
