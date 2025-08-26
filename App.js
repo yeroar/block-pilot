@@ -7,6 +7,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { enableScreens } from "react-native-screens";
 import { LayerBackground, SpacingM2 } from "./generated-tokens/tokens";
 import AppNavigator from "./screens/AppNavigator";
+import TestSearchScreen from "./screens/TestSearchScreen";
 
 enableScreens(true);
 
@@ -15,9 +16,11 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <BottomSheetModalProvider>
-          <NavigationContainer>
-            <AppNavigator />
-          </NavigationContainer>
+          {/*
+            Temporarily rendering TestSearchScreen for quick search-bar testing.
+            The original navigator is commented out so we can iterate fast.
+          */}
+          <TestSearchScreen />
         </BottomSheetModalProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
