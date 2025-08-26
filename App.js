@@ -8,6 +8,8 @@ import { enableScreens } from "react-native-screens";
 import { LayerBackground, SpacingM2 } from "./generated-tokens/tokens";
 import AppNavigator from "./screens/AppNavigator";
 import TestSearchScreen from "./screens/TestSearchScreen";
+import TransferScreen from "./screens/TransferScreen";
+import PreviewBuy from "./screens/PreviewBuy";
 
 enableScreens(true);
 

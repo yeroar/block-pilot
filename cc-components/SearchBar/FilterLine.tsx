@@ -2,11 +2,7 @@ import React, { useState, useRef, useMemo, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import PMTile from "../PMTile/PMTile";
 import { ChevronDownIcon } from "../assets/BlueSkyIcons/ChevronDownIcon";
-import BottomSheet, {
-  BottomSheetView,
-  BottomSheetBackdrop,
-  BottomSheetModal,
-} from "@gorhom/bottom-sheet";
+import StandardBottomSheet from "../BottomSheet/StandardBottomSheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Selector from "../Selector/Selector";
 import ActionBar from "../ActionBar/ActionBar";
@@ -66,12 +62,18 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
     null
   );
 
-  // Bottom sheet refs
-  const categorySheetRef = useRef<BottomSheetModal>(null);
-  const rewardSheetRef = useRef<BottomSheetModal>(null);
+  // Single shared bottom sheet ref (use activeSheet to switch content)
+  const sheetRef = useRef<BottomSheetModal>(null);
 
   // Snap points for the bottom sheets
   const snapPoints = useMemo(() => ["50%", "90%"], []);
+
+  // Icons for location/category options — shared across sheet renderers
+  const locationIcons: Record<string, JSX.Element> = {
+    in_person: <MarkerPinIcon width={20} height={20} />,
+    online: <GlobeIcon width={20} height={20} />,
+    both: <HeartRoundedIcon width={20} height={20} />,
+  };
 
   // Backdrop component — prevent backdrop press from closing sheet
   const renderBackdrop = useCallback(
@@ -92,10 +94,10 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
       // initialize temp selection from the committed selection
       if (filterId === "category") {
         setTempSelectedCategory(selectedCategory);
-        categorySheetRef.current?.present();
+        sheetRef.current?.present();
       } else {
         setTempSelectedReward(selectedReward);
-        rewardSheetRef.current?.present();
+        sheetRef.current?.present();
       }
       setActiveSheet(filterId);
     },
@@ -148,15 +150,9 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
 
     const title = activeSheet === "category" ? "Location" : "Category";
 
-    // Icons for location/category options (used only when category/location sheet is open)
-    const locationIcons: Record<string, JSX.Element> = {
-      in_person: <MarkerPinIcon width={20} height={20} />,
-      online: <GlobeIcon width={20} height={20} />,
-      both: <HeartRoundedIcon width={20} height={20} />,
-    };
-
     return (
-      <BottomSheetView style={styles.sheetContent}>
+      // We keep the sheet body rendering separate and use StandardBottomSheet slots
+      <>
         <FoldPageViewHeader
           style={{ marginTop: -insets.top }}
           title={title}
@@ -164,11 +160,8 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
             <StackControl
               variant="left"
               onLeftPress={() => {
-                if (activeSheet === "category") {
-                  categorySheetRef.current?.dismiss();
-                } else {
-                  rewardSheetRef.current?.dismiss();
-                }
+                // dismiss the single shared sheet
+                sheetRef.current?.dismiss();
               }}
             />
           }
@@ -182,7 +175,6 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
                   variant="radio"
                   title={option.label}
                   selected={selectedValue === option.id}
-                  // if category (location) sheet, show the leading icon from map
                   showLeadingIcon={
                     activeSheet === "category"
                       ? locationIcons[option.id]
@@ -195,62 +187,105 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
             ))}
           </View>
         </View>
-
-        <ActionBar style={{ marginBottom: insets.bottom }}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: SpacingM3,
-            }}
-          >
-            <Button
-              style={{ flex: 1 }}
-              label="Clear"
-              variant="secondary"
-              size="lg"
-              onPress={() => {
-                // Reset both temp + committed to defaults and dismiss
-                if (activeSheet === "category") {
-                  setTempSelectedCategory("all");
-                  setSelectedCategory("all");
-                  onFilterChange?.("category", "all");
-                  categorySheetRef.current?.dismiss();
-                } else {
-                  setTempSelectedReward("all");
-                  setSelectedReward("all");
-                  onFilterChange?.("reward", "all");
-                  rewardSheetRef.current?.dismiss();
-                }
-              }}
-            />
-            <Button
-              style={{ flex: 1 }}
-              label="Apply"
-              variant="primary"
-              size="lg"
-              onPress={() => {
-                // Commit temporary selection and call onFilterChange only if non-default
-                if (activeSheet === "category") {
-                  setSelectedCategory(tempSelectedCategory);
-                  if (tempSelectedCategory !== "all") {
-                    onFilterChange?.("category", tempSelectedCategory);
-                  }
-                  categorySheetRef.current?.dismiss();
-                } else {
-                  setSelectedReward(tempSelectedReward);
-                  if (tempSelectedReward !== "all") {
-                    onFilterChange?.("reward", tempSelectedReward);
-                  }
-                  rewardSheetRef.current?.dismiss();
-                }
-              }}
-            />
-          </View>
-        </ActionBar>
-      </BottomSheetView>
+      </>
     );
   };
+
+  // header / content / footer slots for StandardBottomSheet
+  const renderSheetHeader = () => (
+    <FoldPageViewHeader
+      style={{ marginTop: -insets.top }}
+      title={activeSheet === "category" ? "Location" : "Category"}
+      leftComponent={
+        <StackControl
+          variant="left"
+          onLeftPress={() => {
+            // dismiss the single shared sheet
+            sheetRef.current?.dismiss();
+          }}
+        />
+      }
+    />
+  );
+
+  const renderSheetBody = () => {
+    const options =
+      activeSheet === "category"
+        ? FILTER_OPTIONS.category
+        : FILTER_OPTIONS.reward;
+    const selectedValue =
+      activeSheet === "category" ? tempSelectedCategory : tempSelectedReward;
+
+    return (
+      <View style={styles.roundedPanel}>
+        <View style={styles.selectorList}>
+          {options.map((option, index) => (
+            <React.Fragment key={option.id}>
+              <Selector
+                variant="radio"
+                title={option.label}
+                selected={selectedValue === option.id}
+                showLeadingIcon={
+                  activeSheet === "category"
+                    ? locationIcons[option.id]
+                    : undefined
+                }
+                onPress={() => handleOptionSelect(option.id)}
+              />
+              {index < options.length - 1 && <View style={styles.divider} />}
+            </React.Fragment>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderSheetFooter = () => (
+    <ActionBar>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", gap: SpacingM3 }}
+      >
+        <Button
+          style={{ flex: 1 }}
+          label="Clear"
+          variant="secondary"
+          size="lg"
+          onPress={() => {
+            if (activeSheet === "category") {
+              setTempSelectedCategory("all");
+              setSelectedCategory("all");
+              onFilterChange?.("category", "all");
+            } else {
+              setTempSelectedReward("all");
+              setSelectedReward("all");
+              onFilterChange?.("reward", "all");
+            }
+            sheetRef.current?.dismiss();
+          }}
+        />
+        <Button
+          style={{ flex: 1 }}
+          label="Apply"
+          variant="primary"
+          size="lg"
+          onPress={() => {
+            if (activeSheet === "category") {
+              setSelectedCategory(tempSelectedCategory);
+              if (tempSelectedCategory !== "all") {
+                onFilterChange?.("category", tempSelectedCategory);
+              }
+            } else {
+              setSelectedReward(tempSelectedReward);
+              if (tempSelectedReward !== "all") {
+                onFilterChange?.("reward", tempSelectedReward);
+              }
+            }
+            sheetRef.current?.dismiss();
+          }}
+        />
+      </View>
+    </ActionBar>
+  );
 
   return (
     <>
@@ -271,31 +306,17 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
         />
       </View>
 
-      {/* Category Bottom Sheet */}
-      <BottomSheetModal
-        ref={categorySheetRef}
+      {/* Single shared StandardBottomSheet used for both category and reward */}
+      <StandardBottomSheet
+        ref={sheetRef}
         snapPoints={snapPoints}
-        enablePanDownToClose={false} // only close via buttons
-        backdropComponent={renderBackdrop}
+        enablePanDownToClose={false}
+        closeOnBackdropPress={false}
         onDismiss={handleSheetClose}
-        backgroundStyle={styles.sheetBackground}
-        handleIndicatorStyle={styles.handleIndicator}
-      >
-        {renderSheetContent()}
-      </BottomSheetModal>
-
-      {/* Reward Bottom Sheet */}
-      <BottomSheetModal
-        ref={rewardSheetRef}
-        snapPoints={snapPoints}
-        enablePanDownToClose={false} // only close via buttons
-        backdropComponent={renderBackdrop}
-        onDismiss={handleSheetClose}
-        backgroundStyle={styles.sheetBackground}
-        handleIndicatorStyle={styles.handleIndicator}
-      >
-        {renderSheetContent()}
-      </BottomSheetModal>
+        headerSlot={renderSheetHeader()}
+        contentSlot={renderSheetBody()}
+        footerSlot={renderSheetFooter()}
+      />
     </>
   );
 }
@@ -315,9 +336,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     height: 0,
   },
-  sheetContent: {
-    paddingHorizontal: SpacingM4,
-  },
+  sheetContent: {},
   roundedPanel: {
     overflow: "hidden",
     marginTop: SpacingM5,
