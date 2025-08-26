@@ -41,6 +41,12 @@ import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon"
 import { CreditCardIcon } from "../cc-components/assets/BlueSkyIcons/CreditCardIcon";
 import { GlobeIcon } from "../cc-components/assets/BlueSkyIcons/GlobeIcon";
 import Chip from "../cc-components/Chip/Chip";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+
+export type RootStackParamList = {
+  TestSearch: undefined;
+  PreviewBuyGift: undefined;
+};
 
 export default function TestSearchScreen() {
   const insets = useSafeAreaInsets();
@@ -51,7 +57,8 @@ export default function TestSearchScreen() {
   // Bottom sheet state
   const giftSheetRef = useRef<any>(null);
   const purchaseSheetRef = useRef<any>(null);
-
+  // flag to indicate we're navigating to the preview screen (avoid reopening sheets)
+  const navigatingToPreviewRef = useRef(false);
   // When true we are transitioning from gift -> purchase sheet and should
   // preserve activeGift during the dismiss/present handoff.
   const transitioningToPurchaseRef = useRef(false);
@@ -61,6 +68,14 @@ export default function TestSearchScreen() {
     subtitle: string;
     logoUri?: string;
   } | null>(null);
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  // Add amount selection state
+  const [selectedAmount, setSelectedAmount] = useState<string | null>(null);
+
+  // previewDisabled when no amount is selected
+  const previewDisabled = !selectedAmount;
 
   useEffect(() => {
     setTimeout(() => testRef.current?.focus(), 100);
@@ -265,20 +280,20 @@ export default function TestSearchScreen() {
           <View style={styles.amountCell}>
             <Button
               label="$10"
-              variant="secondary"
+              variant={selectedAmount === "$10" ? "primary" : "secondary"}
               size="lg"
               onPress={() => {
-                /* select $10 */
+                setSelectedAmount("$10");
               }}
             />
           </View>
           <View style={styles.amountCell}>
             <Button
               label="$20"
-              variant="secondary"
+              variant={selectedAmount === "$20" ? "primary" : "secondary"}
               size="lg"
               onPress={() => {
-                /* select $20 */
+                setSelectedAmount("$20");
               }}
             />
           </View>
@@ -288,20 +303,20 @@ export default function TestSearchScreen() {
           <View style={styles.amountCell}>
             <Button
               label="$50"
-              variant="secondary"
+              variant={selectedAmount === "$50" ? "primary" : "secondary"}
               size="lg"
               onPress={() => {
-                /* select $50 */
+                setSelectedAmount("$50");
               }}
             />
           </View>
           <View style={styles.amountCell}>
             <Button
               label="$100"
-              variant="secondary"
+              variant={selectedAmount === "$100" ? "primary" : "secondary"}
               size="lg"
               onPress={() => {
-                /* select $100 */
+                setSelectedAmount("$100");
               }}
             />
           </View>
@@ -318,16 +333,33 @@ export default function TestSearchScreen() {
             label="Confirm purchase"
             variant="primary"
             size="lg"
+            disabled={previewDisabled}
             onPress={() => {
-              // handle confirm -> dismiss all sheets
-              purchaseSheetRef.current?.dismiss?.();
-              setActiveGift(null);
+              if (!previewDisabled) {
+                // mark that we're navigating so onDismiss won't reopen the gift sheet
+                navigatingToPreviewRef.current = true; // set first
+                purchaseSheetRef.current?.dismiss?.();
+                giftSheetRef.current?.dismiss?.();
+                setTimeout(() => {
+                  navigation.navigate("PreviewBuyGift");
+                  // keep flag until navigation completes / next tick
+                  setTimeout(
+                    () => (navigatingToPreviewRef.current = false),
+                    250
+                  );
+                }, 300);
+              }
             }}
           />
         </View>
       </View>
     </ActionBar>
   );
+
+  useEffect(() => {
+    if (!activeGift || navigatingToPreviewRef.current) return;
+    giftSheetRef.current?.present?.();
+  }, [activeGift]);
 
   return (
     <>
@@ -400,7 +432,17 @@ export default function TestSearchScreen() {
         closeOnBackdropPress={true}
         // only clear activeGift when not transitioning to the purchase sheet
         onDismiss={() => {
-          if (!transitioningToPurchaseRef.current) setActiveGift(null);
+          console.log(
+            "giftSheet onDismiss - navigating?",
+            navigatingToPreviewRef.current
+          );
+          if (
+            !transitioningToPurchaseRef.current &&
+            !navigatingToPreviewRef.current
+          ) {
+            setActiveGift(null);
+            setSelectedAmount(null);
+          }
         }}
         contentSlot={renderSheetContent()}
         footerSlot={renderSheetFooter()}
@@ -413,8 +455,12 @@ export default function TestSearchScreen() {
         enablePanDownToClose={true}
         closeOnBackdropPress={true}
         onDismiss={() => {
-          // if user dismisses purchase sheet directly, reopen the gift sheet for continuity
-          setTimeout(() => giftSheetRef.current?.present?.(), 150);
+          // reset selected amount when purchase sheet closes
+          setSelectedAmount(null);
+          // only reopen gift sheet if we're not navigating away to the static preview screen
+          if (!navigatingToPreviewRef.current) {
+            setTimeout(() => giftSheetRef.current?.present?.(), 150);
+          }
         }}
         headerSlot={renderPurchaseHeader()} // FoldPageViewHeader with only chevron left
         contentSlot={renderPurchaseContent()}

@@ -6,7 +6,6 @@ import {
   SpacingM1,
   SpacingM4,
 } from "../../generated-tokens/tokens";
-import Chip from "../Chip/Chip";
 
 export type LineItemProps = {
   label?: string;
