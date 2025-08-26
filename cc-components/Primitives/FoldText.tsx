@@ -18,6 +18,7 @@ import {
   BodySmV2,
   BodySmBoldV2,
   FacePrimary,
+  HeaderXxsV2,
 } from "../../generated-tokens/tokens";
 
 export const groupedTypes = {
@@ -28,6 +29,7 @@ export const groupedTypes = {
     "header-md-v2",
     "header-sm-v2",
     "header-xs-v2",
+    "header-xxs-v2",
   ],
   Body: [
     // --- Body v2 ---
@@ -92,6 +94,7 @@ export const typeStyles: Record<FoldTextType, TextStyle> = {
   "header-md-v2": normalizeTextStyle(HeaderMdV2),
   "header-sm-v2": normalizeTextStyle(HeaderSmV2),
   "header-xs-v2": normalizeTextStyle(HeaderXsV2),
+  "header-xxs-v2": normalizeTextStyle(HeaderXxsV2), // alias for xs
   // --- Body v2 ---
   "body-lg-v2": normalizeTextStyle(BodyLgV2),
   "body-lg-bold-v2": normalizeTextStyle(BodyLgBoldV2), // change to BOLD

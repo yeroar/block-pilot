@@ -44,6 +44,14 @@ const LOGO_SIZES = {
   elevated: SpacingM10,
 } as const;
 
+// Local static logo map (fallbacks). Add more entries as needed.
+const LOCAL_LOGOS: Record<string, any> = {
+  // existing entries
+  Airbnb: require("../assets/logoABNB.png"),
+  // add Starbucks / star logo
+  Starbucks: require("../assets/logoStar.png"),
+};
+
 /**
  * GiftCard Component
  *
@@ -82,11 +90,19 @@ export default function GiftCard({
     return <ChevronRightIcon width={20} height={20} color={FaceAccent} />;
   };
 
-  // Render logo with fallback placeholder
+  // Render logo with fallback placeholder / local asset map
   const renderLogo = () => {
+    // prefer explicit remote URL when provided
     if (logoUri) {
       return <Image source={{ uri: logoUri }} style={styles.logo} />;
     }
+
+    // fallback to a local asset when we have a mapping for this title
+    if (title && LOCAL_LOGOS[title]) {
+      return <Image source={LOCAL_LOGOS[title]} style={styles.logo} />;
+    }
+
+    // final fallback: placeholder block
     return <View style={styles.logoPlaceholder} />;
   };
 
@@ -125,7 +141,6 @@ export default function GiftCard({
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: LayerSecondary,
     borderRadius: BorderRadiusDefault,
     overflow: "hidden",
     flexDirection: "row",
@@ -134,13 +149,14 @@ const styles = StyleSheet.create({
   },
   outlinedRoot: {
     position: "relative",
-    paddingVertical: SpacingM3,
   },
   elevatedRoot: {
     borderWidth: 1,
     borderColor: BorderSecondary,
     paddingVertical: SpacingM4,
     paddingLeft: SpacingM4,
+    backgroundColor: LayerSecondary,
+
     position: "relative",
   },
   logoWrap: {

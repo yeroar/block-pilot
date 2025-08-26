@@ -86,15 +86,7 @@ const StandardBottomSheet = React.forwardRef<
     const sheetRef = useRef<BottomSheetModalMethods | null>(null);
 
     // if using dynamic sizing we expect a header to properly position the sheet
-    if (enableDynamicSizing && !headerSlot && __DEV__) {
-      // runtime helper to catch incorrect usage early in development
-      // headerSlot is required for consistent top offset when sizing to content
-      // (you can still omit headerSlot in production but behaviour may differ)
-      // eslint-disable-next-line no-console
-      console.warn(
-        "StandardBottomSheet: enableDynamicSizing=true but no headerSlot provided. Provide a FoldPageViewHeader in headerSlot for correct layout."
-      );
-    }
+    // headerSlot is now optional - no warning needed
 
     // Use dynamic sizing or provided snap points
     const snapPointsArray = useMemo(() => {
