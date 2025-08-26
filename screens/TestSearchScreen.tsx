@@ -12,11 +12,14 @@ import {
 } from "react-native-safe-area-context";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import StandardBottomSheet from "../cc-components/BottomSheet/StandardBottomSheet";
+import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
+import StackControl from "../cc-components/FoldPageViewHeader/StackControl";
+import { ChevronLeftIcon } from "../cc-components/assets/BlueSkyIcons/ChevronLeftIcon";
+import ActionBar from "../cc-components/ActionBar/ActionBar";
+import Button from "../cc-components/Button/Button";
 import SearchBar from "../cc-components/SearchBar/SearchBar";
 import GiftCard from "../cc-components/GiftCard/GiftCard";
 import FilterLine from "../cc-components/SearchBar/FilterLine";
-import Button from "../cc-components/Button/Button";
-import ActionBar from "../cc-components/ActionBar/ActionBar";
 import { FoldText } from "../cc-components/Primitives/FoldText";
 import {
   FacePrimary,
@@ -31,6 +34,7 @@ import {
   SpacingM0,
   ObjectPrimaryBoldDefault,
   SpacingM8,
+  SpacingM10,
 } from "../generated-tokens/tokens";
 import { BankNoteDollarIcon } from "../cc-components/assets/BlueSkyIcons/BankNoteDollarIcon";
 import { CalendarIcon } from "../cc-components/assets/BlueSkyIcons/CalendarIcon";
@@ -45,7 +49,13 @@ export default function TestSearchScreen() {
   const testRef = useRef<TextInput>(null);
 
   // Bottom sheet state
-  const giftSheetRef = useRef<BottomSheetModal>(null);
+  const giftSheetRef = useRef<any>(null);
+  const purchaseSheetRef = useRef<any>(null);
+
+  // When true we are transitioning from gift -> purchase sheet and should
+  // preserve activeGift during the dismiss/present handoff.
+  const transitioningToPurchaseRef = useRef(false);
+
   const [activeGift, setActiveGift] = useState<{
     title: string;
     subtitle: string;
@@ -68,9 +78,27 @@ export default function TestSearchScreen() {
     []
   );
 
+  const openPurchaseSheet = () => {
+    transitioningToPurchaseRef.current = true;
+    // close gift sheet then open purchase sheet (small delay for smooth transition)
+    giftSheetRef.current?.dismiss?.();
+    setTimeout(() => purchaseSheetRef.current?.present?.(), 175);
+    // reset transition flag shortly after presenting
+    setTimeout(() => {
+      transitioningToPurchaseRef.current = false;
+    }, 350);
+  };
+
+  // keep close explicit: dismiss + clear state
   const closeGiftSheet = useCallback(() => {
     giftSheetRef.current?.dismiss();
+    setActiveGift(null);
   }, []);
+
+  const closePurchaseAndReopenGift = () => {
+    purchaseSheetRef.current?.dismiss?.();
+    setTimeout(() => giftSheetRef.current?.present?.(), 175);
+  };
 
   const renderSheetContent = () => (
     <View style={styles.sheetBody}>
@@ -82,24 +110,31 @@ export default function TestSearchScreen() {
             <Image
               source={{ uri: activeGift.logoUri }}
               style={styles.logoPlaceholder}
+              resizeMode="cover"
             />
           ) : activeGift?.title === "Airbnb" ? (
             <Image
               source={require("../cc-components/assets/logoABNB.png")}
               style={styles.logoPlaceholder}
+              resizeMode="cover"
             />
           ) : activeGift?.title === "Starbucks" ? (
             <Image
               source={require("../cc-components/assets/logoStar.png")}
               style={styles.logoPlaceholder}
+              resizeMode="cover"
             />
           ) : (
-            <View style={styles.logoPlaceholder} />
+            <Image
+              source={require("../cc-components/assets/logoABNB.png")}
+              style={styles.logoPlaceholder}
+              resizeMode="cover"
+            />
           )}
         </View>
 
-        <FoldText type="header-lg-v2" style={styles.mainTitle}>
-          Up to 5% sats back{"\n"}at {activeGift?.title}
+        <FoldText type="header-md-v2">
+          Up to 5% sats back{"\n"}at {activeGift?.title || "Airbnb"}
         </FoldText>
 
         {/* Chips row */}
@@ -165,8 +200,128 @@ export default function TestSearchScreen() {
             size="lg"
             onPress={() => {
               console.log(`Buying card for ${activeGift?.title}`);
-              // perform purchase flow here...
-              closeGiftSheet();
+              // open purchase preview sheet
+              openPurchaseSheet();
+            }}
+          />
+        </View>
+      </View>
+    </ActionBar>
+  );
+
+  const renderPurchaseHeader = () => (
+    // header with only leading chevron back — offset by safe area so header sits flush
+    <FoldPageViewHeader
+      style={{ marginTop: -topInset }}
+      leftComponent={
+        <StackControl
+          variant="left"
+          leadingSlot={<ChevronLeftIcon width={24} height={24} />}
+          onLeftPress={() => {
+            closePurchaseAndReopenGift();
+          }}
+        />
+      }
+    />
+  );
+
+  // replace renderPurchaseContent to match Figma preview-buy layout
+  const renderPurchaseContent = () => (
+    <View style={{ paddingTop: SpacingM3, gap: SpacingM10 }}>
+      {/* header (logo + title) */}
+      <View style={styles.previewHeader}>
+        <View style={styles.previewLogoWrap}>
+          {activeGift?.logoUri ? (
+            <Image
+              source={{ uri: activeGift.logoUri }}
+              style={styles.previewLogo}
+            />
+          ) : activeGift?.title === "Airbnb" ? (
+            <Image
+              source={require("../cc-components/assets/logoABNB.png")}
+              style={styles.previewLogo}
+            />
+          ) : activeGift?.title === "Starbucks" ? (
+            <Image
+              source={require("../cc-components/assets/logoStar.png")}
+              style={styles.previewLogo}
+            />
+          ) : (
+            <Image
+              source={require("../cc-components/assets/logoABNB.png")}
+              style={styles.previewLogo}
+            />
+          )}
+        </View>
+
+        <FoldText type="header-sm-v2">
+          {`Up to 5% sats back\nat ${activeGift?.title ?? "Airbnb"}`}
+        </FoldText>
+      </View>
+
+      {/* quick-amount grid */}
+      <View style={styles.amountGrid}>
+        <View style={styles.amountRow}>
+          <View style={styles.amountCell}>
+            <Button
+              label="$10"
+              variant="secondary"
+              size="lg"
+              onPress={() => {
+                /* select $10 */
+              }}
+            />
+          </View>
+          <View style={styles.amountCell}>
+            <Button
+              label="$20"
+              variant="secondary"
+              size="lg"
+              onPress={() => {
+                /* select $20 */
+              }}
+            />
+          </View>
+        </View>
+
+        <View style={styles.amountRow}>
+          <View style={styles.amountCell}>
+            <Button
+              label="$50"
+              variant="secondary"
+              size="lg"
+              onPress={() => {
+                /* select $50 */
+              }}
+            />
+          </View>
+          <View style={styles.amountCell}>
+            <Button
+              label="$100"
+              variant="secondary"
+              size="lg"
+              onPress={() => {
+                /* select $100 */
+              }}
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderPurchaseFooter = () => (
+    <ActionBar style={{ marginBottom: 0 }}>
+      <View style={{ flexDirection: "row", gap: 12 }}>
+        <View style={{ flex: 1 }}>
+          <Button
+            label="Confirm purchase"
+            variant="primary"
+            size="lg"
+            onPress={() => {
+              // handle confirm -> dismiss all sheets
+              purchaseSheetRef.current?.dismiss?.();
+              setActiveGift(null);
             }}
           />
         </View>
@@ -243,9 +398,27 @@ export default function TestSearchScreen() {
         enableDynamicSizing={true}
         enablePanDownToClose={true}
         closeOnBackdropPress={true}
-        onDismiss={() => setActiveGift(null)}
+        // only clear activeGift when not transitioning to the purchase sheet
+        onDismiss={() => {
+          if (!transitioningToPurchaseRef.current) setActiveGift(null);
+        }}
         contentSlot={renderSheetContent()}
         footerSlot={renderSheetFooter()}
+      />
+
+      {/* Purchase preview sheet (opened from gift sheet) */}
+      <StandardBottomSheet
+        ref={purchaseSheetRef}
+        enableDynamicSizing={true}
+        enablePanDownToClose={true}
+        closeOnBackdropPress={true}
+        onDismiss={() => {
+          // if user dismisses purchase sheet directly, reopen the gift sheet for continuity
+          setTimeout(() => giftSheetRef.current?.present?.(), 150);
+        }}
+        headerSlot={renderPurchaseHeader()} // FoldPageViewHeader with only chevron left
+        contentSlot={renderPurchaseContent()}
+        footerSlot={renderPurchaseFooter()}
       />
     </>
   );
@@ -283,10 +456,7 @@ const styles = StyleSheet.create({
     backgroundColor: BorderSecondary,
     borderRadius: 6, // border-radii/small
   },
-  mainTitle: {
-    color: FacePrimary,
-    lineHeight: 36, // from App/Header-lg-v2
-  },
+
   chipsRow: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -316,5 +486,46 @@ const styles = StyleSheet.create({
   disclaimerText: {
     color: FaceTertiary,
     letterSpacing: 0.24, // tracking from design
+  },
+
+  previewHeader: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: SpacingM4,
+    marginBottom: SpacingM4,
+  },
+  previewLogoWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: BorderSecondary,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  previewLogo: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  previewTitle: {
+    color: FacePrimary,
+    lineHeight: 28, // from App/Header-md-v2
+    flex: 1,
+  },
+
+  amountGrid: {
+    width: "100%",
+  },
+  amountRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: SpacingM2,
+    gap: SpacingM2,
+  },
+  amountCell: {
+    flex: 1,
   },
 });

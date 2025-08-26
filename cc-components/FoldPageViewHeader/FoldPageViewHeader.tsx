@@ -115,7 +115,7 @@ export default function FoldPageViewHeader({
               color: headerTextColor,
             }}
           >
-            {title || "Default Title"}
+            {title || ""}
           </FoldText>
         </View>
 

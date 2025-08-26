@@ -6,6 +6,7 @@ import {
   TextStyle,
   ViewStyle,
   TextInput as RNTextInput,
+  Keyboard,
 } from "react-native";
 import { SearchMdIcon } from "../assets/BlueSkyIcons/SearchMdIcon";
 import { ArrowNarrowLeftIcon } from "../assets/BlueSkyIcons/ArrowNarrowLeftIcon";
@@ -45,6 +46,7 @@ export default function SearchBar({
 }: SearchBarProps) {
   const [value, setValue] = useState(controlledValue ?? "");
   const [focused, setFocused] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const inputRef = useRef<RNTextInput | null>(null);
 
   useEffect(() => {
@@ -63,6 +65,8 @@ export default function SearchBar({
   }, [focus]);
 
   const handleChange = (v: string) => {
+    // User edited -> clear submitted flag so filled visual returns while typing
+    setSubmitted(false);
     setValue(v);
     onChange?.(v);
   };
@@ -73,12 +77,29 @@ export default function SearchBar({
     inputRef.current?.focus();
   };
 
-  const iconSize = 16;
-  const typing = focused || value.length > 0;
-  const iconColor = typing ? FaceAccent : FaceDisabled;
+  const handleSubmit = () => {
+    // When user taps "Search" on keyboard: blur and mark as submitted so visuals revert
+    inputRef.current?.blur();
+    Keyboard.dismiss();
+    setSubmitted(true);
+    setFocused(false);
+  };
+
+  // slightly larger icon when focused for visual affordance
+  const iconSize = focused ? 18 : 16;
+  // "active" when focused OR when there's content and user hasn't submitted yet
+  const active = focused || (value.length > 0 && !submitted);
+  // submitted state uses FacePrimary, otherwise active uses FaceAccent, else disabled
+  const iconColor = submitted
+    ? FacePrimary
+    : active
+    ? FaceAccent
+    : FaceDisabled;
 
   const renderIcon = (IconComp: any, colorOverride?: string) => {
-    const c = colorOverride ?? iconColor;
+    // Force SearchMdIcon to always use FaceDisabled regardless of state
+    const c =
+      IconComp === SearchMdIcon ? FaceDisabled : colorOverride ?? iconColor;
     return (
       <IconComp
         width={iconSize}
@@ -91,7 +112,9 @@ export default function SearchBar({
     );
   };
 
-  const leadingIcon = typing
+  // left arrow when focused OR when user submitted and there's input text (not placeholder)
+  const leadingIsArrow = focused || (submitted && value.length > 0);
+  const leadingIcon = leadingIsArrow
     ? renderIcon(ArrowNarrowLeftIcon)
     : renderIcon(SearchMdIcon);
 
@@ -102,7 +125,7 @@ export default function SearchBar({
       <View
         style={[
           styles.inputBox,
-          (focused || value.length > 0) && {
+          active && {
             borderColor: FaceAccent,
             borderWidth: 1.5,
           },
@@ -126,8 +149,12 @@ export default function SearchBar({
           placeholderTextColor={FaceDisabled}
           value={value}
           onChangeText={handleChange}
-          onFocus={() => setFocused(true)}
+          onFocus={() => {
+            setFocused(true);
+            setSubmitted(false); // user focuses -> clear submitted
+          }}
           onBlur={() => setFocused(false)}
+          onSubmitEditing={handleSubmit}
           keyboardType="default"
           returnKeyType="search"
           underlineColorAndroid="transparent"

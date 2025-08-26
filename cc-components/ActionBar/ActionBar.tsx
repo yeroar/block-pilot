@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    gap: SpacingM2,
     paddingTop: SpacingM6,
   },
 });
