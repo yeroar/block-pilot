@@ -52,7 +52,9 @@ export default function TestSearchScreen() {
   const insets = useSafeAreaInsets();
   const topInset = insets?.top ?? 0;
   const [q, setQ] = useState("");
-  const testRef = useRef<TextInput>(null);
+
+  // Simple filter: show only Airbnb when typing, show all when empty
+  const showOnlyAirbnb = q.trim().length > 0;
 
   // Bottom sheet state
   const giftSheetRef = useRef<any>(null);
@@ -76,6 +78,8 @@ export default function TestSearchScreen() {
 
   // previewDisabled when no amount is selected
   const previewDisabled = !selectedAmount;
+
+  const testRef = useRef<TextInput>(null);
 
   useEffect(() => {
     setTimeout(() => testRef.current?.focus(), 100);
@@ -373,6 +377,7 @@ export default function TestSearchScreen() {
             }}
           >
             <SearchBar
+              ref={testRef}
               value={q}
               placeholder="Search..."
               onChange={setQ}
@@ -394,6 +399,8 @@ export default function TestSearchScreen() {
             >
               Recommended
             </FoldText>
+
+            {/* Always show Airbnb */}
             <GiftCard
               variant="outlined"
               title="Airbnb"
@@ -407,19 +414,23 @@ export default function TestSearchScreen() {
                 })
               }
             />
-            <GiftCard
-              variant="outlined"
-              title="Starbucks"
-              subtitle="2% sats back"
-              logoUri={undefined}
-              onPress={() =>
-                openGiftSheet({
-                  title: "Starbucks",
-                  subtitle: "2% sats back",
-                  logoUri: undefined,
-                })
-              }
-            />
+
+            {/* Only show Starbucks when search is empty */}
+            {!showOnlyAirbnb && (
+              <GiftCard
+                variant="outlined"
+                title="Starbucks"
+                subtitle="2% sats back"
+                logoUri={undefined}
+                onPress={() =>
+                  openGiftSheet({
+                    title: "Starbucks",
+                    subtitle: "2% sats back",
+                    logoUri: undefined,
+                  })
+                }
+              />
+            )}
           </View>
         </View>
       </SafeAreaView>
@@ -526,7 +537,7 @@ const styles = StyleSheet.create({
   },
   disclaimerSection: {
     width: "100%",
-    paddingTop: SpacingM2,
+    paddingTop: SpacingM8,
     paddingBottom: SpacingM2,
   },
   disclaimerText: {

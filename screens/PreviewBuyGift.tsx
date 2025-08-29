@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Animated, Dimensions, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import type { RootStackParamList } from "./AppNavigator";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../cc-components/FoldPageViewHeader/StackControl";
@@ -28,8 +30,11 @@ type RouteParams = { amountStr?: string };
 
 const { height: screenHeight } = Dimensions.get("window");
 
+// Add proper typing for navigation
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function PreviewBuyGiftCard() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProp>();
 
   // static data for preview
   const amountStr = "100";
@@ -72,7 +77,14 @@ export default function PreviewBuyGiftCard() {
       }).start();
 
       setTimeout(() => {
-        navigation.replace("Success", { amount: `$${amountStr}.00` });
+        navigation.replace("SuccessGC", {
+          amount: `$${amountStr}.00`,
+          giftCard: {
+            title: "Airbnb",
+            subtitle: "5% sats back",
+            logoUri: undefined,
+          },
+        });
         slideAnimation.setValue(screenHeight);
         setIsAnimating(false);
       }, 400);

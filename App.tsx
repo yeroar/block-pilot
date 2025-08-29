@@ -8,12 +8,19 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { enableScreens } from "react-native-screens";
 import TestSearchScreen from "./screens/TestSearchScreen";
 import PreviewBuyGift from "./screens/PreviewBuyGift";
+import SuccessGC from "./screens/SuccessGC";
 
 enableScreens(true);
 
 export type RootStackParamList = {
   TestSearch: undefined;
   PreviewBuyGift: undefined;
+  SuccessGC:
+    | {
+        amount?: string;
+        giftCard?: { title: string; subtitle: string; logoUri?: string };
+      }
+    | undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +37,7 @@ export default function App() {
             >
               <Stack.Screen name="TestSearch" component={TestSearchScreen} />
               <Stack.Screen name="PreviewBuyGift" component={PreviewBuyGift} />
+              <Stack.Screen name="SuccessGC" component={SuccessGC} />
             </Stack.Navigator>
           </NavigationContainer>
         </BottomSheetModalProvider>

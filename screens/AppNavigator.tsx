@@ -4,17 +4,37 @@ import TransferScreen from "./TransferScreen";
 import PreviewBuy from "./PreviewBuy";
 import SuccessScreen from "./SuccessScreen";
 import PreviewBuyGift from "./PreviewBuyGift";
+import SuccessGC from "./SuccessGC";
 
 export type RootStackParamList = {
   Transfer: undefined;
   PreviewBuy: { amountStr?: string } | undefined;
-  Success: { amount?: string } | undefined;
+  Success:
+    | {
+        amount?: string;
+        giftCard?: {
+          title: string;
+          subtitle: string;
+          logoUri?: string;
+        };
+      }
+    | undefined;
   PreviewBuyGift:
     | {
         title?: string;
         subtitle?: string;
         logoUri?: string;
         amountStr?: string;
+      }
+    | undefined;
+  SuccessGC:
+    | {
+        amount?: string;
+        giftCard?: {
+          title: string;
+          subtitle: string;
+          logoUri?: string;
+        };
       }
     | undefined;
 };
@@ -31,14 +51,8 @@ export default function AppNavigator() {
       <Stack.Screen name="Transfer" component={TransferScreen} />
       <Stack.Screen name="PreviewBuy" component={PreviewBuy} />
       <Stack.Screen name="PreviewBuyGift" component={PreviewBuyGift} />
-      <Stack.Screen
-        name="Success"
-        component={SuccessScreen}
-        options={{
-          animation: "fade", // Use fade instead of none
-          animationDuration: 0, // Make transition instant
-        }}
-      />
+      <Stack.Screen name="Success" component={SuccessScreen} />
+      <Stack.Screen name="SuccessGC" component={SuccessGC} />
     </Stack.Navigator>
   );
 }
