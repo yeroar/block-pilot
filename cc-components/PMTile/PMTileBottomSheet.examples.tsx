@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Selector from "../Selector/Selector";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
@@ -12,6 +13,9 @@ import {
   BorderRadiusDefault,
   SpacingM1,
   SpacingM16,
+  SpacingM5,
+  SpacingM0,
+  SpacingM4,
 } from "../../generated-tokens/tokens";
 
 // Minimal items for selection
@@ -36,29 +40,39 @@ export const EmptyPaymentContentExample = ({
   onSelect,
 }: {
   onSelect?: (pm: { key: "bank" | "card" }) => void;
-}) => (
-  <View style={[styles.listContainer, styles.addPaymentContainer]}>
-    <View style={styles.selectorList}>
-      <Selector
-        variant="navigation"
-        title={bankMethod.title}
-        subtext={bankMethod.subtitle}
-        footnote={bankMethod.subsubtitle}
-        showLeadingIcon={bankMethod.icon}
-        onPress={() => onSelect?.({ key: "bank" })}
-      />
-      <View style={styles.divider} />
-      <Selector
-        variant="navigation"
-        title={cardMethod.title}
-        subtext={cardMethod.subtitle}
-        footnote={cardMethod.subsubtitle}
-        showLeadingIcon={cardMethod.icon}
-        onPress={() => onSelect?.({ key: "card" })}
-      />
+}) => {
+  const insets = useSafeAreaInsets();
+  return (
+    <View
+      style={[
+        styles.listContainer,
+        {
+          marginBottom: SpacingM16 + insets.bottom,
+        },
+      ]}
+    >
+      <View style={styles.selectorList}>
+        <Selector
+          variant="navigation"
+          title={bankMethod.title}
+          subtext={bankMethod.subtitle}
+          footnote={bankMethod.subsubtitle}
+          showLeadingIcon={bankMethod.icon}
+          onPress={() => onSelect?.({ key: "bank" })}
+        />
+        <View style={styles.divider} />
+        <Selector
+          variant="navigation"
+          title={cardMethod.title}
+          subtext={cardMethod.subtitle}
+          footnote={cardMethod.subsubtitle}
+          showLeadingIcon={cardMethod.icon}
+          onPress={() => onSelect?.({ key: "card" })}
+        />
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 // Updated: card samples with chip indicators matching the Figma design
 export const CardsPaymentContentExample = ({
@@ -104,7 +118,7 @@ export const CardsPaymentContentExample = ({
         ))}
       </View>
 
-      <ActionBar>
+      <ActionBar style={{ marginBottom: SpacingM4 }}>
         <Button
           label="Use this payment card"
           variant="primary"
@@ -214,6 +228,7 @@ const styles = StyleSheet.create({
   // Main container for the list design
   listContainer: {
     gap: SpacingM1,
+    marginVertical: SpacingM5,
   },
 
   // Modifier for add payment method (no action bar)

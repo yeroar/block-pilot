@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Animated, Dimensions, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Animated,
+  Dimensions,
+  Text,
+  Image,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { RootStackParamList } from "./AppNavigator";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -20,6 +27,7 @@ import {
   LayerBackground,
   ObjectPrimaryBoldDefault,
   SpacingM4,
+  SpacingM8,
 } from "../generated-tokens/tokens";
 
 import ConfirmationBuyGiftCard from "../cc-components/Confirmation/ConfirmationBuyGiftCard";
@@ -32,6 +40,8 @@ const { height: screenHeight } = Dimensions.get("window");
 
 // Add proper typing for navigation
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+const logoAirbnb = require("../cc-components/assets/logoABNB.png");
 
 export default function PreviewBuyGiftCard() {
   const navigation = useNavigation<NavigationProp>();
@@ -104,7 +114,19 @@ export default function PreviewBuyGiftCard() {
         <View style={styles.amountSection}>
           <CurrencyInput
             amount={`$${amountStr}.00`}
-            topSlot={<TopContext variant="btc" fiatAmount={`Airbnb`} />}
+            topSlot={
+              <TopContext
+                variant="cash"
+                label="Airbnb"
+                leadingIcon={
+                  <Image
+                    source={logoAirbnb}
+                    style={{ width: 16, height: 16, borderRadius: 3 }}
+                    resizeMode="cover"
+                  />
+                }
+              />
+            }
             bottomSlot={
               selectedPayment ? (
                 <PMTile
@@ -137,7 +159,7 @@ export default function PreviewBuyGiftCard() {
         />
       </View>
 
-      <ActionBar>
+      <ActionBar style={{ marginBottom: SpacingM8 }}>
         <Button
           label="Confirm buy"
           variant="primary"

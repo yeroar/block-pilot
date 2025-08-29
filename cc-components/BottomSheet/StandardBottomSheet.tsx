@@ -8,13 +8,13 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
+  BorderRadiusDefault,
   LayerBackground,
   SpacingM4,
-  BorderRadiusDefault,
   SpacingM5,
-  SpacingM16,
-  SpacingM6,
+  SpacingM8,
 } from "../../generated-tokens/tokens";
+import { colorPrimitivesBS } from "../../generated-tokens/colorPrimitives2.1";
 
 export interface StandardBottomSheetProps {
   /**
@@ -61,6 +61,23 @@ export interface StandardBottomSheetProps {
    * Backdrop opacity
    */
   backdropOpacity?: number;
+
+  /**
+   * Horizontal padding inside sheet sections (header/content/footer)
+   */
+  sectionPaddingX?: number;
+  /**
+   * Vertical gap between header/content/footer
+   */
+  sectionGap?: number;
+  /**
+   * Wrap content slot in a rounded panel
+   */
+  useRoundedPanel?: boolean;
+  /**
+   * Padding inside the rounded panel
+   */
+  panelPadding?: number;
 }
 
 const StandardBottomSheet = React.forwardRef<
@@ -78,6 +95,10 @@ const StandardBottomSheet = React.forwardRef<
       closeOnBackdropPress = false,
       onDismiss,
       backdropOpacity = 0.5,
+      sectionPaddingX = SpacingM4,
+      sectionGap = SpacingM5,
+      useRoundedPanel = false,
+      panelPadding = SpacingM4,
     },
     ref
   ) => {
@@ -134,6 +155,12 @@ const StandardBottomSheet = React.forwardRef<
       onDismiss?.();
     }, [onDismiss]);
 
+    const contentNode = useRoundedPanel ? (
+      <View style={[styles.roundedPanel]}>{contentSlot}</View>
+    ) : (
+      contentSlot
+    );
+
     return (
       <BottomSheetModal
         // BottomSheetModal expects a ref that resolves to BottomSheetModalMethods.
@@ -147,13 +174,18 @@ const StandardBottomSheet = React.forwardRef<
         backgroundStyle={styles.sheetBackground}
         handleIndicatorStyle={styles.handleIndicator}
       >
-        <BottomSheetView style={styles.container}>
+        <BottomSheetView
+          style={[
+            styles.container,
+            { paddingHorizontal: sectionPaddingX, gap: sectionGap },
+          ]}
+        >
           {/* Header slot */}
           {headerSlot ? (
             <View style={[styles.header]}>{headerSlot}</View>
           ) : null}
 
-          {/* Content area — wraps to content height when dynamic sizing enabled */}
+          {/* Content area */}
           <View
             style={
               enableDynamicSizing
@@ -161,7 +193,7 @@ const StandardBottomSheet = React.forwardRef<
                 : styles.contentArea
             }
           >
-            {contentSlot}
+            {contentNode}
           </View>
 
           {/* Footer slot */}
@@ -176,11 +208,25 @@ const StandardBottomSheet = React.forwardRef<
   }
 );
 
+const resolveColor = (val: unknown) => {
+  if (typeof val === "string" && val.startsWith("{") && val.endsWith("}")) {
+    const path = val.slice(1, -1).split(".");
+    let ref: any = colorPrimitivesBS;
+    for (const p of path) {
+      if (ref == null) return val;
+      ref = ref[p];
+    }
+    return typeof ref === "string" ? ref : val;
+  }
+  return val;
+};
+
 const styles = StyleSheet.create({
   container: {
     // layout stacks header / content / footer vertically
     justifyContent: "flex-start",
     paddingHorizontal: SpacingM4,
+    gap: SpacingM5,
   },
   header: {
     width: "100%",
@@ -208,7 +254,6 @@ const styles = StyleSheet.create({
   // roundedPanel left for callers to use when they want it
   roundedPanel: {
     overflow: "hidden",
-    marginTop: SpacingM5,
     borderRadius: BorderRadiusDefault,
   },
 });

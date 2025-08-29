@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../cc-components/FoldPageViewHeader/StackControl";
@@ -15,6 +15,9 @@ import {
   LayerBackground,
   SpacingM4,
   SpacingM12,
+  SpacingM2,
+  SpacingM3,
+  SpacingM8,
 } from "../generated-tokens/tokens";
 
 type Props = {
@@ -38,6 +41,7 @@ export default function GiftCardSuccessScreen({ navigation, route }: Props) {
     subtitle: "5% sats back",
     logoUri: undefined,
   };
+  const logoAirbnb = require("../cc-components/assets/logoABNB.png");
 
   return (
     <View style={styles.screen}>
@@ -58,6 +62,13 @@ export default function GiftCardSuccessScreen({ navigation, route }: Props) {
                 variant="cash"
                 fiatAmount={amount}
                 label={giftCard.title}
+                leadingIcon={
+                  <Image
+                    source={logoAirbnb}
+                    style={{ width: 16, height: 16, borderRadius: 3 }}
+                    resizeMode="cover"
+                  />
+                }
               />
             }
             bottomSlot={
@@ -78,12 +89,27 @@ export default function GiftCardSuccessScreen({ navigation, route }: Props) {
       </View>
 
       <ActionBar>
-        <Button
-          label="Done"
-          variant="secondary"
-          size="lg"
-          onPress={() => navigation.popToTop()}
-        />
+        <View style={styles.actions}>
+          <Button
+            label="Claim code"
+            size="lg"
+            // black background + white text
+            style={{ backgroundColor: "#000" }}
+            textStyle={{ color: "#FFF" }}
+            onPress={() =>
+              navigation.navigate("GiftCardDetails", {
+                amount,
+                giftCard,
+              })
+            }
+          />
+          <Button
+            label="Done"
+            variant="secondary"
+            size="lg"
+            onPress={() => navigation.popToTop()}
+          />
+        </View>
       </ActionBar>
     </View>
   );
@@ -103,5 +129,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "stretch",
     paddingVertical: SpacingM12,
+  },
+  actions: {
+    width: "100%",
+    gap: SpacingM3,
+    marginBottom: SpacingM8,
   },
 });

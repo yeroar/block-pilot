@@ -77,9 +77,10 @@ const TopContext: React.FC<TopContextProps> = ({
     return (
       <View style={styles.topContext}>
         <View style={styles.inline}>
-          <View>
-            <FoldText type="body-md-bold-v2">{primaryLabel}</FoldText>
-          </View>
+          {displayIcon ? (
+            <View style={{ marginRight: SpacingM1 }}>{displayIcon}</View>
+          ) : null}
+          <FoldText type="body-md-bold-v2">{primaryLabel}</FoldText>
         </View>
       </View>
     );

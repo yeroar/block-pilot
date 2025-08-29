@@ -2,8 +2,8 @@ import React, { useState, useCallback, useMemo, useRef } from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import StandardBottomSheet from "../BottomSheet/StandardBottomSheet";
+import type { BottomSheetModalMethods } from "@gorhom/bottom-sheet";
+import { StandardBottomSheet } from "../BottomSheet";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -75,8 +75,8 @@ export default function PMTile({
     "select"
   );
 
-  // Bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  // Bottom sheet ref: use our StandardBottomSheet methods shape
+  const bottomSheetRef = useRef<BottomSheetModalMethods | null>(null);
 
   // Snap points for the bottom sheet
   const snapPoints = useMemo(() => ["50%", "90%"], []);
@@ -288,8 +288,9 @@ export default function PMTile({
       </FoldPressable>
 
       <StandardBottomSheet
-        ref={bottomSheetRef}
+        ref={bottomSheetRef as any}
         snapPoints={snapPoints}
+        enableDynamicSizing
         enablePanDownToClose
         closeOnBackdropPress={false}
         backdropOpacity={0.5}
@@ -297,6 +298,7 @@ export default function PMTile({
         headerSlot={enablePaymentSelection ? renderSheetHeader() : null}
         contentSlot={enablePaymentSelection ? renderSheetContent() : null}
         footerSlot={enablePaymentSelection ? renderSheetFooter() : null}
+        useRoundedPanel={true}
       />
     </>
   );
@@ -306,7 +308,7 @@ const styles = StyleSheet.create({
   tileContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // match list rows
+    justifyContent: "space-between",
     height: SpacingM8,
     paddingHorizontal: SpacingM4,
     borderRadius: BorderRadiusDefault,
