@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, StyleSheet, Image } from "react-native";
+import { StandardBottomSheet } from "../cc-components/BottomSheet";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import FoldPageViewHeader from "../cc-components/FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../cc-components/FoldPageViewHeader/StackControl";
@@ -18,7 +20,10 @@ import {
   SpacingM2,
   SpacingM3,
   SpacingM8,
+  SpacingM5,
+  SpacingM10,
 } from "../generated-tokens/tokens";
+import ClaimCodeField from "../cc-components/Text Field/TextField";
 
 type Props = {
   navigation: any;
@@ -35,6 +40,7 @@ type Props = {
 };
 
 export default function GiftCardSuccessScreen({ navigation, route }: Props) {
+  const insets = useSafeAreaInsets();
   const amount = route?.params?.amount ?? "$100";
   const giftCard = route?.params?.giftCard ?? {
     title: "Airbnb",
@@ -42,6 +48,7 @@ export default function GiftCardSuccessScreen({ navigation, route }: Props) {
     logoUri: undefined,
   };
   const logoAirbnb = require("../cc-components/assets/logoABNB.png");
+  const codeSheetRef = useRef<any>(null);
 
   return (
     <View style={styles.screen}>
@@ -88,20 +95,53 @@ export default function GiftCardSuccessScreen({ navigation, route }: Props) {
         </View>
       </View>
 
+      {/* Claim code bottom sheet */}
+      <StandardBottomSheet
+        ref={codeSheetRef}
+        enableDynamicSizing
+        enablePanDownToClose
+        closeOnBackdropPress
+        useRoundedPanel
+        sectionGap={SpacingM2} // tighten spacing between header/content/footer
+        headerSlot={
+          <View style={{ marginTop: -insets.top, marginBottom: SpacingM5 }}>
+            <FoldPageViewHeader
+              title={"Airbnb claim code"}
+              leftComponent={<StackControl variant="left" />}
+              rightComponent={<StackControl variant="right" />}
+            />
+          </View>
+        }
+        contentSlot={
+          <ClaimCodeField
+            label="Claim code"
+            code="SKN2-YX7NK2-SAAU"
+            onCopy={(c) => {
+              // integrate with your toast/toaster if available
+              console.log("Copied:", c);
+            }}
+          />
+        }
+        footerSlot={
+          <Button
+            label="Dismiss"
+            variant="secondary"
+            size="lg"
+            onPress={() => codeSheetRef.current?.dismiss?.()}
+            style={{ marginBottom: insets.bottom, marginTop: SpacingM5 }}
+          />
+        }
+      />
+
       <ActionBar>
-        <View style={styles.actions}>
+        <View style={[styles.actions]}>
           <Button
             label="Claim code"
             size="lg"
             // black background + white text
             style={{ backgroundColor: "#000" }}
             textStyle={{ color: "#FFF" }}
-            onPress={() =>
-              navigation.navigate("GiftCardDetails", {
-                amount,
-                giftCard,
-              })
-            }
+            onPress={() => codeSheetRef.current?.present?.()}
           />
           <Button
             label="Done"

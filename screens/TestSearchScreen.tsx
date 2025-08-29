@@ -537,8 +537,6 @@ const styles = StyleSheet.create({
   },
   disclaimerSection: {
     width: "100%",
-    paddingTop: SpacingM8,
-    paddingBottom: SpacingM2,
   },
   disclaimerText: {
     color: FaceTertiary,
@@ -573,6 +571,7 @@ const styles = StyleSheet.create({
   },
 
   amountGrid: {
+    marginVertical: -SpacingM4,
     width: "100%",
   },
   amountRow: {
