@@ -21,6 +21,8 @@ import {
   SpacingM14,
   LayerPrimaryPressed,
   SpacingM8,
+  BorderTertiary,
+  BorderSecondary,
 } from "../../generated-tokens/tokens";
 
 const TOKENS = {
@@ -49,7 +51,7 @@ interface ButtonProps {
   label?: string;
   onPress: () => void;
   disabled?: boolean;
-  variant?: "primary" | "secondary" | "tertiary";
+  variant?: "primary" | "secondary" | "tertiary" | "outline";
   loading?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
@@ -82,14 +84,14 @@ const Button = ({
       ? ObjectPrimaryBoldDefault
       : variant === "secondary"
       ? ObjectSecondaryDefault
-      : "transparent";
+      : "transparent"; // tertiary/outline transparent
 
   const bgPressed =
     variant === "primary"
       ? ObjectPrimaryBoldPressed
       : variant === "secondary"
       ? ObjectSecondaryPressed
-      : LayerPrimaryPressed;
+      : LayerPrimaryPressed; // pressed state for outline
 
   // use disabled-aware text color
   const textColor = isDisabled
@@ -113,7 +115,6 @@ const Button = ({
       style={({ pressed }) => [
         styles.button,
         {
-          // disabled background + remove opacity dim
           backgroundColor: isDisabled
             ? TOKENS.colors.bgDisabled
             : pressed
@@ -126,6 +127,8 @@ const Button = ({
           opacity: 1,
           width,
           alignSelf,
+          borderWidth: variant === "outline" ? 1 : 0,
+          borderColor: variant === "outline" ? BorderTertiary : "transparent",
         },
         style,
       ]}

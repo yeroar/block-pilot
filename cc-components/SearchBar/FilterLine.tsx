@@ -18,12 +18,12 @@ import {
   SpacingM2,
   LayerBackground,
   BorderRadiusDefault,
-  SpacingM4,
   SpacingM5,
   LayerSecondary,
   BorderSecondary,
-  SpacingM1,
   SpacingM3,
+  FaceSecondary,
+  ObjectSecondaryDefault,
 } from "../../generated-tokens/tokens";
 
 interface FilterOption {
@@ -43,7 +43,7 @@ const FILTER_OPTIONS = {
     { id: "both", label: "In person & online" },
   ],
   reward: [
-    { id: "all", label: "All Rewards" },
+    { id: "all", label: "Category" },
     { id: "5", label: "5% sats back" },
     { id: "15", label: "15% sats back" },
     { id: "115", label: "115% sats back" },
@@ -54,6 +54,11 @@ const FILTER_OPTIONS = {
 
 export default function FilterLine({ onFilterChange }: FilterLineProps) {
   const insets = useSafeAreaInsets();
+  // External filter id mapping (internal -> outbound)
+  const FILTER_ID_MAP: Record<string, string> = {
+    category: "redemption",
+    reward: "category",
+  };
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedReward, setSelectedReward] = useState("all");
   // temporary selections inside the sheet (do NOT commit until Apply)
@@ -116,14 +121,14 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
     const option = FILTER_OPTIONS.category.find(
       (opt) => opt.id === selectedCategory
     );
-    return option?.label || "Category";
+    return option?.label || "Redemption method"; // updated fallback label
   };
 
   const getRewardLabel = () => {
     const option = FILTER_OPTIONS.reward.find(
       (opt) => opt.id === selectedReward
     );
-    return option?.label || "Reward";
+    return option?.label || "Category"; // updated fallback label
   };
 
   // Render sheet content
@@ -184,7 +189,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
   const renderSheetHeader = () => (
     <FoldPageViewHeader
       style={{ marginTop: -insets.top }}
-      title={activeSheet === "category" ? "Location" : "Reward"}
+      title={activeSheet === "category" ? "Redemption" : "Category"} // updated header titles
       leftComponent={
         <StackControl
           variant="left"
@@ -243,11 +248,11 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
             if (activeSheet === "category") {
               setTempSelectedCategory("all");
               setSelectedCategory("all");
-              onFilterChange?.("category", "all");
+              onFilterChange?.(FILTER_ID_MAP.category, "all");
             } else {
               setTempSelectedReward("all");
               setSelectedReward("all");
-              onFilterChange?.("reward", "all");
+              onFilterChange?.(FILTER_ID_MAP.reward, "all");
             }
             sheetRef.current?.dismiss();
           }}
@@ -261,12 +266,12 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
             if (activeSheet === "category") {
               setSelectedCategory(tempSelectedCategory);
               if (tempSelectedCategory !== "all") {
-                onFilterChange?.("category", tempSelectedCategory);
+                onFilterChange?.(FILTER_ID_MAP.category, tempSelectedCategory);
               }
             } else {
               setSelectedReward(tempSelectedReward);
               if (tempSelectedReward !== "all") {
-                onFilterChange?.("reward", tempSelectedReward);
+                onFilterChange?.(FILTER_ID_MAP.reward, tempSelectedReward);
               }
             }
             sheetRef.current?.dismiss();
@@ -285,6 +290,9 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
           leadingIcon={false}
           trailingSlot={<ChevronDownIcon width={16} height={16} />}
           onPress={() => handleFilterPress("category")}
+          style={styles.pill}
+          textType="body-md-v2"
+          textStyle={styles.pillText}
         />
         <PMTile
           label={getRewardLabel()}
@@ -292,6 +300,9 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
           leadingIcon={false}
           trailingSlot={<ChevronDownIcon width={16} height={16} />}
           onPress={() => handleFilterPress("reward")}
+          style={styles.pill}
+          textType="body-md-v2"
+          textStyle={styles.pillText}
         />
       </View>
 
@@ -320,6 +331,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "100%",
     gap: SpacingM2,
+  },
+  pill: {
+    paddingLeft: 16,
+    paddingRight: 12,
+    paddingVertical: 8,
+    borderRadius: 100,
+    backgroundColor: ObjectSecondaryDefault,
+    gap: 2,
+    height: 36, // override base height to hug content
+    justifyContent: "flex-start", // prevent space-between stretching
+  },
+  pillText: {
+    color: FaceSecondary,
+    // remove forced lineHeight to let text hug vertically via intrinsic metrics
   },
   sheetBackground: {
     backgroundColor: LayerBackground,

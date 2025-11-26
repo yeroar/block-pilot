@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: BorderSecondary,
     borderWidth: 1,
     paddingHorizontal: SpacingM4,
-    height: 48, // increase height to prevent text cropping
+    height: 44, // increase height to prevent text cropping
     flexDirection: "row",
     alignItems: "center",
     gap: SpacingM3,

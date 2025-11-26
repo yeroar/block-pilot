@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import { View, StyleSheet, ViewStyle, TextStyle } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
-import type { BottomSheetModalMethods } from "@gorhom/bottom-sheet";
+import type { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { StandardBottomSheet } from "../BottomSheet";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,6 +15,11 @@ import {
   SpacingM5,
   BorderRadiusDefault,
   SpacingM2,
+  ObjectAccentSubtleDefault,
+  FaceAccent,
+  ObjectSecondaryDefault,
+  SpacingM3,
+  FaceInverse,
 } from "../../generated-tokens/tokens";
 import {
   EmptyPaymentContentExample,
@@ -28,6 +33,7 @@ import StackControl from "../FoldPageViewHeader/StackControl";
 import { ChevronLeftIcon } from "../assets/BlueSkyIcons/ChevronLeftIcon";
 import ActionBar from "../ActionBar/ActionBar";
 import Button from "../Button/Button";
+import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 
 export type PaymentMethod = {
   key: "bank" | "card";
@@ -44,10 +50,15 @@ export type PMTileProps = {
   leadingSlot?: React.ReactNode;
   trailingSlot?: React.ReactNode;
   onPress?: () => void;
-  style?: ViewStyle;
-  textStyle?: ViewStyle;
+  style?: ViewStyle; // now applied to internal container for pill styling
+  textStyle?: TextStyle;
+  textType?: string; // new: override FoldText type (e.g. body-md-v2)
   enablePaymentSelection?: boolean;
   onPaymentSelect?: (pm: PaymentMethod) => void;
+  // new: control bottom sheet behavior
+  initialSheetMode?: "select" | "bank" | "card";
+  autoOpen?: boolean; // auto present on mount
+  hideSheetHeader?: boolean; // omit header in sheet
 };
 
 export default function PMTile({
@@ -60,26 +71,39 @@ export default function PMTile({
   onPress,
   style,
   textStyle,
+  textType = "body-sm-bold-v2",
   enablePaymentSelection = false,
   onPaymentSelect,
+  initialSheetMode = "select",
+  autoOpen = false,
+  hideSheetHeader = false,
   ...rest
 }: PMTileProps) {
   const insets = useSafeAreaInsets();
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>({
     key: "card",
-    icon: <CreditCardIcon width={20} height={20} />,
+    icon: <CreditCardIcon width={16} height={16} />,
     title: "Add payment method",
     subtitle: "",
   });
   const [sheetMode, setSheetMode] = useState<"select" | "bank" | "card">(
-    "select"
+    initialSheetMode
   );
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // Bottom sheet ref: use our StandardBottomSheet methods shape
-  const bottomSheetRef = useRef<BottomSheetModalMethods | null>(null);
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   // Snap points for the bottom sheet
   const snapPoints = useMemo(() => ["50%", "90%"], []);
+
+  // Auto-open logic on mount when enabled
+  React.useEffect(() => {
+    if (enablePaymentSelection && autoOpen) {
+      setSheetMode(initialSheetMode);
+      bottomSheetRef.current?.present?.();
+    }
+  }, [enablePaymentSelection, autoOpen, initialSheetMode]);
 
   // Handle initial payment method selection (bank or card)
   const handleSelectPm = useCallback((pm) => {
@@ -124,6 +148,7 @@ export default function PMTile({
 
   // Handle bottom sheet close
   const handleSheetClose = useCallback(() => {
+    setIsSheetOpen(false);
     // Reset to select mode when sheet closes
     setSheetMode("select");
   }, []);
@@ -141,6 +166,7 @@ export default function PMTile({
       } else if (selectedPayment.key === "card") {
         setSheetMode("card");
       }
+      setIsSheetOpen(true);
       bottomSheetRef.current?.present();
     } else {
       onPress?.();
@@ -176,7 +202,7 @@ export default function PMTile({
         leftComponent={
           <StackControl
             variant="left"
-            leadingSlot={<ChevronLeftIcon width={24} height={24} />}
+            leadingSlot={<ChevronLeftIcon width={16} height={16} />}
             onLeftPress={handleLeftPress}
           />
         }
@@ -257,33 +283,91 @@ export default function PMTile({
   const showLeading =
     leadingIcon === true || (!!displayLeadingSlot && leadingIcon !== false);
 
+  // Show slots if enabled or provided
+  const showTrailing = trailingIcon || !!trailingSlot;
+
+  // Visual state
+  const isAddPayment =
+    enablePaymentSelection && selectedPayment.title === "Add payment method";
+  const isChosen =
+    enablePaymentSelection &&
+    selectedPayment.title !== "Select payment method" &&
+    selectedPayment.title !== "Add payment method";
+
+  // Extract last four digits from subtitle like "---- 0823"
+  const extractLastFour = (subtitle?: string) => {
+    if (!subtitle) return "";
+    const digits = subtitle.replace(/[^0-9]/g, "");
+    return digits.slice(-4);
+  };
+  const chosenLast4 = isChosen ? extractLastFour(selectedPayment.subtitle) : "";
+
+  const backgroundColor =
+    isSheetOpen && isAddPayment
+      ? FaceAccent // use accent as background while open
+      : isAddPayment
+      ? ObjectAccentSubtleDefault
+      : isChosen
+      ? ObjectSecondaryDefault
+      : ObjectPrimarySubtleDefault;
+
+  const contentTextColor =
+    isSheetOpen && isAddPayment
+      ? FaceInverse
+      : isAddPayment
+      ? FaceAccent
+      : undefined;
+
   const displayLabel =
-    label !== "Select payment method"
+    isSheetOpen && isAddPayment
+      ? "Select payment method"
+      : isChosen && chosenLast4
+      ? `${selectedPayment.title} ${chosenLast4}`
+      : label !== "Select payment method"
       ? label
       : enablePaymentSelection &&
         selectedPayment.title !== "Select payment method"
       ? selectedPayment?.title
       : label;
 
-  // Show slots if enabled or provided
-  const showTrailing = trailingIcon || !!trailingSlot;
-
-  const backgroundColor = selected
-    ? ObjectPrimarySubtleDefault // selected payment method gets subtle color
-    : enablePaymentSelection &&
-      selectedPayment.title !== "Select payment method"
-    ? ObjectPrimaryBoldDefault // "Add payment method" when clicked gets bold color
-    : ObjectPrimarySubtleDefault; // default state gets subtle color
+  // Helper to normalize icon size to 16px (cast to any to satisfy different icon prop types)
+  const normalizeIcon = (node: React.ReactNode) => {
+    if (!node || !React.isValidElement(node)) return node;
+    const el: any = node;
+    const needsResize = el.props?.width !== 16 || el.props?.height !== 16;
+    if (!needsResize) return node;
+    try {
+      return React.cloneElement(el, { width: 16, height: 16 });
+    } catch (e) {
+      return (
+        <View style={{ width: 16, height: 16, justifyContent: "center", alignItems: "center" }}>
+          {el}
+        </View>
+      );
+    }
+  };
 
   return (
     <>
       <FoldPressable onPress={handlePress} {...rest}>
-        <View style={[styles.tileContainer, { backgroundColor }]}>
-          {showLeading && displayLeadingSlot}
-          <FoldText type="body-sm-bold-v2" style={textStyle}>
+        <View style={[styles.tileContainer, { backgroundColor }, style]}>
+          {showLeading && !isAddPayment && normalizeIcon(displayLeadingSlot)}
+          <FoldText
+            type={textType as any}
+            style={[{ color: contentTextColor }, textStyle]}
+          >
             {displayLabel}
           </FoldText>
-          {showTrailing && trailingSlot}
+          {showTrailing &&
+            (isAddPayment ? (
+              <PlusCircleIcon
+                width={16}
+                height={16}
+                fill={isSheetOpen ? FaceInverse : FaceAccent}
+              />
+            ) : (
+              normalizeIcon(trailingSlot)
+            ))}
         </View>
       </FoldPressable>
 
@@ -292,10 +376,16 @@ export default function PMTile({
         snapPoints={snapPoints}
         enableDynamicSizing
         enablePanDownToClose
-        closeOnBackdropPress={false}
+        closeOnBackdropPress={true}
         backdropOpacity={0.5}
         onDismiss={handleSheetClose}
-        headerSlot={enablePaymentSelection ? renderSheetHeader() : null}
+        headerSlot={
+          hideSheetHeader
+            ? null
+            : enablePaymentSelection
+            ? renderSheetHeader()
+            : null
+        }
         contentSlot={enablePaymentSelection ? renderSheetContent() : null}
         footerSlot={enablePaymentSelection ? renderSheetFooter() : null}
         useRoundedPanel={true}
@@ -310,8 +400,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     height: SpacingM8,
-    paddingHorizontal: SpacingM4,
+    paddingHorizontal: SpacingM3,
     borderRadius: BorderRadiusDefault,
-    gap: SpacingM2,
+    gap: 6,
   },
 });

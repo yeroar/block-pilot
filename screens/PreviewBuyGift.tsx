@@ -128,25 +128,18 @@ export default function PreviewBuyGiftCard() {
               />
             }
             bottomSlot={
-              selectedPayment ? (
-                <PMTile
-                  label={selectedPayment.label}
-                  leadingIcon={true}
-                  // leading and trailing icon slots for selected PMTile
-                  leadingSlot={<CreditCardIcon width={20} height={20} />}
-                  trailingSlot={<ChevronDownIcon width={20} height={20} />}
-                  onPress={() => {
-                    // open payment picker or toggle selection
-                    setSelectedPayment(null);
-                  }}
-                />
-              ) : (
-                <BottomContext
-                  content="addPayment"
-                  selectedPayment={selectedPayment}
-                  onPaymentSelect={handleAddPayment}
-                />
-              )
+              // Always use PMTile to present the card selector bottom sheet, without header
+              <PMTile
+                enablePaymentSelection
+                initialSheetMode="card"
+                autoOpen
+                hideSheetHeader
+                onPaymentSelect={handleAddPayment}
+                leadingIcon={true}
+                leadingSlot={<CreditCardIcon width={20} height={20} />}
+                trailingSlot={<ChevronDownIcon width={20} height={20} />}
+                textType="body-sm-bold-v2"
+              />
             }
           />
         </View>

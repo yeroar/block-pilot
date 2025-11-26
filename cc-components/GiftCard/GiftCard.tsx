@@ -9,16 +9,13 @@ import {
 } from "react-native";
 import { FoldText } from "../Primitives/FoldText";
 import { ChevronRightIcon } from "../assets/BlueSkyIcons/ChevronRightIcon";
-import { StarIcon } from "../assets/BlueSkyIcons/StarIcon";
 import {
-  LayerSecondary,
   BorderSecondary,
   FacePrimary,
   FaceAccent,
+  FaceTertiary,
   SpacingM4,
   SpacingM3,
-  SpacingM5,
-  SpacingM8,
   BorderRadiusSm,
   SpacingM10,
   BorderRadiusDefault,
@@ -36,11 +33,14 @@ export interface GiftCardProps {
   style?: ViewStyle;
   titleStyle?: TextStyle;
   subtitleStyle?: TextStyle;
+  meta?: string; // third descriptive line e.g. "Online and in-store"
+  accentPercent?: number; // dynamic percent replacement for subtitle template
+  figmaNodeId?: string; // optional data-node-id for mapping
 }
 
 // Constants for logo sizes - easier to maintain
 const LOGO_SIZES = {
-  outlined: SpacingM8,
+  outlined: SpacingM10, // closer to ~64px from design (66.6)
   elevated: SpacingM10,
 } as const;
 
@@ -50,6 +50,14 @@ const LOCAL_LOGOS: Record<string, any> = {
   Airbnb: require("../assets/logoABNB.png"),
   // add Starbucks / star logo
   Starbucks: require("../assets/logoStar.png"),
+  // new merchants
+  Walgreens: require("../assets/Walgreens.png"),
+  Walmart: require("../assets/Wallmart.png"), // project file named Wallmart.png
+  Wallmart: require("../assets/Wallmart.png"), // alias in case title varies
+  Wawa: require("../assets/Wawa.png"),
+  Wayfair: require("../assets/Wayfair.png"),
+  WHBM: require("../assets/WHBM.png"),
+  "Wine.com": require("../assets/Wine.com.png"),
 };
 
 /**
@@ -64,12 +72,15 @@ const LOCAL_LOGOS: Record<string, any> = {
 export default function GiftCard({
   variant = "outlined",
   title = "Merchant",
-  subtitle = "5% sats back",
+  subtitle = "Up to {n}% sats back",
+  meta = "Online and in-store",
+  accentPercent,
   logoUri,
   onPress,
   style,
   titleStyle,
   subtitleStyle,
+  figmaNodeId,
 }: GiftCardProps) {
   const isElevated = variant === "elevated";
   const isOutlined = variant === "outlined";
@@ -83,12 +94,9 @@ export default function GiftCard({
   };
 
   // Render appropriate icon based on variant
-  const renderTrailingIcon = () => {
-    if (isElevated) {
-      return <StarIcon width={20} height={20} color={FaceAccent} />;
-    }
-    return <ChevronRightIcon width={20} height={20} color={FaceAccent} />;
-  };
+  const renderTrailingIcon = () => (
+    <ChevronRightIcon width={20} height={20} color={FaceTertiary} />
+  );
 
   // Render logo with fallback placeholder / local asset map
   const renderLogo = () => {
@@ -108,31 +116,51 @@ export default function GiftCard({
 
   const Container = onPress ? TouchableOpacity : View;
 
+  const resolvedSubtitle = subtitle.replace(
+    "{n}",
+    accentPercent != null ? String(accentPercent) : "5"
+  );
+
   return (
     <Container
       onPress={onPress}
       activeOpacity={0.85}
       style={[
         styles.root,
-        isElevated ? styles.elevatedRoot : styles.outlinedRoot,
         style,
+        variant === "elevated" && styles.elevatedRoot,
       ]}
+      {...(figmaNodeId
+        ? {
+            accessibilityLabel: title,
+            testID: figmaNodeId,
+            "data-node-id": figmaNodeId,
+          }
+        : {})}
     >
-      <View style={[styles.logoWrap, logoInlineStyle]}>{renderLogo()}</View>
-
-      <View style={[styles.content, isOutlined && styles.contentOutlined]}>
+      <View
+        style={[
+          styles.logoWrap,
+          { width: LOGO_SIZES[variant], height: LOGO_SIZES[variant] },
+        ]}
+      >
+        {renderLogo()}
+      </View>
+      <View style={styles.content}>
         <View style={styles.left}>
           <FoldText type="body-md-bold-v2" style={[styles.title, titleStyle]}>
             {title}
           </FoldText>
           <FoldText
-            type="body-sm-bold-v2"
+            type="body-md-bold-v2"
             style={[styles.subtitle, subtitleStyle]}
           >
-            {subtitle}
+            {resolvedSubtitle}
+          </FoldText>
+          <FoldText type="body-md-bold-v2" style={styles.meta}>
+            {meta}
           </FoldText>
         </View>
-
         <View style={styles.trailing}>{renderTrailingIcon()}</View>
       </View>
     </Container>
@@ -146,23 +174,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     alignItems: "center",
-  },
-  outlinedRoot: {
-    position: "relative",
+    paddingVertical: SpacingM4,
+    // Horizontal padding handled by logo + content gap
   },
   elevatedRoot: {
     borderWidth: 1,
     borderColor: BorderSecondary,
-    paddingVertical: SpacingM4,
-    paddingLeft: SpacingM4,
-    backgroundColor: LayerSecondary,
-
-    position: "relative",
   },
   logoWrap: {
     overflow: "hidden",
-    marginRight: SpacingM4,
-    backgroundColor: LayerSecondary,
+    marginRight: SpacingM3, // gap ~12px between logo & text
+    backgroundColor: FaceAccent, // logo background matches design sample brand color
+    borderRadius: 12, // design radius
     justifyContent: "center",
     alignItems: "center",
   },
@@ -183,24 +206,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingRight: SpacingM4,
   },
-  contentOutlined: {
-    borderBottomWidth: 1,
-    borderColor: BorderSecondary,
-    paddingVertical: SpacingM5,
-  },
   left: {
     flex: 1,
     justifyContent: "center",
+    gap: 0,
   },
-  title: {
-    color: FacePrimary,
-  },
-  subtitle: {
-    color: FaceAccent,
-    marginTop: 4,
-  },
-  trailing: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  title: { color: FacePrimary },
+  subtitle: { color: FaceAccent, marginTop: 0 },
+  meta: { color: FaceTertiary, marginTop: 0 },
+  trailing: { alignItems: "center", justifyContent: "center" },
 });

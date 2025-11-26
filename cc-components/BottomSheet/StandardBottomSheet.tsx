@@ -10,9 +10,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BorderRadiusDefault,
   LayerBackground,
+  SpacingM0,
   SpacingM4,
   SpacingM5,
-  SpacingM8,
 } from "../../generated-tokens/tokens";
 import { colorPrimitivesBS } from "../../generated-tokens/colorPrimitives2.1";
 
@@ -95,10 +95,8 @@ const StandardBottomSheet = React.forwardRef<
       closeOnBackdropPress = false,
       onDismiss,
       backdropOpacity = 0.5,
-      sectionPaddingX = SpacingM4,
-      sectionGap = SpacingM5,
+      sectionGap = SpacingM0,
       useRoundedPanel = false,
-      panelPadding = SpacingM4,
     },
     ref
   ) => {
@@ -177,7 +175,10 @@ const StandardBottomSheet = React.forwardRef<
         <BottomSheetView
           style={[
             styles.container,
-            { paddingHorizontal: sectionPaddingX, gap: sectionGap },
+            {
+              paddingHorizontal: SpacingM5,
+              gap: sectionGap,
+            },
           ]}
         >
           {/* Header slot */}
@@ -198,7 +199,7 @@ const StandardBottomSheet = React.forwardRef<
 
           {/* Footer slot */}
           {footerSlot ? (
-            <View style={[styles.footer, { paddingBottom: insets.bottom }]}>
+            <View style={[styles.footer, { paddingBottom: insets.bottom - 8 }]}>
               {footerSlot}
             </View>
           ) : null}
@@ -225,8 +226,8 @@ const styles = StyleSheet.create({
   container: {
     // layout stacks header / content / footer vertically
     justifyContent: "flex-start",
-    paddingHorizontal: SpacingM4,
-    gap: SpacingM5,
+    paddingHorizontal: SpacingM0,
+    paddingTop: 0, // remove implicit top padding
   },
   header: {
     width: "100%",
