@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   View,
   StyleSheet,
@@ -68,6 +68,9 @@ export default function TestSearchScreen() {
   const topInset = insets?.top ?? 0;
   const [q, setQ] = useState("");
 
+  // Content height measurement for dynamic sizing
+  const [contentHeight, setContentHeight] = useState(400); // Default fallback height
+
   // Simple filter: show only Airbnb when typing, show all when empty
   const showOnlyAirbnb = q.trim().length > 0;
 
@@ -75,6 +78,9 @@ export default function TestSearchScreen() {
   const giftSheetRef = useRef<any>(null);
   // flag to indicate we're navigating to the preview screen (avoid reopening sheets)
   const navigatingToPreviewRef = useRef(false);
+
+  // Snap points based on measured content height
+  const snapPoints = useMemo(() => [contentHeight], [contentHeight]);
 
   const [activeGift, setActiveGift] = useState<{
     title: string;
@@ -255,6 +261,25 @@ export default function TestSearchScreen() {
     </ActionBar>
   );
 
+  // Create a wrapper that measures the total content height
+  const renderMeasuredContent = useCallback(() => {
+    return (
+      <View
+        style={{
+          paddingTop: 16,
+          paddingBottom: insets.bottom,
+        }}
+        onLayout={(event) => {
+          const { height } = event.nativeEvent.layout;
+          setContentHeight(Math.max(height, 200)); // Minimum height of 200
+        }}
+      >
+        {renderSheetContent()}
+        {renderSheetFooter()}
+      </View>
+    );
+  }, [renderSheetContent, renderSheetFooter, insets.bottom]);
+
   useEffect(() => {
     if (!activeGift || navigatingToPreviewRef.current) return;
     giftSheetRef.current?.present?.();
@@ -323,7 +348,8 @@ export default function TestSearchScreen() {
       {/* Shared bottom sheet for gift card details (standardized) */}
       <StandardBottomSheet
         ref={giftSheetRef}
-        enableDynamicSizing={true}
+        snapPoints={snapPoints} // Use measured content height as single snap point
+        enableDynamicSizing={false} // Disable dynamic sizing to use fixed snap points
         enablePanDownToClose={true} // Enable swipe down to close
         enableHandlePanningGesture={false} // Disable handle dragging
         enableContentPanningGesture={true} // Enable content panning for swipe down to close
@@ -340,8 +366,7 @@ export default function TestSearchScreen() {
             setSelectedAmount(null);
           }
         }}
-        contentSlot={renderSheetContent()}
-        footerSlot={renderSheetFooter()}
+        contentSlot={renderMeasuredContent()} // Use measured content wrapper
       />
     </>
   );
