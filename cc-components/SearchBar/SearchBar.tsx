@@ -20,7 +20,6 @@ import {
   SpacingM4,
   SpacingM3,
   BorderRadiusRounded,
-  SpacingM12,
 } from "../../generated-tokens/tokens";
 
 interface SearchBarProps {

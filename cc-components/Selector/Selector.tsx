@@ -10,6 +10,7 @@ import {
   SpacingM0,
   FaceSecondary,
   Yellow800,
+  Blue100,
 } from "../../generated-tokens/tokens";
 import {
   renderTrailingIcon,

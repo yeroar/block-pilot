@@ -76,6 +76,18 @@ export default function TestSearchScreen() {
   // previewDisabled when no amount is selected
   const previewDisabled = !selectedAmount;
 
+  // Helper function to get button style based on selection state
+  const getAmountButtonStyle = (amount: string) => {
+    const baseStyle = { borderRadius: 16 };
+    const selectedStyle = {
+      borderColor: BorderPrimary,
+      borderWidth: 1.5,
+      borderRadius: 16,
+    };
+
+    return selectedAmount === amount ? selectedStyle : baseStyle;
+  };
+
   const handleFilterChange = (filterId: string, optionId: string) => {
     console.log(`Filter ${filterId} changed to: ${optionId}`);
   };
@@ -141,11 +153,7 @@ export default function TestSearchScreen() {
                 label="$10"
                 variant="outline"
                 size="lg"
-                style={
-                  selectedAmount === "$10"
-                    ? { borderColor: BorderPrimary, borderWidth: 1.5 }
-                    : undefined
-                }
+                style={getAmountButtonStyle("$10")}
                 onPress={() => setSelectedAmount("$10")}
               />
             </View>
@@ -154,11 +162,7 @@ export default function TestSearchScreen() {
                 label="$20"
                 variant="outline"
                 size="lg"
-                style={
-                  selectedAmount === "$20"
-                    ? { borderColor: BorderPrimary, borderWidth: 1.5 }
-                    : undefined
-                }
+                style={getAmountButtonStyle("$20")}
                 onPress={() => setSelectedAmount("$20")}
               />
             </View>
@@ -169,11 +173,7 @@ export default function TestSearchScreen() {
                 label="$50"
                 variant="outline"
                 size="lg"
-                style={
-                  selectedAmount === "$50"
-                    ? { borderColor: BorderPrimary, borderWidth: 1.5 }
-                    : undefined
-                }
+                style={getAmountButtonStyle("$50")}
                 onPress={() => setSelectedAmount("$50")}
               />
             </View>
@@ -182,11 +182,7 @@ export default function TestSearchScreen() {
                 label="$100"
                 variant="outline"
                 size="lg"
-                style={
-                  selectedAmount === "$100"
-                    ? { borderColor: BorderPrimary, borderWidth: 1.5 }
-                    : undefined
-                }
+                style={getAmountButtonStyle("$100")}
                 onPress={() => setSelectedAmount("$100")}
               />
             </View>
