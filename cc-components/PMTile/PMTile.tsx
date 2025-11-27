@@ -86,6 +86,10 @@ export default function PMTile({
   ...rest
 }: PMTileProps) {
   const insets = useSafeAreaInsets();
+  
+  // Content height measurement for dynamic sizing
+  const [contentHeight, setContentHeight] = useState(400); // Default fallback height
+  
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>(
     initialSelectedPayment || {
       key: "card",
@@ -102,8 +106,8 @@ export default function PMTile({
   // Bottom sheet ref: use our StandardBottomSheet methods shape
   const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
-  // Snap points for the bottom sheet
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
+  // Snap points based on measured content height
+  const snapPoints = useMemo(() => [contentHeight], [contentHeight]);
 
   // Auto-open logic on mount when enabled
   React.useEffect(() => {
@@ -315,6 +319,25 @@ export default function PMTile({
   // Show slots if enabled or provided
   const showTrailing = trailingIcon || !!trailingSlot;
 
+  // Create a wrapper that measures the total content height
+  const renderMeasuredContent = useCallback(() => {
+    return (
+      <View
+        style={{
+          paddingTop: 16,
+          paddingBottom: insets.bottom,
+        }}
+        onLayout={(event) => {
+          const { height } = event.nativeEvent.layout;
+          setContentHeight(Math.max(height, 200)); // Minimum height of 200
+        }}
+      >
+        {renderSheetContent()}
+        {renderSheetFooter()}
+      </View>
+    );
+  }, [renderSheetContent, renderSheetFooter, insets.bottom]);
+
   // Visual state
   const isAddPayment =
     enablePaymentSelection && selectedPayment.title === "Add payment method";
@@ -413,15 +436,16 @@ export default function PMTile({
 
       <StandardBottomSheet
         ref={bottomSheetRef as any}
-        snapPoints={snapPoints}
-        enableDynamicSizing
-        enablePanDownToClose
+        snapPoints={snapPoints} // Use measured content height as single snap point
+        enableDynamicSizing={false} // Disable dynamic sizing to use fixed snap points
+        enablePanDownToClose={true} // Enable swipe down to close
+        enableHandlePanningGesture={false} // Disable handle dragging
+        enableContentPanningGesture={true} // Enable content panning for swipe down to close
         closeOnBackdropPress={true}
         backdropOpacity={0.5}
         onDismiss={handleSheetClose}
         headerSlot={null} // Remove header for payment selection
-        contentSlot={enablePaymentSelection ? renderSheetContent() : null}
-        footerSlot={enablePaymentSelection ? renderSheetFooter() : null}
+        contentSlot={enablePaymentSelection ? renderMeasuredContent() : null} // Use measured content wrapper
         useRoundedPanel={true}
       />
     </>
