@@ -419,13 +419,7 @@ export default function PMTile({
         closeOnBackdropPress={true}
         backdropOpacity={0.5}
         onDismiss={handleSheetClose}
-        headerSlot={
-          hideSheetHeader
-            ? null
-            : enablePaymentSelection
-            ? renderSheetHeader()
-            : null
-        }
+        headerSlot={null} // Remove header for payment selection
         contentSlot={enablePaymentSelection ? renderSheetContent() : null}
         footerSlot={enablePaymentSelection ? renderSheetFooter() : null}
         useRoundedPanel={true}

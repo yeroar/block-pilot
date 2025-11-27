@@ -324,7 +324,9 @@ export default function TestSearchScreen() {
       <StandardBottomSheet
         ref={giftSheetRef}
         enableDynamicSizing={true}
-        enablePanDownToClose={true}
+        enablePanDownToClose={true} // Enable swipe down to close
+        enableHandlePanningGesture={false} // Disable handle dragging
+        enableContentPanningGesture={true} // Enable content panning for swipe down to close
         closeOnBackdropPress={true}
         headerSlot={<View style={{ height: 0 }} />}
         // only clear activeGift when not transitioning to the purchase sheet

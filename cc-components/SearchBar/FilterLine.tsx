@@ -1,5 +1,5 @@
-import React, { useState, useRef, useMemo, useCallback, useEffect } from "react";
-import { View, StyleSheet, Animated, LayoutAnimation, Platform, UIManager } from "react-native";
+import React, { useState, useRef, useMemo, useCallback } from "react";
+import { View, StyleSheet } from "react-native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import PMTile from "../PMTile/PMTile";
 import { ChevronDownIcon } from "../assets/BlueSkyIcons/ChevronDownIcon";
@@ -59,27 +59,10 @@ const FILTER_OPTIONS = {
 
 export default function FilterLine({ onFilterChange }: FilterLineProps) {
   const insets = useSafeAreaInsets();
-  
-  // Enable layout animations for Android
-  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-  
-  // Animated values for chip interactions
-  const categoryScaleAnim = useRef(new Animated.Value(1)).current;
-  const rewardScaleAnim = useRef(new Animated.Value(1)).current;
-  const categoryChevronRotation = useRef(new Animated.Value(0)).current;
-  const rewardChevronRotation = useRef(new Animated.Value(0)).current;
-  const containerOpacity = useRef(new Animated.Value(0)).current;
 
-  // Entrance animation on mount
-  useEffect(() => {
-    Animated.timing(containerOpacity, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, [containerOpacity]);
+  // Content height measurement for dynamic sizing
+  const [contentHeight, setContentHeight] = useState(400); // Default fallback height
+
   // External filter id mapping (internal -> outbound)
   const FILTER_ID_MAP: Record<string, string> = {
     category: "redemption",
@@ -98,8 +81,8 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
   // Single shared bottom sheet ref (use activeSheet to switch content)
   const sheetRef = useRef<BottomSheetModal>(null);
 
-  // Snap points for the bottom sheets
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
+  // Snap points based on measured content height
+  const snapPoints = useMemo(() => [contentHeight], [contentHeight]);
 
   // Icons for location/category options — shared across sheet renderers
   const locationIcons: Record<string, React.ReactNode> = {
@@ -108,66 +91,9 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
     both: <HeartRoundedIcon width={20} height={20} />,
   };
 
-  // Animation helpers
-  const animateChipPress = useCallback((chipType: "category" | "reward") => {
-    const scaleAnim = chipType === "category" ? categoryScaleAnim : rewardScaleAnim;
-    const rotationAnim = chipType === "category" ? categoryChevronRotation : rewardChevronRotation;
-    
-    // Enhanced scale animation with bounce effect
-    Animated.parallel([
-      Animated.sequence([
-        Animated.timing(scaleAnim, {
-          toValue: 0.95,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.spring(scaleAnim, {
-          toValue: 1,
-          tension: 300,
-          friction: 10,
-          useNativeDriver: true,
-        }),
-      ]),
-      Animated.spring(rotationAnim, {
-        toValue: 1,
-        tension: 200,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, [categoryScaleAnim, rewardScaleAnim, categoryChevronRotation, rewardChevronRotation]);
-
-  const resetChipAnimation = useCallback((chipType: "category" | "reward") => {
-    const rotationAnim = chipType === "category" ? categoryChevronRotation : rewardChevronRotation;
-    
-    // Smooth spring animation for reset
-    Animated.spring(rotationAnim, {
-      toValue: 0,
-      tension: 200,
-      friction: 8,
-      useNativeDriver: true,
-    }).start();
-  }, [categoryChevronRotation, rewardChevronRotation]);
-
   // Handle filter selection
   const handleFilterPress = useCallback(
     (filterId: "category" | "reward") => {
-      // Add smooth layout animation for state changes
-      LayoutAnimation.configureNext({
-        duration: 300,
-        create: {
-          type: LayoutAnimation.Types.easeInEaseOut,
-          property: LayoutAnimation.Properties.opacity,
-        },
-        update: {
-          type: LayoutAnimation.Types.spring,
-          springDamping: 0.7,
-        },
-      });
-      
-      // Animate the chip press
-      animateChipPress(filterId);
-      
       // initialize temp selection from the committed selection
       if (filterId === "category") {
         setTempSelectedCategory(selectedCategory);
@@ -178,7 +104,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
       }
       setActiveSheet(filterId);
     },
-    [selectedCategory, selectedReward, animateChipPress]
+    [selectedCategory, selectedReward]
   );
 
   // Handle option selection (don't close here — only via buttons)
@@ -196,12 +122,8 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
 
   // Handle sheet close
   const handleSheetClose = useCallback(() => {
-    // Reset animations when sheet closes
-    if (activeSheet) {
-      resetChipAnimation(activeSheet);
-    }
     setActiveSheet(null);
-  }, [activeSheet, resetChipAnimation]);
+  }, []);
 
   // Get display labels
   const getCategoryLabel = () => {
@@ -322,6 +244,26 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
     );
   };
 
+  // Create a wrapper that measures the total content height
+  const renderMeasuredContent = () => {
+    return (
+      <View
+        style={{
+          paddingTop: 16,
+          paddingBottom: insets.bottom,
+        }}
+        onLayout={(event) => {
+          const { height } = event.nativeEvent.layout;
+          setContentHeight(Math.max(height, 200)); // Minimum height of 200
+        }}
+      >
+        {renderSheetHeader()}
+        {renderSheetBody()}
+        {renderSheetFooter()}
+      </View>
+    );
+  };
+
   const renderSheetFooter = () => (
     <ActionBar>
       <View
@@ -333,28 +275,14 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
           variant="secondary"
           size="lg"
           onPress={() => {
-            // Add smooth transition for clear action
-            LayoutAnimation.configureNext({
-              duration: 250,
-              create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-              },
-              update: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-              },
-            });
-            
             if (activeSheet === "category") {
               setTempSelectedCategory("gift_card");
               setSelectedCategory("gift_card");
               onFilterChange?.(FILTER_ID_MAP.category, "gift_card");
-              resetChipAnimation("category");
             } else {
               setTempSelectedReward("top_brands");
               setSelectedReward("top_brands");
               onFilterChange?.(FILTER_ID_MAP.reward, "top_brands");
-              resetChipAnimation("reward");
             }
             sheetRef.current?.dismiss();
           }}
@@ -365,26 +293,12 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
           variant="primary"
           size="lg"
           onPress={() => {
-            // Add smooth transition for apply action
-            LayoutAnimation.configureNext({
-              duration: 250,
-              create: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-                property: LayoutAnimation.Properties.opacity,
-              },
-              update: {
-                type: LayoutAnimation.Types.easeInEaseOut,
-              },
-            });
-            
             if (activeSheet === "category") {
               setSelectedCategory(tempSelectedCategory);
               onFilterChange?.(FILTER_ID_MAP.category, tempSelectedCategory);
-              resetChipAnimation("category");
             } else {
               setSelectedReward(tempSelectedReward);
               onFilterChange?.(FILTER_ID_MAP.reward, tempSelectedReward);
-              resetChipAnimation("reward");
             }
             sheetRef.current?.dismiss();
           }}
@@ -395,85 +309,42 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
 
   return (
     <>
-      <Animated.View style={[styles.container, { opacity: containerOpacity }]}>
-        <Animated.View 
-          style={[
-            { transform: [{ scale: categoryScaleAnim }] }
-          ]}
-        >
-          <PMTile
-            label={getCategoryLabel()}
-            selected={selectedCategory !== "gift_card"}
-            leadingIcon={false}
-            trailingSlot={
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      rotate: categoryChevronRotation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '180deg'],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <ChevronDownIcon width={16} height={16} />
-              </Animated.View>
-            }
-            onPress={() => handleFilterPress("category")}
-            style={styles.pill}
-            textType="body-md-v2"
-            textStyle={styles.pillText}
-          />
-        </Animated.View>
-        
-        <Animated.View 
-          style={[
-            { transform: [{ scale: rewardScaleAnim }] }
-          ]}
-        >
-          <PMTile
-            label={getRewardLabel()}
-            selected={selectedReward !== "top_brands"}
-            leadingIcon={false}
-            trailingSlot={
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      rotate: rewardChevronRotation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '180deg'],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <ChevronDownIcon width={16} height={16} />
-              </Animated.View>
-            }
-            onPress={() => handleFilterPress("reward")}
-            style={styles.pill}
-            textType="body-md-v2"
-            textStyle={styles.pillText}
-          />
-        </Animated.View>
-      </Animated.View>
+      <View style={styles.container}>
+        <PMTile
+          label={getCategoryLabel()}
+          selected={selectedCategory !== "gift_card"}
+          leadingIcon={false}
+          trailingSlot={<ChevronDownIcon width={16} height={16} />}
+          onPress={() => handleFilterPress("category")}
+          style={styles.pill}
+          textType="body-md-v2"
+          textStyle={styles.pillText}
+        />
+        <PMTile
+          label={getRewardLabel()}
+          selected={selectedReward !== "top_brands"}
+          leadingIcon={false}
+          trailingSlot={<ChevronDownIcon width={16} height={16} />}
+          onPress={() => handleFilterPress("reward")}
+          style={styles.pill}
+          textType="body-md-v2"
+          textStyle={styles.pillText}
+        />
+      </View>
 
       {/* Single shared StandardBottomSheet used for both category and reward
-          - headerSlot is required (FoldPageViewHeader)
-          - enableDynamicSizing makes the sheet hug header+content+footer
-          - footerSlot is optional (ActionBar) */}
+          - Uses measured content height as the only snap point
+          - Disables pan gestures to prevent dragging beyond content */}
       <StandardBottomSheet
         ref={sheetRef}
-        enableDynamicSizing={true}
-        enablePanDownToClose={false}
+        snapPoints={snapPoints} // Use measured content height as single snap point
+        enableDynamicSizing={false} // Disable dynamic sizing to use fixed snap points
+        enablePanDownToClose={true} // Enable swipe down to close
+        enableHandlePanningGesture={false} // Disable handle dragging
+        enableContentPanningGesture={true} // Enable content panning for swipe down to close
         closeOnBackdropPress={true}
         onDismiss={handleSheetClose}
-        headerSlot={renderSheetHeader()} // Add header back
-        contentSlot={renderSheetBody()}
-        footerSlot={renderSheetFooter() /* optional ActionBar */}
+        contentSlot={renderMeasuredContent()} // Use measured content wrapper
       />
     </>
   );

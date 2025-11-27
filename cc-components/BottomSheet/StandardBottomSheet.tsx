@@ -4,7 +4,6 @@ import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetBackdrop,
-  BottomSheetModalMethods,
 } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -49,6 +48,16 @@ export interface StandardBottomSheetProps {
   enablePanDownToClose?: boolean;
 
   /**
+   * Enable handle panning gesture
+   */
+  enableHandlePanningGesture?: boolean;
+
+  /**
+   * Enable content panning gesture
+   */
+  enableContentPanningGesture?: boolean;
+
+  /**
    * Allow backdrop press to close
    */
   closeOnBackdropPress?: boolean;
@@ -82,7 +91,7 @@ export interface StandardBottomSheetProps {
 }
 
 const StandardBottomSheet = React.forwardRef<
-  BottomSheetModalMethods,
+  BottomSheetModal,
   StandardBottomSheetProps
 >(
   (
@@ -93,6 +102,8 @@ const StandardBottomSheet = React.forwardRef<
       snapPoints,
       enableDynamicSizing = true, // default to dynamic sizing for "hug content"
       enablePanDownToClose = true,
+      enableHandlePanningGesture = true,
+      enableContentPanningGesture = true,
       closeOnBackdropPress = false,
       onDismiss,
       backdropOpacity = 0.5,
@@ -103,7 +114,7 @@ const StandardBottomSheet = React.forwardRef<
   ) => {
     const insets = useSafeAreaInsets();
     // ref that holds the modal methods exposed by @gorhom/bottom-sheet
-    const sheetRef = useRef<BottomSheetModalMethods | null>(null);
+    const sheetRef = useRef<BottomSheetModal | null>(null);
 
     // if using dynamic sizing we expect a header to properly position the sheet
     // headerSlot is now optional - no warning needed
@@ -132,7 +143,7 @@ const StandardBottomSheet = React.forwardRef<
           collapse: () => sheetRef.current?.collapse?.(),
           forceClose: () => (sheetRef.current as any)?.forceClose?.(),
           close: () => (sheetRef.current as any)?.close?.(),
-        } as BottomSheetModalMethods),
+        } as BottomSheetModal),
       []
     );
 
@@ -168,6 +179,8 @@ const StandardBottomSheet = React.forwardRef<
         snapPoints={snapPointsArray}
         enableDynamicSizing={enableDynamicSizing}
         enablePanDownToClose={enablePanDownToClose}
+        enableHandlePanningGesture={enableHandlePanningGesture}
+        enableContentPanningGesture={enableContentPanningGesture}
         backdropComponent={renderBackdrop}
         onDismiss={handleDismiss}
         backgroundStyle={styles.sheetBackground}
