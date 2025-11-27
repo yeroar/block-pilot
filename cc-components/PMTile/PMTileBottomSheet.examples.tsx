@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Selector from "../Selector/Selector";
 import { BankIcon } from "../assets/BlueSkyIcons/BankIcon";
@@ -7,6 +7,7 @@ import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import Chip from "../Chip/Chip";
 import ActionBar from "../ActionBar/ActionBar";
 import Button from "../Button/Button";
+import { FoldText } from "../Primitives/FoldText";
 import {
   LayerSecondary,
   BorderSecondary,
@@ -16,9 +17,97 @@ import {
   SpacingM5,
   SpacingM0,
   SpacingM4,
+  ObjectPrimaryBoldDefault,
+  ObjectAccentBoldDefault,
+  FacePrimary,
+  SpacingM8,
+  Blue100,
+  SpacingM3,
 } from "../../generated-tokens/tokens";
 
-// Minimal items for selection
+// Lightning icon using asset as fill
+const LightningIcon = () => (
+  <View
+    style={{
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      overflow: "hidden",
+    }}
+  >
+    <Image
+      source={require("../assets/Lighting.png")}
+      style={{ width: "100%", height: "100%" }}
+      resizeMode="cover"
+    />
+  </View>
+);
+
+// Bitcoin/cash icon using asset as fill
+const BitcoinIcon = () => (
+  <View
+    style={{
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      overflow: "hidden",
+    }}
+  >
+    <Image
+      source={require("../assets/Cash balance.png")}
+      style={{ width: "100%", height: "100%" }}
+      resizeMode="cover"
+    />
+  </View>
+);
+
+// Card icon using asset as fill
+const CardIconContainer = () => (
+  <View
+    style={{
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      overflow: "hidden",
+    }}
+  >
+    <Image
+      source={require("../assets/Visa.png")}
+      style={{ width: "100%", height: "100%" }}
+      resizeMode="cover"
+    />
+  </View>
+);
+
+// Updated payment methods to match Figma design
+const cashBalanceMethod = {
+  key: "cash" as const,
+  icon: <BitcoinIcon />,
+  title: "Cash balance",
+  subtitle: "$500.00",
+  chip: "2.5%",
+  chipColor: ObjectAccentBoldDefault, // blue chip
+};
+
+const visaCardMethod = {
+  key: "card" as const,
+  icon: <CardIconContainer />,
+  title: "Visa",
+  subtitle: "•••• 0823",
+  chip: "0.5%",
+  chipColor: ObjectAccentBoldDefault,
+};
+
+const lightningMethod = {
+  key: "lightning" as const,
+  icon: <LightningIcon />,
+  title: "Lightning",
+  subtitle: "Instant delivery, minimal fees",
+  chip: "1.5%",
+  chipColor: ObjectAccentBoldDefault,
+};
+
+// Legacy methods for backward compatibility
 const bankMethod = {
   key: "bank" as const,
   icon: <BankIcon width={20} height={20} />,
@@ -35,7 +124,66 @@ const cardMethod = {
   subsubtitle: "n.n% deposit fee ($n.nn min)",
 };
 
-// Only export this example - updated to match card/bank styling
+// New: Payment method selection matching Figma design
+export const PaymentMethodSelectionExample = ({
+  onSelect,
+}: {
+  onSelect?: (methodKey: string) => void;
+}) => {
+  const insets = useSafeAreaInsets();
+  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+
+  const paymentMethods = [cashBalanceMethod, visaCardMethod, lightningMethod];
+
+  return (
+    <View
+      style={[
+        styles.listContainer,
+        {
+          marginBottom: insets.bottom,
+        },
+      ]}
+    >
+      <FoldText type="header-md-v2" style={styles.header}>
+        Choose payment method
+      </FoldText>
+
+      <View style={[styles.selectorListClean, styles.selectorListPadding]}>
+        {paymentMethods.map((method, index) => (
+          <React.Fragment key={method.key}>
+            <Selector
+              variant="radio"
+              title={method.title}
+              subtext={method.subtitle}
+              showLeadingIcon={method.icon}
+              hasChip={
+                <Chip
+                  label={method.chip}
+                  onPress={() => {}}
+                  bold={selectedMethod === method.key}
+                />
+              }
+              selected={selectedMethod === method.key}
+              onPress={() => setSelectedMethod(method.key)}
+            />
+          </React.Fragment>
+        ))}
+      </View>
+
+      <ActionBar>
+        <Button
+          label="Use this payment method"
+          variant="primary"
+          size="lg"
+          onPress={() => selectedMethod && onSelect?.(selectedMethod)}
+          disabled={!selectedMethod}
+        />
+      </ActionBar>
+    </View>
+  );
+};
+
+// Keep existing EmptyPaymentContentExample for backward compatibility
 export const EmptyPaymentContentExample = ({
   onSelect,
 }: {
@@ -227,8 +375,13 @@ export const getBankDetails = (id: string) => {
 const styles = StyleSheet.create({
   // Main container for the list design
   listContainer: {
-    gap: SpacingM1,
-    marginVertical: SpacingM5,
+    gap: SpacingM0,
+  },
+
+  // Header with vertical padding
+  header: {
+    paddingTop: SpacingM3,
+    paddingBottom: 20,
   },
 
   // Modifier for add payment method (no action bar)
@@ -236,11 +389,21 @@ const styles = StyleSheet.create({
     marginBottom: SpacingM16,
   },
 
-  // Container for selector items with background and borders
+  // Container for selector items with background and borders (legacy)
   selectorList: {
     backgroundColor: LayerSecondary,
     borderRadius: BorderRadiusDefault,
     overflow: "hidden",
+  },
+
+  // Clean selector list without background, padding, or dividers
+  selectorListClean: {
+    // No background, padding, or borders
+  },
+
+  // Vertical padding for selectors list
+  selectorListPadding: {
+    paddingVertical: 12,
   },
 
   // Divider between selector items

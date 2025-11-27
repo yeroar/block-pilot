@@ -44,7 +44,6 @@ export const getSelectionStyle = (
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 12,
-    paddingHorizontal: 16,
   } as const;
 
   // return the same base for navigation, radio and checkbox (no variant-specific background)

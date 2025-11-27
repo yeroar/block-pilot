@@ -24,6 +24,7 @@ import {
 } from "../../generated-tokens/tokens";
 import {
   EmptyPaymentContentExample,
+  PaymentMethodSelectionExample,
   CardsPaymentContentExample,
   BankPaymentContentExample,
   getCardDetails,
@@ -129,13 +130,17 @@ export default function PMTile({
   const handleSpecificPaymentSelect = useCallback(
     (paymentId: string) => {
       if (sheetMode === "bank") {
-        const bankDetails = getBankDetails(paymentId) as PaymentMethod | undefined;
+        const bankDetails = getBankDetails(paymentId) as
+          | PaymentMethod
+          | undefined;
         if (bankDetails) {
           setSelectedPayment(bankDetails);
           onPaymentSelect?.(bankDetails);
         }
       } else if (sheetMode === "card") {
-        const cardDetails = getCardDetails(paymentId) as PaymentMethod | undefined;
+        const cardDetails = getCardDetails(paymentId) as
+          | PaymentMethod
+          | undefined;
         if (cardDetails) {
           setSelectedPayment(cardDetails);
           onPaymentSelect?.(cardDetails);
@@ -225,8 +230,8 @@ export default function PMTile({
       }
       if (sheetMode === "card") {
         return (
-          <CardsPaymentContentExample
-            onSelect={(cardId) => handleSpecificPaymentSelect(cardId)}
+          <PaymentMethodSelectionExample
+            onSelect={(methodKey) => handleSpecificPaymentSelect(methodKey)}
           />
         );
       }

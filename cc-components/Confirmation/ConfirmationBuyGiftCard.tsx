@@ -104,4 +104,8 @@ const styles = StyleSheet.create({
   disclaimer: {
     gap: SpacingM2,
   },
+  rewardsValue: {
+    alignItems: "flex-end",
+    gap: SpacingM0,
+  },
 });

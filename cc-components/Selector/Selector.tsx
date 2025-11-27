@@ -2,14 +2,11 @@ import React from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
 import FoldPressable from "../Primitives/FoldPressable";
 import { FoldText } from "../Primitives/FoldText";
-import Chip from "../Chip/Chip";
 import { CreditCardIcon } from "../assets/BlueSkyIcons/CreditCardIcon";
 import {
   FacePrimary,
-  SpacingM2,
   SpacingM4,
   ObjectSecondaryDefault,
-  LayerSecondary,
   SpacingM0,
   FaceSecondary,
   Yellow800,
@@ -54,7 +51,6 @@ const Selector: React.FC<SelectorProps> = ({
   const showSubtext = subtext || !!subtextSlot;
   const showFootnote = footnote || !!footnoteSlot;
 
-  // Render the leading icon - prioritize showLeadingIcon, then leadingSlot, then default
   const renderLeadingIcon = () => {
     if (React.isValidElement(showLeadingIcon)) {
       return showLeadingIcon;
@@ -65,7 +61,6 @@ const Selector: React.FC<SelectorProps> = ({
     return <CreditCardIcon width={20} height={20} />;
   };
 
-  // Get dynamic styles based on selection state
   const selectionStyle = getSelectionStyle(variant, selected);
   const containerStyle = StyleSheet.flatten([
     styles.container,
@@ -83,7 +78,6 @@ const Selector: React.FC<SelectorProps> = ({
 
         {/* Text Content */}
         <View style={styles.textContent}>
-          {/* Title Row with Chip */}
           <View style={styles.titleRow}>
             <FoldText type="body-md-bold-v2" style={styles.title}>
               {title}
@@ -91,14 +85,12 @@ const Selector: React.FC<SelectorProps> = ({
             {hasChip && hasChip}
           </View>
 
-          {/* Subtext */}
           {showSubtext && (
             <FoldText type="body-md-v2" style={styles.subtext}>
               {subtextSlot || subtext}
             </FoldText>
           )}
 
-          {/* Footnote */}
           {showFootnote && (
             <FoldText type="body-md-v2" style={styles.footnote}>
               {footnoteSlot || footnote}
@@ -106,7 +98,7 @@ const Selector: React.FC<SelectorProps> = ({
           )}
         </View>
 
-        {/* Trailing Icon - Centered vertically */}
+        {/* Trailing Icon */}
         {renderTrailingIcon(variant, selected)}
       </View>
     </FoldPressable>
@@ -116,12 +108,11 @@ const Selector: React.FC<SelectorProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    padding: SpacingM4,
   },
   content: {
     flexDirection: "row",
-    alignItems: "center", // Center all items vertically
-    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
     gap: SpacingM4,
   },
   iconContainer: {
@@ -130,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: ObjectSecondaryDefault,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8, // Add some border radius for better visual
+    borderRadius: 8,
   },
   textContent: {
     flex: 1,
@@ -139,7 +130,7 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: SpacingM2,
+    gap: 6,
   },
   title: {
     color: FacePrimary,
