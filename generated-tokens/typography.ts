@@ -32,9 +32,9 @@ export const tokens = {
   },
   "header-xxs-v2": {
     fontFamily: "Geist",
-    fontWeight: 600,
-    fontSize: 14,
-    lineHeight: 16,
+    fontWeight: 500,
+    fontSize: 16,
+    lineHeight: 18,
   },
   "body-lg-v2": {
     fontFamily: "Geist",

@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -25,12 +31,20 @@ import {
   SpacingM6,
   BorderPrimary,
   Red500,
+  FaceAccent,
+  FaceTertiary,
+  SpacingM8,
 } from "../generated-tokens/tokens";
 import { CreditCardIcon } from "../cc-components/assets/BlueSkyIcons/CreditCardIcon";
 import { GlobeIcon } from "../cc-components/assets/BlueSkyIcons/GlobeIcon";
+import { TrendUp01Icon } from "../cc-components/assets/BlueSkyIcons/TrendUp01Icon";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import RecommendedGifts from "../cc-components/GiftCard/RecommendedGifts";
 import { red } from "react-native-reanimated/lib/typescript/Colors";
+import { FoldSolidIcon } from "../cc-components/assets/BlueSkyIcons/FoldSolidIcon";
+import { FoldIcon } from "../cc-components/assets/BlueSkyIcons/FoldIcon";
+import { CircleIcon } from "../cc-components/assets/BlueSkyIcons/CircleIcon";
+import { ChaseIcon } from "../cc-components/assets/BlueSkyIcons/ChaseIcon";
 
 export type RootStackParamList = {
   TestSearch: undefined;
@@ -94,6 +108,8 @@ export default function TestSearchScreen() {
 
   const openGiftSheet = useCallback(
     (gift: { title: string; subtitle: string; logoUri?: string }) => {
+      // Dismiss keyboard when opening bottom sheet
+      Keyboard.dismiss();
       setActiveGift(gift);
       giftSheetRef.current?.present();
     },
@@ -128,14 +144,17 @@ export default function TestSearchScreen() {
           </FoldText>
           <View style={styles.valueProps}>
             <View style={styles.validationRow}>
-              <CreditCardIcon width={16} height={16} />
-              <FoldText type="body-md-v2" style={styles.validationText}>
-                Purchase with debit or credit card
+              <ChaseIcon width={20} height={20} fill={FaceAccent} />
+              <FoldText
+                type="body-lg-v2"
+                style={[styles.validationText, { color: FaceAccent }]}
+              >
+                Up to 5% sats back
               </FoldText>
             </View>
             <View style={styles.validationRow}>
-              <GlobeIcon width={16} height={16} />
-              <FoldText type="body-md-v2" style={styles.validationText}>
+              <GlobeIcon width={20} height={20} fill={FaceTertiary} />
+              <FoldText type="body-lg-v2" style={styles.validationText}>
                 In-store or online
               </FoldText>
             </View>
@@ -244,57 +263,61 @@ export default function TestSearchScreen() {
   return (
     <>
       <SafeAreaView style={styles.safe}>
-        <View style={styles.page}>
-          {/* Header */}
-          <View
-            style={{
-              paddingHorizontal: SpacingM5,
-              gap: SpacingM3,
-            }}
-          >
-            <SearchBar
-              value={q}
-              placeholder="Search gift cards"
-              onChange={setQ}
-              testID="test-searchbar"
-              autoFocus={true}
-            />
-            <FilterLine onFilterChange={handleFilterChange} />
-          </View>
-
-          {/* Gift search */}
-          <View
-            style={{
-              paddingLeft: SpacingM5,
-            }}
-          >
-            <FoldText
-              type="header-xs-v2"
-              style={{ marginBottom: SpacingM4, marginTop: SpacingM5 }}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.page}>
+            {/* Header */}
+            <View
+              style={{
+                paddingTop: 16,
+                paddingHorizontal: SpacingM5,
+                gap: SpacingM4,
+              }}
             >
-              Recommended
-            </FoldText>
+              <SearchBar
+                value={q}
+                placeholder="Search gift cards"
+                onChange={setQ}
+                testID="test-searchbar"
+                autoFocus={true}
+              />
+              <FilterLine onFilterChange={handleFilterChange} />
+            </View>
 
-            <GiftCard
-              variant="outlined"
-              title="Airbnb"
-              subtitle="5% sats back"
-              logoUri={undefined}
-              onPress={() =>
-                openGiftSheet({
-                  title: "Airbnb",
-                  subtitle: "5% sats back",
-                  logoUri: undefined,
-                })
-              }
-            />
+            {/* Gift search */}
+            <View
+              style={{
+                gap: 0,
+                paddingLeft: SpacingM5,
+              }}
+            >
+              <FoldText
+                type="header-xs-v2"
+                style={{ marginBottom: SpacingM4, marginTop: SpacingM8 }}
+              >
+                Top brands
+              </FoldText>
 
-            <RecommendedGifts
-              openGiftSheet={openGiftSheet}
-              showOnlyAirbnb={showOnlyAirbnb}
-            />
+              <GiftCard
+                variant="outlined"
+                title="Airbnb"
+                subtitle="5% sats back"
+                logoUri={undefined}
+                onPress={() =>
+                  openGiftSheet({
+                    title: "Airbnb",
+                    subtitle: "5% sats back",
+                    logoUri: undefined,
+                  })
+                }
+              />
+
+              <RecommendedGifts
+                openGiftSheet={openGiftSheet}
+                showOnlyAirbnb={showOnlyAirbnb}
+              />
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
 
       {/* Shared bottom sheet for gift card details (standardized) */}

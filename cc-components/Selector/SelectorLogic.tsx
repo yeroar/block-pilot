@@ -4,7 +4,7 @@ import { SquareIcon } from "../assets/BlueSkyIcons/SquareIcon";
 import { ChevronRightIcon } from "../assets/BlueSkyIcons/ChevronRightIcon";
 import { CheckCircleIcon } from "../assets/BlueSkyIcons/CheckCircleIcon";
 import { CheckSquareIcon } from "../assets/BlueSkyIcons/CheckSquareIcon";
-import { FaceAccent } from "../../generated-tokens/tokens";
+import { FacePrimary, FaceDisabled } from "../../generated-tokens/tokens";
 
 export type SelectorVariant = "navigation" | "radio" | "checkbox";
 
@@ -14,23 +14,36 @@ export const renderTrailingIcon = (
 ): React.ReactNode => {
   switch (variant) {
     case "radio":
-      // Radio: Show filled circle with accent color when selected, empty circle when not
-      return selected ? (
-        <CheckCircleIcon width={20} height={20} fill={FaceAccent} />
-      ) : (
-        <CircleIcon width={20} height={20} />
-      );
+      // For radio, we'll move this to leading position, so return null here
+      return null;
     case "checkbox":
-      // Checkbox: Show filled square with accent color when selected, empty square when not
+      // Checkbox: Show filled circle with primary color when selected, disabled color when not (like radio but on right)
       return selected ? (
-        <CheckSquareIcon width={20} height={20} fill={FaceAccent} />
+        <CheckCircleIcon width={20} height={20} fill={FacePrimary} />
       ) : (
-        <SquareIcon width={20} height={20} />
+        <CircleIcon width={20} height={20} fill={FaceDisabled} />
       );
     case "navigation":
     default:
       // Navigation: Always show chevron right (selection state doesn't matter)
       return <ChevronRightIcon width={20} height={20} />;
+  }
+};
+
+export const renderLeadingIcon = (
+  variant: SelectorVariant,
+  selected: boolean
+): React.ReactNode => {
+  switch (variant) {
+    case "radio":
+      // Radio: Show filled circle with primary color when selected, disabled color when not
+      return selected ? (
+        <CheckCircleIcon width={20} height={20} fill={FacePrimary} />
+      ) : (
+        <CircleIcon width={20} height={20} fill={FaceDisabled} />
+      );
+    default:
+      return null;
   }
 };
 

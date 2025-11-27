@@ -14,6 +14,7 @@ import {
 } from "../../generated-tokens/tokens";
 import {
   renderTrailingIcon,
+  renderLeadingIcon as renderVariantLeadingIcon,
   getSelectionStyle,
   SelectorVariant,
 } from "./SelectorLogic";
@@ -72,8 +73,9 @@ const Selector: React.FC<SelectorProps> = ({
   return (
     <FoldPressable onPress={onPress} style={containerStyle}>
       <View style={styles.content}>
-        {/* Leading Icon */}
-        {showLeading && (
+        {/* Leading Icon - Radio button for radio variant, or custom icon */}
+        {variant === "radio" && renderVariantLeadingIcon(variant, selected)}
+        {variant !== "radio" && showLeading && (
           <View style={styles.iconContainer}>{renderLeadingIcon()}</View>
         )}
 
@@ -99,8 +101,8 @@ const Selector: React.FC<SelectorProps> = ({
           )}
         </View>
 
-        {/* Trailing Icon */}
-        {renderTrailingIcon(variant, selected)}
+        {/* Trailing Icon - Only for non-radio variants */}
+        {variant !== "radio" && renderTrailingIcon(variant, selected)}
       </View>
     </FoldPressable>
   );

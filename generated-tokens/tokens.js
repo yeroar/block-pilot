@@ -167,15 +167,15 @@ export const HeaderSmV2 = {
 };
 export const HeaderXsV2 = {
   fontFamily: "Geist",
-  fontWeight: "500",
+  fontWeight: "Regular",
   lineHeight: 20,
   fontSize: 18,
 };
 export const HeaderXxsV2 = {
   fontFamily: "Geist",
-  fontWeight: "600",
-  fontSize: 14,
-  lineHeight: 16,
+  fontWeight: "500",
+  fontSize: 16,
+  lineHeight: 18,
 };
 export const BodyLgV2 = {
   fontFamily: "Geist",

@@ -19,6 +19,7 @@ import {
   BorderRadiusSm,
   SpacingM10,
   BorderRadiusDefault,
+  SpacingM5,
 } from "../../generated-tokens/tokens";
 
 // Clear type definition with better naming
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingRight: SpacingM4,
+    paddingRight: SpacingM5,
   },
   left: {
     flex: 1,

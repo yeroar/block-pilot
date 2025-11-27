@@ -179,14 +179,14 @@ export const PaymentMethodSelectionExample = ({
         Choose payment method
       </FoldText>
 
-      <View style={[styles.selectorListClean, styles.selectorListPadding]}>
+      <View style={styles.selectorList}>
         {paymentMethods.map((method, index) => (
           <React.Fragment key={method.key}>
             <Selector
-              variant="radio"
+              variant="checkbox" // Use checkbox variant for radio on right side
               title={method.title}
               subtext={method.subtitle}
-              showLeadingIcon={method.icon}
+              showLeadingIcon={method.icon} // Keep icon containers
               hasChip={
                 <Chip
                   label={method.chip}
@@ -501,7 +501,6 @@ const styles = StyleSheet.create({
 
   // Container for selector items with background and borders (legacy)
   selectorList: {
-    backgroundColor: LayerSecondary,
     borderRadius: BorderRadiusDefault,
     overflow: "hidden",
   },

@@ -45,6 +45,7 @@ interface FoldPageViewHeaderProps {
   backgroundColor?: string;
   rightIconColor?: string;
   titleColor?: string;
+  titleType?: string; // New prop for title typography
   style?: StyleProp<ViewStyle>; // added
 }
 
@@ -63,13 +64,11 @@ export default function FoldPageViewHeader({
   backgroundColor,
   rightIconColor,
   titleColor,
+  titleType = "header-xs-v2", // Default value
   style, // added
 }: FoldPageViewHeaderProps) {
   const insets = useSafeAreaInsets();
   const headerTextColor = titleColor || TOKENS.colors.textPrimary;
-
-  // Center max width = screen - 176 (88 per side)
-  const centerMaxWidth = Dimensions.get("window").width - 176;
 
   const iconStyles = { margin: 12 };
 
@@ -81,6 +80,7 @@ export default function FoldPageViewHeader({
           backgroundColor: backgroundColor || "transparent",
           height: HEADER_HEIGHT + insets.top,
           paddingTop: insets.top,
+          marginBottom: 16,
         },
         style,
       ]}
@@ -106,12 +106,13 @@ export default function FoldPageViewHeader({
         </View>
 
         {/* Center (flex:1, capped to screen - 176) */}
-        <View style={[styles.center, { maxWidth: centerMaxWidth }]}>
+        <View style={[styles.center]}>
           <FoldText
-            type="header-xs-v2"
+            type={titleType as any}
+            numberOfLines={1}
+            ellipsizeMode="tail"
             style={{
               textAlign: "center",
-              paddingTop: 4,
               color: headerTextColor,
             }}
           >
@@ -154,7 +155,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   leftSide: {
-    width: SIDE_WIDTH,
     height: "100%",
     justifyContent: "center",
     alignItems: "flex-start",
@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   rightSide: {
-    width: SIDE_WIDTH,
     height: "100%",
     justifyContent: "center",
     alignItems: "flex-end",

@@ -188,8 +188,9 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
   // header / content / footer slots for StandardBottomSheet
   const renderSheetHeader = () => (
     <FoldPageViewHeader
-      style={{ marginTop: -insets.top }}
-      title={activeSheet === "category" ? "Redemption" : "Category"} // updated header titles
+      style={{ marginTop: -insets.top - 16 }}
+      titleType="header-xxs-v2"
+      title="Filter by redemption method"
       leftComponent={
         <StackControl
           variant="left"
@@ -210,28 +211,44 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
     const selectedValue =
       activeSheet === "category" ? tempSelectedCategory : tempSelectedReward;
 
-    return (
-      <View style={styles.roundedPanel}>
-        <View style={styles.selectorList}>
+    // Different styling for category (redemption) vs reward (payment method)
+    if (activeSheet === "category") {
+      // Redemption method: clean styling with radio on left, no icons
+      return (
+        <View style={styles.selectorListClean}>
           {options.map((option, index) => (
-            <React.Fragment key={option.id}>
-              <Selector
-                variant="radio"
-                title={option.label}
-                selected={selectedValue === option.id}
-                showLeadingIcon={
-                  activeSheet === "category"
-                    ? locationIcons[option.id]
-                    : undefined
-                }
-                onPress={() => handleOptionSelect(option.id)}
-              />
-              {index < options.length - 1 && <View style={styles.divider} />}
-            </React.Fragment>
+            <Selector
+              key={option.id}
+              variant="radio"
+              title={option.label}
+              selected={selectedValue === option.id}
+              showLeadingIcon={false} // Remove icon containers
+              onPress={() => handleOptionSelect(option.id)}
+            />
           ))}
         </View>
-      </View>
-    );
+      );
+    } else {
+      // Payment method: traditional styling with radio on right, with icon containers
+      return (
+        <View style={styles.roundedPanel}>
+          <View style={styles.selectorList}>
+            {options.map((option, index) => (
+              <React.Fragment key={option.id}>
+                <Selector
+                  variant="checkbox" // Use checkbox variant for traditional radio on right
+                  title={option.label}
+                  selected={selectedValue === option.id}
+                  showLeadingIcon={true} // Show icon containers
+                  onPress={() => handleOptionSelect(option.id)}
+                />
+                {index < options.length - 1 && <View style={styles.divider} />}
+              </React.Fragment>
+            ))}
+          </View>
+        </View>
+      );
+    }
   };
 
   const renderSheetFooter = () => (
@@ -240,7 +257,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
         style={{ flexDirection: "row", alignItems: "center", gap: SpacingM3 }}
       >
         <Button
-          style={{ flex: 1 }}
+          style={{ flex: 1, height: 48 }}
           label="Clear"
           variant="secondary"
           size="lg"
@@ -258,7 +275,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
           }}
         />
         <Button
-          style={{ flex: 1 }}
+          style={{ flex: 1, height: 48 }}
           label="Apply"
           variant="primary"
           size="lg"
@@ -316,7 +333,7 @@ export default function FilterLine({ onFilterChange }: FilterLineProps) {
         enablePanDownToClose={false}
         closeOnBackdropPress={true}
         onDismiss={handleSheetClose}
-        headerSlot={renderSheetHeader()} // uses FoldPageViewHeader
+        headerSlot={renderSheetHeader()} // Add header back
         contentSlot={renderSheetBody()}
         footerSlot={renderSheetFooter() /* optional ActionBar */}
       />
@@ -363,6 +380,10 @@ const styles = StyleSheet.create({
     backgroundColor: LayerSecondary,
     borderRadius: BorderRadiusDefault,
     overflow: "hidden",
+  },
+  selectorListClean: {
+    // Clean list without background, borders, or dividers
+    gap: 0,
   },
   divider: {
     height: 1,
