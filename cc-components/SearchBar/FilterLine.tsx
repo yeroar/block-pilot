@@ -38,9 +38,9 @@ interface FilterLineProps {
 const FILTER_OPTIONS = {
   // category slot is now used for "location" choices (location = where service is available)
   category: [
-    { id: "in_person", label: "In person" },
+    { id: "in_person", label: "In-store" },
     { id: "online", label: "Online" },
-    { id: "both", label: "In person & online" },
+    { id: "both", label: "In-store & online" },
   ],
   reward: [
     { id: "all", label: "Category" },

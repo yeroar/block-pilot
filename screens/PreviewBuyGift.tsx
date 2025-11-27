@@ -27,6 +27,8 @@ import {
   LayerBackground,
   ObjectPrimaryBoldDefault,
   SpacingM4,
+  SpacingM5,
+  SpacingM6,
   SpacingM8,
 } from "../generated-tokens/tokens";
 
@@ -128,11 +130,10 @@ export default function PreviewBuyGiftCard() {
               />
             }
             bottomSlot={
-              // Always use PMTile to present the card selector bottom sheet, without header
+              // PMTile for payment method selection - only opens on user tap
               <PMTile
                 enablePaymentSelection
                 initialSheetMode="card"
-                autoOpen
                 hideSheetHeader
                 onPaymentSelect={handleAddPayment}
                 leadingIcon={true}
@@ -145,7 +146,7 @@ export default function PreviewBuyGiftCard() {
         </View>
 
         <ConfirmationBuyGiftCard
-          location="Airbnb"
+          location="Online and in-store"
           total={`$${amountStr}.00`}
           feePercentLabel="5%"
           feeValue="$5.00"
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: LayerBackground,
-    paddingHorizontal: SpacingM4,
+    paddingHorizontal: SpacingM5,
   },
   body: {
     flex: 1,

@@ -1,14 +1,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import LineItem from "../LineItem/LineItem";
-import Chip from "../Chip/Chip";
 import {
-  SpacingM4,
-  SpacingM2,
   BorderSecondary,
-  LayerBackground,
   FacePrimary,
   FaceSecondary,
+  FaceTertiary,
+  LayerBackground,
+  SpacingM0,
+  SpacingM2,
+  SpacingM3,
+  SpacingM4,
+  SpacingM6,
 } from "../../generated-tokens/tokens";
 import { FoldText } from "../Primitives/FoldText";
 
@@ -17,13 +20,15 @@ interface ConfirmationBuyGiftCardProps {
   total?: string;
   feePercentLabel?: string;
   feeValue?: string;
+  feeSatsValue?: string;
 }
 
 export default function ConfirmationBuyGiftCard({
-  location = "Airbnb",
-  total = "$100.00",
+  location = "Online and in-store",
+  total = "$250",
   feePercentLabel = "5%",
-  feeValue = "$5.00",
+  feeValue = "$12.50",
+  feeSatsValue = "10,946 sats",
 }: ConfirmationBuyGiftCardProps) {
   return (
     <View style={styles.card}>
@@ -31,11 +36,28 @@ export default function ConfirmationBuyGiftCard({
         <LineItem label="Location" variable={location} />
         <LineItem label="Total" variable={total} />
         <LineItem
-          label="Rewards"
-          variable={feeValue}
-          showChip={<Chip label={feePercentLabel} onPress={() => {}} />}
+          label={`Rewards • ${feePercentLabel}`}
+          variable={
+            <View style={styles.rewardsValue}>
+              <FoldText
+                type="body-md-bold-v2"
+                style={{ color: FacePrimary, textAlign: "right" }}
+              >
+                {feeValue}
+              </FoldText>
+              <FoldText
+                type="body-md-v2"
+                style={{ color: FaceTertiary, textAlign: "right" }}
+              >
+                {feeSatsValue}
+              </FoldText>
+            </View>
+          }
         />
       </View>
+
+      <View style={styles.dividerLine} />
+
       <View style={styles.disclaimer}>
         <FoldText type="body-sm-v2" style={{ color: FaceSecondary }}>
           [Brand] is not a sponsor of the rewards or otherwise affiliated with
@@ -68,14 +90,16 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: LayerBackground,
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: BorderSecondary,
-    paddingHorizontal: SpacingM4,
-    paddingVertical: SpacingM4,
     marginTop: SpacingM4,
   },
   list: {
-    gap: SpacingM2,
+    gap: SpacingM0,
+  },
+
+  dividerLine: {
+    height: 1,
+    backgroundColor: BorderSecondary,
+    marginVertical: SpacingM6,
   },
   disclaimer: {
     gap: SpacingM2,

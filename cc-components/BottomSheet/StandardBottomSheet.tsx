@@ -11,6 +11,7 @@ import {
   BorderRadiusDefault,
   LayerBackground,
   SpacingM0,
+  SpacingM3,
   SpacingM4,
   SpacingM5,
 } from "../../generated-tokens/tokens";
@@ -230,6 +231,7 @@ const styles = StyleSheet.create({
     paddingTop: 0, // remove implicit top padding
   },
   header: {
+    paddingTop: SpacingM3,
     width: "100%",
   },
   // Original content area for fixed snap points

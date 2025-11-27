@@ -18,6 +18,7 @@ import {
   ObjectAccentSubtleDefault,
   FaceAccent,
   ObjectSecondaryDefault,
+  ObjectSecondaryPressed,
   SpacingM3,
   FaceInverse,
 } from "../../generated-tokens/tokens";
@@ -115,30 +116,36 @@ export default function PMTile({
     }
   }, []);
 
+  // Helper: close the sheet with animation timing
+  const closeSheetImmediate = useCallback(() => {
+    setIsSheetOpen(false);
+    // Delay actual dismiss to allow visual state change to animate
+    setTimeout(() => {
+      bottomSheetRef.current?.dismiss();
+    }, 100); // Shorter delay for quicker visual feedback
+  }, []);
+
   // Handle specific payment selection from bank/card sheets
   const handleSpecificPaymentSelect = useCallback(
     (paymentId: string) => {
       if (sheetMode === "bank") {
-        const bankDetails = getBankDetails(paymentId) as
-          | PaymentMethod
-          | undefined;
+        const bankDetails = getBankDetails(paymentId) as PaymentMethod | undefined;
         if (bankDetails) {
           setSelectedPayment(bankDetails);
           onPaymentSelect?.(bankDetails);
         }
       } else if (sheetMode === "card") {
-        const cardDetails = getCardDetails(paymentId) as
-          | PaymentMethod
-          | undefined;
+        const cardDetails = getCardDetails(paymentId) as PaymentMethod | undefined;
         if (cardDetails) {
           setSelectedPayment(cardDetails);
           onPaymentSelect?.(cardDetails);
         }
       }
 
-      bottomSheetRef.current?.dismiss();
+      // Instant visual update on close
+      closeSheetImmediate();
     },
-    [sheetMode, onPaymentSelect]
+    [sheetMode, onPaymentSelect, closeSheetImmediate]
   );
 
   // Handle back navigation from bank/card to select
@@ -191,13 +198,13 @@ export default function PMTile({
       if (showBackButton) {
         handleBackToSelect();
       } else {
-        bottomSheetRef.current?.dismiss();
+        // Instant visual update on manual close
+        closeSheetImmediate();
       }
     };
 
     return (
       <FoldPageViewHeader
-        style={{ marginTop: -insets.top }}
         title={getTitle()}
         leftComponent={
           <StackControl
@@ -208,7 +215,7 @@ export default function PMTile({
         }
       />
     );
-  }, [sheetMode, handleBackToSelect, insets.top]);
+  }, [sheetMode, handleBackToSelect, insets.top, closeSheetImmediate]);
 
   // Render main content
   const renderSheetContent = useCallback(() => {
@@ -265,11 +272,11 @@ export default function PMTile({
           label="Use this payment method"
           variant="primary"
           size="lg"
-          onPress={() => bottomSheetRef.current?.dismiss()}
+          onPress={closeSheetImmediate}
         />
       </ActionBar>
     );
-  }, []);
+  }, [closeSheetImmediate]);
 
   // Display logic for payment selection mode - prioritize props over internal state
   const displayLeadingSlot =
@@ -304,11 +311,13 @@ export default function PMTile({
 
   const backgroundColor =
     isSheetOpen && isAddPayment
-      ? FaceAccent // use accent as background while open
+      ? FaceAccent // accent while open in add-payment state
+      : isSheetOpen && !isAddPayment
+      ? ObjectSecondaryPressed // pressed background for other states while sheet open
       : isAddPayment
       ? ObjectAccentSubtleDefault
       : isChosen
-      ? ObjectSecondaryDefault
+      ? ObjectSecondaryDefault // idle chosen state uses secondary default
       : ObjectPrimarySubtleDefault;
 
   const contentTextColor =
@@ -330,7 +339,7 @@ export default function PMTile({
       ? selectedPayment?.title
       : label;
 
-  // Helper to normalize icon size to 16px (cast to any to satisfy different icon prop types)
+  // Helper to normalize icon size to 16px
   const normalizeIcon = (node: React.ReactNode) => {
     if (!node || !React.isValidElement(node)) return node;
     const el: any = node;
@@ -338,9 +347,16 @@ export default function PMTile({
     if (!needsResize) return node;
     try {
       return React.cloneElement(el, { width: 16, height: 16 });
-    } catch (e) {
+    } catch {
       return (
-        <View style={{ width: 16, height: 16, justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{
+            width: 16,
+            height: 16,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {el}
         </View>
       );

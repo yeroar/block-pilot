@@ -24,11 +24,13 @@ import {
   SpacingM12,
   SpacingM6,
   BorderPrimary,
+  Red500,
 } from "../generated-tokens/tokens";
 import { CreditCardIcon } from "../cc-components/assets/BlueSkyIcons/CreditCardIcon";
 import { GlobeIcon } from "../cc-components/assets/BlueSkyIcons/GlobeIcon";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import RecommendedGifts from "../cc-components/GiftCard/RecommendedGifts";
+import { red } from "react-native-reanimated/lib/typescript/Colors";
 
 export type RootStackParamList = {
   TestSearch: undefined;
@@ -122,7 +124,7 @@ export default function TestSearchScreen() {
             <View style={styles.validationRow}>
               <GlobeIcon width={16} height={16} />
               <FoldText type="body-md-v2" style={styles.validationText}>
-                In person or online
+                In-store or online
               </FoldText>
             </View>
           </View>
@@ -225,7 +227,7 @@ export default function TestSearchScreen() {
         <View style={{ flexDirection: "row", gap: 12 }}>
           <View style={{ flex: 1 }}>
             <Button
-              label="Add to favorite"
+              label={`Favorite ${activeGift?.title || "brand"}`}
               variant="tertiary"
               size="lg"
               onPress={() => {

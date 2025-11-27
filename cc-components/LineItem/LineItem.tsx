@@ -2,8 +2,11 @@ import React from "react";
 import { View, StyleSheet, ViewStyle, StyleProp } from "react-native";
 import { FoldText } from "../Primitives/FoldText";
 import {
+  Blue100,
   FacePrimary,
+  SpacingM0,
   SpacingM1,
+  SpacingM3,
   SpacingM4,
 } from "../../generated-tokens/tokens";
 
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: SpacingM4,
+    paddingVertical: SpacingM3,
   },
   left: {
     flexDirection: "row",
