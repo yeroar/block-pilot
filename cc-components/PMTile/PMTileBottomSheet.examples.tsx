@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Selector from "../Selector/Selector";
@@ -124,26 +124,57 @@ const cardMethod = {
   subsubtitle: "n.n% deposit fee ($n.nn min)",
 };
 
+// Helper function to format payment method display text
+const formatPaymentMethodTitle = (method: any) => {
+  // For Cash balance and Lightning: show only title (no numbers)
+  if (method.key === "cash" || method.key === "lightning") {
+    return method.title;
+  }
+
+  // For cards (Visa, etc.): show title + subtitle (which already contains the formatted numbers)
+  if (method.key === "card") {
+    return `${method.title} ${method.subtitle}`;
+  }
+
+  return method.title;
+};
+
 // New: Payment method selection matching Figma design
 export const PaymentMethodSelectionExample = ({
   onSelect,
+  initialSelection,
 }: {
   onSelect?: (methodKey: string) => void;
+  initialSelection?: string;
 }) => {
   const insets = useSafeAreaInsets();
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<string | null>(
+    initialSelection || null
+  );
 
   const paymentMethods = [cashBalanceMethod, visaCardMethod, lightningMethod];
 
+  const handleMethodSelection = (methodKey: string) => {
+    setSelectedMethod(methodKey);
+
+    // Find the selected method and format its title
+    const method = paymentMethods.find((m) => m.key === methodKey);
+    if (method && onSelect) {
+      // Create a formatted payment method object to pass back
+      const formattedMethod = {
+        key: method.key,
+        icon: method.icon,
+        title: formatPaymentMethodTitle(method),
+        subtitle: method.subtitle,
+      };
+
+      // Pass the formatted data to the parent
+      onSelect(methodKey);
+    }
+  };
+
   return (
-    <View
-      style={[
-        styles.listContainer,
-        {
-          marginBottom: insets.bottom,
-        },
-      ]}
-    >
+    <View style={[styles.listContainer, {}]}>
       <FoldText type="header-md-v2" style={styles.header}>
         Choose payment method
       </FoldText>
@@ -164,21 +195,11 @@ export const PaymentMethodSelectionExample = ({
                 />
               }
               selected={selectedMethod === method.key}
-              onPress={() => setSelectedMethod(method.key)}
+              onPress={() => handleMethodSelection(method.key)}
             />
           </React.Fragment>
         ))}
       </View>
-
-      <ActionBar>
-        <Button
-          label="Use this payment method"
-          variant="primary"
-          size="lg"
-          onPress={() => selectedMethod && onSelect?.(selectedMethod)}
-          disabled={!selectedMethod}
-        />
-      </ActionBar>
     </View>
   );
 };
@@ -336,6 +357,30 @@ export const BankPaymentContentExample = ({
   );
 };
 
+export const getPaymentMethodDetails = (methodKey: string) => {
+  const methods = {
+    cash: {
+      key: "cash" as const,
+      icon: <BitcoinIcon />,
+      title: "Cash balance", // Raw title - no numbers
+      subtitle: "$500.00",
+    },
+    lightning: {
+      key: "lightning" as const,
+      icon: <LightningIcon />,
+      title: "Lightning", // Raw title - no numbers
+      subtitle: "Instant delivery, minimal fees",
+    },
+    card: {
+      key: "card" as const,
+      icon: <CardIconContainer />,
+      title: "Visa", // Raw title - numbers will be added by formatPaymentMethodTitle
+      subtitle: "•••• 0823",
+    },
+  };
+  return methods[methodKey as keyof typeof methods];
+};
+
 export const getCardDetails = (id: string) => {
   const cards = {
     wells: {
@@ -372,6 +417,71 @@ export const getBankDetails = (id: string) => {
   return banks[id];
 };
 
+// Example component showing how to use PMTile with persistent selection
+export const PersistentPaymentMethodExample = () => {
+  const [rememberedPayment, setRememberedPayment] = useState<any>(null);
+
+  // In a real app, you would load this from AsyncStorage or SecureStore
+  const loadPersistedPayment = useCallback(async () => {
+    // Example: const saved = await AsyncStorage.getItem('selectedPaymentMethod');
+    // For demo, let's default to cash balance if nothing is remembered
+    if (!rememberedPayment) {
+      const cashBalance = getPaymentMethodDetails("cash");
+      setRememberedPayment(cashBalance);
+    }
+  }, [rememberedPayment]);
+
+  const savePaymentChoice = useCallback(async (payment: any) => {
+    // Example: await AsyncStorage.setItem('selectedPaymentMethod', JSON.stringify(payment));
+    setRememberedPayment(payment);
+    console.log("Payment choice saved:", payment.title);
+  }, []);
+
+  // Load persisted payment on mount
+  React.useEffect(() => {
+    loadPersistedPayment();
+  }, [loadPersistedPayment]);
+
+  return (
+    <View style={{ padding: 20 }}>
+      <FoldText type="header-lg-v2" style={{ marginBottom: 20 }}>
+        Payment Method with Memory
+      </FoldText>
+
+      <FoldText type="body-md-v2" style={{ marginBottom: 20, color: "#666" }}>
+        This PMTile remembers your choice. Try selecting different payment
+        methods - your choice will be remembered.
+      </FoldText>
+
+      {/* PMTile with persistent selection */}
+      {/* Example usage:
+      <PMTile
+        label="Choose payment method"
+        enablePaymentSelection={true}
+        initialSelectedPayment={rememberedPayment}
+        onPaymentSelect={(payment) => {
+          savePaymentChoice(payment);
+        }}
+      />
+      */}
+
+      {rememberedPayment && (
+        <View
+          style={{
+            marginTop: 20,
+            padding: 15,
+            backgroundColor: "#f0f0f0",
+            borderRadius: 8,
+          }}
+        >
+          <FoldText type="body-sm-bold-v2">Currently remembered:</FoldText>
+          <FoldText type="body-md-v2">{rememberedPayment.title}</FoldText>
+        </View>
+      )}
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   // Main container for the list design
   listContainer: {
@@ -404,16 +514,5 @@ const styles = StyleSheet.create({
   // Vertical padding for selectors list
   selectorListPadding: {
     paddingVertical: 12,
-  },
-
-  // Divider between selector items
-  divider: {
-    height: 1,
-    backgroundColor: BorderSecondary,
-  },
-
-  // Legacy styles kept for backward compatibility
-  content: {
-    gap: 1,
   },
 });

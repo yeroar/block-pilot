@@ -29,6 +29,7 @@ import {
   BankPaymentContentExample,
   getCardDetails,
   getBankDetails,
+  getPaymentMethodDetails,
 } from "./PMTileBottomSheet.examples";
 import FoldPageViewHeader from "../FoldPageViewHeader/FoldPageViewHeader";
 import StackControl from "../FoldPageViewHeader/StackControl";
@@ -38,7 +39,7 @@ import Button from "../Button/Button";
 import { PlusCircleIcon } from "../assets/BlueSkyIcons/PlusCircleIcon";
 
 export type PaymentMethod = {
-  key: "bank" | "card";
+  key: "bank" | "card" | "cash" | "lightning";
   icon: React.ReactNode;
   title: string;
   subtitle: string;
@@ -58,9 +59,11 @@ export type PMTileProps = {
   enablePaymentSelection?: boolean;
   onPaymentSelect?: (pm: PaymentMethod) => void;
   // new: control bottom sheet behavior
-  initialSheetMode?: "select" | "bank" | "card";
+  initialSheetMode?: "select" | "bank" | "payment-method";
   autoOpen?: boolean; // auto present on mount
   hideSheetHeader?: boolean; // omit header in sheet
+  // new: remember selected payment method
+  initialSelectedPayment?: PaymentMethod;
 };
 
 export default function PMTile({
@@ -79,18 +82,21 @@ export default function PMTile({
   initialSheetMode = "select",
   autoOpen = false,
   hideSheetHeader = false,
+  initialSelectedPayment,
   ...rest
 }: PMTileProps) {
   const insets = useSafeAreaInsets();
-  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>({
-    key: "card",
-    icon: <CreditCardIcon width={16} height={16} />,
-    title: "Add payment method",
-    subtitle: "",
-  });
-  const [sheetMode, setSheetMode] = useState<"select" | "bank" | "card">(
-    initialSheetMode
+  const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>(
+    initialSelectedPayment || {
+      key: "card",
+      icon: <CreditCardIcon width={16} height={16} />,
+      title: "Add payment method",
+      subtitle: "",
+    }
   );
+  const [sheetMode, setSheetMode] = useState<
+    "select" | "bank" | "payment-method"
+  >(initialSheetMode);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // Bottom sheet ref: use our StandardBottomSheet methods shape
@@ -113,7 +119,7 @@ export default function PMTile({
     if (pm.key === "bank") {
       setSheetMode("bank");
     } else if (pm.key === "card") {
-      setSheetMode("card");
+      setSheetMode("payment-method");
     }
   }, []);
 
@@ -137,20 +143,34 @@ export default function PMTile({
           setSelectedPayment(bankDetails);
           onPaymentSelect?.(bankDetails);
         }
-      } else if (sheetMode === "card") {
-        const cardDetails = getCardDetails(paymentId) as
-          | PaymentMethod
-          | undefined;
-        if (cardDetails) {
-          setSelectedPayment(cardDetails);
-          onPaymentSelect?.(cardDetails);
+      } else if (sheetMode === "payment-method") {
+        // Check if it's one of our new payment methods (cash, lightning, card)
+        const paymentMethodDetails = getPaymentMethodDetails(paymentId);
+        if (paymentMethodDetails) {
+          const formattedPayment = {
+            key: paymentMethodDetails.key,
+            icon: paymentMethodDetails.icon,
+            title: paymentMethodDetails.title,
+            subtitle: paymentMethodDetails.subtitle,
+          } as PaymentMethod;
+
+          setSelectedPayment(formattedPayment);
+          onPaymentSelect?.(formattedPayment);
+        } else {
+          // Fall back to legacy card details
+          const cardDetails = getCardDetails(paymentId) as
+            | PaymentMethod
+            | undefined;
+          if (cardDetails) {
+            setSelectedPayment(cardDetails);
+            onPaymentSelect?.(cardDetails);
+          }
         }
       }
 
-      // Instant visual update on close
-      closeSheetImmediate();
+      // Don't close the sheet here - let the user press "Use this payment method" button
     },
-    [sheetMode, onPaymentSelect, closeSheetImmediate]
+    [sheetMode, onPaymentSelect]
   );
 
   // Handle back navigation from bank/card to select
@@ -167,31 +187,22 @@ export default function PMTile({
 
   const handlePress = useCallback(() => {
     if (enablePaymentSelection) {
-      // Determine which sheet to open based on current selection
-      if (
-        !selectedPayment.title ||
-        selectedPayment.title === "Select payment method"
-      ) {
-        setSheetMode("select");
-      } else if (selectedPayment.key === "bank") {
-        setSheetMode("bank");
-      } else if (selectedPayment.key === "card") {
-        setSheetMode("card");
-      }
+      // Always open payment method selection for this flow
+      setSheetMode("payment-method");
       setIsSheetOpen(true);
       bottomSheetRef.current?.present();
     } else {
       onPress?.();
     }
-  }, [enablePaymentSelection, selectedPayment, onPress]);
+  }, [enablePaymentSelection, onPress]);
 
   // Render header content
   const renderSheetHeader = useCallback(() => {
     const showBackButton = sheetMode !== "select";
     const getTitle = () => {
       switch (sheetMode) {
-        case "card":
-          return "Select Payment Card";
+        case "payment-method":
+          return "Choose payment method"; // This shows PaymentMethodSelectionExample
         case "bank":
           return "Select Bank Account";
         default:
@@ -228,10 +239,16 @@ export default function PMTile({
       if (sheetMode === "select") {
         return <EmptyPaymentContentExample onSelect={handleSelectPm} />;
       }
-      if (sheetMode === "card") {
+      if (sheetMode === "payment-method") {
         return (
           <PaymentMethodSelectionExample
             onSelect={(methodKey) => handleSpecificPaymentSelect(methodKey)}
+            initialSelection={
+              selectedPayment.key !== "card" ||
+              selectedPayment.title !== "Add payment method"
+                ? selectedPayment.key
+                : undefined
+            }
           />
         );
       }
@@ -267,12 +284,12 @@ export default function PMTile({
 
   // Render footer (optional action bar)
   const renderSheetFooter = useCallback(() => {
-    const showActionBar = false; // Currently disabled
+    const showActionBar = sheetMode === "payment-method"; // Show for payment method selection
 
     if (!showActionBar) return null;
 
     return (
-      <ActionBar>
+      <ActionBar style={{ marginBottom: 0 }}>
         <Button
           label="Use this payment method"
           variant="primary"
@@ -281,7 +298,7 @@ export default function PMTile({
         />
       </ActionBar>
     );
-  }, [closeSheetImmediate]);
+  }, [sheetMode, closeSheetImmediate]);
 
   // Display logic for payment selection mode - prioritize props over internal state
   const displayLeadingSlot =
@@ -306,13 +323,15 @@ export default function PMTile({
     selectedPayment.title !== "Select payment method" &&
     selectedPayment.title !== "Add payment method";
 
-  // Extract last four digits from subtitle like "---- 0823"
-  const extractLastFour = (subtitle?: string) => {
-    if (!subtitle) return "";
+  // Extract last four digits from subtitle like "---- 0823" - only for card payments
+  const extractLastFour = (subtitle?: string, paymentKey?: string) => {
+    if (!subtitle || paymentKey !== "card") return "";
     const digits = subtitle.replace(/[^0-9]/g, "");
     return digits.slice(-4);
   };
-  const chosenLast4 = isChosen ? extractLastFour(selectedPayment.subtitle) : "";
+  const chosenLast4 = isChosen
+    ? extractLastFour(selectedPayment.subtitle, selectedPayment.key)
+    : "";
 
   const backgroundColor =
     isSheetOpen && isAddPayment

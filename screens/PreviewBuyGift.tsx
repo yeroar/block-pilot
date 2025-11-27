@@ -65,17 +65,15 @@ export default function PreviewBuyGiftCard() {
 
   const handlePaymentSelect = (pm: PaymentMethod) => {
     setSelectedPayment(pm);
+    // In a real app, you could persist this choice here
+    // Example: AsyncStorage.setItem('preferredPaymentMethod', JSON.stringify(pm));
   };
 
-  // Create a default payment method when BottomContext triggers payment selection
-  const handleAddPayment = () => {
-    const defaultPayment: PaymentMethod = {
-      id: "pm_default",
-      label: "Wells Fargo •••• 4242",
-      brand: "Visa",
-      last4: "4242",
-    } as unknown as PaymentMethod;
-    setSelectedPayment(defaultPayment);
+  // Create a default cash balance as initial preferred method (example persistence)
+  // In a real app, you would load this from AsyncStorage
+  const getInitialPaymentMethod = (): PaymentMethod | null => {
+    // For demo purposes, let's not set a default - let user choose
+    return null;
   };
 
   const handleConfirmBuy = () => {
@@ -130,12 +128,12 @@ export default function PreviewBuyGiftCard() {
               />
             }
             bottomSlot={
-              // PMTile for payment method selection - only opens on user tap
+              // PMTile for payment method selection - adapts based on selection
               <PMTile
                 enablePaymentSelection
-                initialSheetMode="card"
                 hideSheetHeader
-                onPaymentSelect={handleAddPayment}
+                onPaymentSelect={handlePaymentSelect}
+                initialSelectedPayment={selectedPayment}
                 leadingIcon={true}
                 leadingSlot={<CreditCardIcon width={20} height={20} />}
                 trailingSlot={<ChevronDownIcon width={20} height={20} />}
